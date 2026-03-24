@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.env
+venv/
+src/config/api_keys.py
+.idea/
+.vscode/
+*.egg-info/
+dist/
+build/
+output_images/
+~$*
+docs/
