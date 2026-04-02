@@ -206,88 +206,50 @@ d:\毕设\
 
 ---
 
-## 七、关键设计要点备忘
+## 七、开发记录
 
-### 7.1 ReAct Agent 循环伪代码
+### 7.1 System Prompt 优化：出行场景时空推理
 
-```python
-def react_loop(query: str, max_steps: int = 10) -> str:
-    """ReAct 主循环：交替执行推理与行动"""
-    context = initialize_context(query)
+**问题**：用户输入"明天早八到晚六的车，从武汉到成都，有什么穿衣建议"时，Agent 错误地查询了成都早八的天气，而用户早八实际在武汉，晚六才到成都。
 
-    for step in range(max_steps):
-        # Thought: LLM 推理当前应执行什么操作
-        thought = llm.reason(context)
+**原因**：初版 Prompt 缺乏出行场景下"不同时间段 → 不同地点"的推理引导，LLM 默认对两个城市都查询了完整时间段的天气。
 
-        # Action: 根据推理结果选择并调用工具
-        action, action_input = parse_action(thought)
-        if action == "FINISH":
-            return thought.final_answer
+**修改前**：
 
-        # Observation: 获取工具执行结果
-        observation = execute_tool(action, action_input)
-
-        # 将本轮结果追加到上下文
-        context.append(thought, action, observation)
-
-    return generate_fallback_response(context)
+```
+你是一个天气查询助手，你要使用getlocationID工具将用户要查询的地址转化为地址代码，
+再使用地址代码在getweather中查询，精准定位用户需要的时间、地点、天气参数，
+不输出无关内容，解答用户的问题。
 ```
 
-### 7.2 气象 API 工具描述模板
+**修改后**：
 
-```json
-{
-  "name": "get_weather_forecast",
-  "description": "获取指定城市未来N天的天气预报数据，包括温度、湿度、风力、降水概率等",
-  "parameters": {
-    "type": "object",
-    "properties": {
-      "city": {
-        "type": "string",
-        "description": "城市名称或城市编码"
-      },
-      "days": {
-        "type": "integer",
-        "description": "预报天数（1-15）",
-        "default": 3
-      },
-      "metrics": {
-        "type": "array",
-        "items": { "type": "string" },
-        "description": "需要的气象要素列表，如 ['temperature', 'humidity', 'wind']"
-      }
-    },
-    "required": ["city"]
-  }
-}
+```
+你是一个天气查询助手。
+
+## 工具使用规则
+1. 用户提到地名时，先用 search_city 获取 LocationID
+2. 再用 LocationID 调用 get_forcast_weather 查询天气
+3. 用户提到相对时间（今天、明天等）时，先调用 get_current_time 确定当前日期
+
+## 出行场景推理规则
+当用户描述从A地到B地的出行计划时：
+- 出发时间段：使用 **出发地（A地）** 对应时段的天气
+- 到达时间段：使用 **目的地（B地）** 对应时段的天气
+- 例如"明天早八到晚六，从武汉到成都"意味着：
+  - 早上8点在武汉出发 → 查武汉上午的天气
+  - 晚上6点到达成都 → 查成都傍晚的天气
+  - 不要查武汉晚上或成都早上的天气，因为用户那时不在那里
+
+## 输出规则
+- 精准定位用户需要的时间、地点、天气参数
+- 不输出用户不在场的时间地点的天气
+- 给出实用的穿衣/出行建议
 ```
 
-### 7.3 语义桥接映射示例
+**效果**：Agent 能正确理解出行场景的时空关系，仅查询武汉出发时段和成都到达时段的天气。然而此prompt只适用当前问题，气象问题的泛化有待继续探索。
 
-```json
-{
-  "temperature": {
-    "ranges": [
-      { "min": -40, "max": -10, "label": "极寒", "suggestion": "极端低温，请做好全面防寒措施" },
-      { "min": -10, "max": 0,   "label": "严寒", "suggestion": "注意防寒保暖，减少户外活动" },
-      { "min": 0,   "max": 10,  "label": "寒冷", "suggestion": "需要穿着厚实冬装" },
-      { "min": 10,  "max": 20,  "label": "凉爽", "suggestion": "建议穿着外套或薄毛衣" },
-      { "min": 20,  "max": 28,  "label": "舒适", "suggestion": "适宜户外活动" },
-      { "min": 28,  "max": 35,  "label": "炎热", "suggestion": "注意防暑降温，及时补充水分" },
-      { "min": 35,  "max": 50,  "label": "酷热", "suggestion": "高温预警，尽量避免户外活动" }
-    ]
-  },
-  "wind_scale": {
-    "ranges": [
-      { "min": 0, "max": 2,  "label": "微风",   "impact": "对日常活动无影响" },
-      { "min": 3, "max": 4,  "label": "和风",   "impact": "适宜户外活动" },
-      { "min": 5, "max": 6,  "label": "清劲风", "impact": "户外活动需注意" },
-      { "min": 7, "max": 8,  "label": "疾风",   "impact": "不宜进行户外活动" },
-      { "min": 9, "max": 12, "label": "烈风",   "impact": "存在安全隐患，应留在室内" }
-    ]
-  }
-}
-```
+**对应研究问题**：Q1（气象任务指令解析——如何将用户自然语言查询精准映射为结构化检索参数）
 
 ---
 
