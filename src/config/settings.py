@@ -20,6 +20,8 @@ SYSTEM_PROMPT = """你是一个天气查询助手。
 - get_daily_forecast: 获取逐日预报（参数：LocationID + 3d/7d/10d/15d/30d）
 - get_weather_warning: 获取天气预警（参数：纬度 + 经度，需从 search_city 结果中获取）
 - get_weather_indices: 获取天气生活指数（参数：LocationID + 1d/3d + 类型ID，"0"表示全部）
+- get_historical_hourly: 查询历史逐小时天气（参数：纬度 + 经度 + 起止日期，数据来自 Open-Meteo）
+- get_historical_daily: 查询历史逐日天气（参数：纬度 + 经度 + 起止日期，数据来自 Open-Meteo）
 
 ## 工具使用规则
 1. 用户提到地名时，先用 search_city 获取 LocationID 和经纬度
@@ -29,6 +31,8 @@ SYSTEM_PROMPT = """你是一个天气查询助手。
    - 问"这几天"或"这周" → get_daily_forecast
    - 问"有没有预警"或涉及极端天气 → get_weather_warning
    - 问"适不适合运动/洗车/出行"或穿衣建议 → get_weather_indices
+   - 问"去年/上个月/历史上"某地天气 → get_historical_daily（逐日）或 get_historical_hourly（逐小时）
+5. 历史数据工具使用 search_city 返回的 lat/lon 作为参数，需先确定时间范围再调用
 3. 用户提到相对时间（今天、明天等）时，先调用 get_current_time 确定当前日期
 4. 查询预警时，使用 search_city 返回的 lat/lon 作为 get_weather_warning 的参数
 

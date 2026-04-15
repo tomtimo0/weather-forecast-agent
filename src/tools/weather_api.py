@@ -232,3 +232,121 @@ def get_weather_indices(location: str, days: str, types: str = "0") -> dict:
             "text": item.get("text", ""),
         })
     return {"indices": indices_list}
+
+
+OPEN_METEO_BASE_URL = "https://archive-api.open-meteo.com/v1/archive"
+
+
+@tool
+def get_historical_hourly(latitude: str, longitude: str, start_date: str, end_date: str) -> dict:
+    """查询指定地点过去某段时间的逐小时历史天气数据，包括温度、体感温度、湿度、降水量、风速风向、云量等。
+    适用于"去年某天几点的气温"、"上周每小时降水量"等精细历史回顾类问题。
+    经纬度可通过search_city工具获取。
+
+    Args:
+        latitude: 纬度，如"30.58"
+        longitude: 经度，如"114.30"
+        start_date: 起始日期，格式 YYYY-MM-DD，如"2025-01-01"
+        end_date: 结束日期，格式 YYYY-MM-DD，如"2025-01-07"
+    """
+    params = {
+        "latitude": latitude,
+        "longitude": longitude,
+        "start_date": start_date,
+        "end_date": end_date,
+        "hourly": "temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,snowfall,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m,wind_gusts_10m,pressure_msl",
+        "timezone": "auto",
+    }
+
+    response = requests.get(OPEN_METEO_BASE_URL, params=params)
+    data = response.json()
+
+    if data.get("error"):
+        return {"error": data.get("reason", "历史逐小时数据查询失败")}
+
+    hourly = data.get("hourly", {})
+    times = hourly.get("time", [])
+    if not times:
+        return {"error": "未查询到该地点和时间段的历史逐小时数据"}
+
+    hourly_list = []
+    for i, t in enumerate(times):
+        entry = {"time": t}
+        if hourly.get("temperature_2m") and hourly["temperature_2m"][i] is not None:
+            entry["temp"] = f"{hourly['temperature_2m'][i]}°C"
+        if hourly.get("apparent_temperature") and hourly["apparent_temperature"][i] is not None:
+            entry["feelsLike"] = f"{hourly['apparent_temperature'][i]}°C"
+        if hourly.get("relative_humidity_2m") and hourly["relative_humidity_2m"][i] is not None:
+            entry["humidity"] = f"{hourly['relative_humidity_2m'][i]}%"
+        if hourly.get("precipitation") and hourly["precipitation"][i] is not None:
+            entry["precip"] = f"{hourly['precipitation'][i]}mm"
+        if hourly.get("wind_speed_10m") and hourly["wind_speed_10m"][i] is not None:
+            entry["windSpeed"] = f"{hourly['wind_speed_10m'][i]}km/h"
+        if hourly.get("wind_direction_10m") and hourly["wind_direction_10m"][i] is not None:
+            entry["windDirection"] = f"{hourly['wind_direction_10m'][i]}°"
+        if hourly.get("cloud_cover") and hourly["cloud_cover"][i] is not None:
+            entry["cloudCover"] = f"{hourly['cloud_cover'][i]}%"
+        if hourly.get("pressure_msl") and hourly["pressure_msl"][i] is not None:
+            entry["pressure"] = f"{hourly['pressure_msl'][i]}hPa"
+        hourly_list.append(entry)
+    return {"hourly": hourly_list}
+
+
+@tool
+def get_historical_daily(latitude: str, longitude: str, start_date: str, end_date: str) -> dict:
+    """查询指定地点过去某段时间的逐日历史天气数据，包括最高最低温度、降水量、风速、日出日落等。
+    适用于"去年这个时候天气怎样"、"上个月降水量多少"等历史回顾类问题。
+    经纬度可通过search_city工具获取。
+
+    Args:
+        latitude: 纬度，如"30.58"
+        longitude: 经度，如"114.30"
+        start_date: 起始日期，格式 YYYY-MM-DD，如"2025-01-01"
+        end_date: 结束日期，格式 YYYY-MM-DD，如"2025-01-31"
+    """
+    params = {
+        "latitude": latitude,
+        "longitude": longitude,
+        "start_date": start_date,
+        "end_date": end_date,
+        "daily": "weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min,precipitation_sum,rain_sum,snowfall_sum,wind_speed_10m_max,wind_gusts_10m_max,wind_direction_10m_dominant,sunrise,sunset,sunshine_duration",
+        "timezone": "auto",
+    }
+
+    response = requests.get(OPEN_METEO_BASE_URL, params=params)
+    data = response.json()
+
+    if data.get("error"):
+        return {"error": data.get("reason", "历史逐日数据查询失败")}
+
+    daily = data.get("daily", {})
+    times = daily.get("time", [])
+    if not times:
+        return {"error": "未查询到该地点和时间段的历史逐日数据"}
+
+    daily_list = []
+    for i, t in enumerate(times):
+        entry = {"date": t}
+        if daily.get("temperature_2m_max") and daily["temperature_2m_max"][i] is not None:
+            entry["tempMax"] = f"{daily['temperature_2m_max'][i]}°C"
+        if daily.get("temperature_2m_min") and daily["temperature_2m_min"][i] is not None:
+            entry["tempMin"] = f"{daily['temperature_2m_min'][i]}°C"
+        if daily.get("apparent_temperature_max") and daily["apparent_temperature_max"][i] is not None:
+            entry["feelsLikeMax"] = f"{daily['apparent_temperature_max'][i]}°C"
+        if daily.get("apparent_temperature_min") and daily["apparent_temperature_min"][i] is not None:
+            entry["feelsLikeMin"] = f"{daily['apparent_temperature_min'][i]}°C"
+        if daily.get("precipitation_sum") and daily["precipitation_sum"][i] is not None:
+            entry["precip"] = f"{daily['precipitation_sum'][i]}mm"
+        if daily.get("wind_speed_10m_max") and daily["wind_speed_10m_max"][i] is not None:
+            entry["windSpeedMax"] = f"{daily['wind_speed_10m_max'][i]}km/h"
+        if daily.get("wind_direction_10m_dominant") and daily["wind_direction_10m_dominant"][i] is not None:
+            entry["windDirection"] = f"{daily['wind_direction_10m_dominant'][i]}°"
+        if daily.get("sunrise") and daily["sunrise"][i] is not None:
+            entry["sunrise"] = daily["sunrise"][i]
+        if daily.get("sunset") and daily["sunset"][i] is not None:
+            entry["sunset"] = daily["sunset"][i]
+        if daily.get("sunshine_duration") and daily["sunshine_duration"][i] is not None:
+            hours = round(daily["sunshine_duration"][i] / 3600, 1)
+            entry["sunshineDuration"] = f"{hours}h"
+        daily_list.append(entry)
+    return {"daily": daily_list}

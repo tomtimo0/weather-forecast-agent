@@ -14,6 +14,8 @@ from src.tools.weather_api import (
     get_daily_forecast,
     get_weather_warning,
     get_weather_indices,
+    get_historical_hourly,
+    get_historical_daily,
 )
 
 
@@ -43,6 +45,8 @@ def create_weather_agent():
             get_daily_forecast,
             get_weather_warning,
             get_weather_indices,
+            get_historical_hourly,
+            get_historical_daily,
         ],
         context_schema=Context,
         system_prompt=SYSTEM_PROMPT,
@@ -82,4 +86,4 @@ def run_agent(query: str, thread_id: str = "1"):
 
 
 if __name__ == "__main__":
-    run_agent("武汉未来一周一周哪几天适合骑车？")
+    run_agent("过去五年来武汉的冬天是变冷了还是变热了？")

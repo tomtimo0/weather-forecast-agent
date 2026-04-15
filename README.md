@@ -303,7 +303,7 @@ cp src/config/api_keys.example.py src/config/api_keys.py
 # 编辑 api_keys.py 填入实际密钥
 
 # 5. 运行 Agent（开发完成后）
-python src/agent/react_agent.py
+python -m src.agent.react_agent
 ```
 
 ---
