@@ -195,3 +195,40 @@ def get_weather_warning(latitude: str, longitude: str) -> dict:
             "instruction": alert.get("instruction", ""),
         })
     return {"alerts": alerts_list}
+
+
+@tool
+def get_weather_indices(location: str, days: str, types: str = "0") -> dict:
+    """获取天气生活指数预报，如穿衣指数、洗车指数、运动指数、紫外线指数等。
+
+    Args:
+        location: 城市的LocationID（如"101010100"）或经纬度坐标（如"116.41,39.92"）。
+                  LocationID可通过search_city工具获取。
+        days: 预报天数，可选值：
+              1d 1天预报。
+              3d 3天预报。
+        types: 生活指数类型ID，多个用英文逗号分隔。传"0"表示查询所有类型。完整类型列表：
+               1-运动指数 2-洗车指数 3-穿衣指数 4-感冒指数 5-紫外线指数
+               6-旅游指数 7-空气污染扩散条件指数 8-舒适度指数 9-交通指数
+               10-空调开启指数 11-太阳镜指数 12-化妆指数 13-晾晒指数
+               14-过敏指数 15-钓鱼指数 16-防晒指数
+    """
+    url = f"https://{QWEATHER_API_HOST}/v7/indices/{days}"
+    params = {"location": location, "key": QWEATHER_API_KEY, "type": types}
+
+    response = requests.get(url, params=params)
+    data = response.json()
+
+    if data.get("code") != "200":
+        return {"error": f"天气指数查询失败，状态码: {data.get('code')}"}
+
+    indices_list = []
+    for item in data.get("daily", []):
+        indices_list.append({
+            "date": item["date"],
+            "name": item["name"],
+            "level": item["level"],
+            "category": item["category"],
+            "text": item.get("text", ""),
+        })
+    return {"indices": indices_list}

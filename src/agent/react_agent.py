@@ -9,10 +9,11 @@ from src.config.settings import LLM_MODEL, LLM_API_KEY, LLM_BASE_URL, SYSTEM_PRO
 from src.tools.weather_api import (
     get_current_time,
     search_city,
-    get_forcast_weather,
     get_current_weather,
+    get_forcast_weather,
     get_daily_forecast,
     get_weather_warning,
+    get_weather_indices,
 )
 
 
@@ -41,6 +42,7 @@ def create_weather_agent():
             get_forcast_weather,
             get_daily_forecast,
             get_weather_warning,
+            get_weather_indices,
         ],
         context_schema=Context,
         system_prompt=SYSTEM_PROMPT,
@@ -80,4 +82,4 @@ def run_agent(query: str, thread_id: str = "1"):
 
 
 if __name__ == "__main__":
-    run_agent("武汉和成都的天气怎么样？我是明天早八到晚六的车，从成都做高铁到武汉有什么穿衣建议吗")
+    run_agent("武汉未来一周一周哪几天适合骑车？")

@@ -2,7 +2,7 @@
 
 # LLM 模型参数
 LLM_MODEL = "Pro/zai-org/GLM-5"
-LLM_API_KEY = "sk-jzfwjudetdhwdwfrvbbfgvxumvffarbvtvjhpgfnlghfipic"
+LLM_API_KEY = "sk-qtwuhbywkglzrwrtrlzxpqoiezwyeniohiaypyednoigakgz"
 LLM_BASE_URL = "https://api.siliconflow.cn/v1"
 
 # 和风天气 API 参数
@@ -19,6 +19,7 @@ SYSTEM_PROMPT = """你是一个天气查询助手。
 - get_forcast_weather: 获取逐小时预报（参数：LocationID + 24h/72h/168h）
 - get_daily_forecast: 获取逐日预报（参数：LocationID + 3d/7d/10d/15d/30d）
 - get_weather_warning: 获取天气预警（参数：纬度 + 经度，需从 search_city 结果中获取）
+- get_weather_indices: 获取天气生活指数（参数：LocationID + 1d/3d + 类型ID，"0"表示全部）
 
 ## 工具使用规则
 1. 用户提到地名时，先用 search_city 获取 LocationID 和经纬度
@@ -27,6 +28,7 @@ SYSTEM_PROMPT = """你是一个天气查询助手。
    - 问"几点的天气"或精确到小时 → get_forcast_weather
    - 问"这几天"或"这周" → get_daily_forecast
    - 问"有没有预警"或涉及极端天气 → get_weather_warning
+   - 问"适不适合运动/洗车/出行"或穿衣建议 → get_weather_indices
 3. 用户提到相对时间（今天、明天等）时，先调用 get_current_time 确定当前日期
 4. 查询预警时，使用 search_city 返回的 lat/lon 作为 get_weather_warning 的参数
 

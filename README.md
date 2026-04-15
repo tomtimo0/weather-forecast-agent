@@ -154,18 +154,18 @@ d:\毕设\
 
 ### 阶段一：基础设施搭建（预计 2 周）
 
-- [ ] 初始化项目仓库，搭建目录结构
-- [ ] 配置开发环境（Python 虚拟环境、依赖安装）
-- [ ] 调研并选定气象数据 API，完成 API 账号注册与测试
-- [ ] 搭建基础 LLM 调用链路（选定模型、测试 API 连通性）
-- [ ] 确定 Agent 框架选型（LangChain vs 自研），完成技术选型文档
+- [x] 初始化项目仓库，搭建目录结构
+- [x] 配置开发环境（Python 虚拟环境、依赖安装）
+- [x] 调研并选定气象数据 API，完成 API 账号注册与测试
+- [x] 搭建基础 LLM 调用链路（选定模型、测试 API 连通性）
+- [x] 确定 Agent 框架选型（LangChain vs 自研），完成技术选型文档
 
 **里程碑**：能够通过代码调用 LLM 和气象 API，获取基本气象数据
 
 ### 阶段二：Agent 核心 + 工具检索（预计 3-4 周，对应第2-3章）
 
-- [ ] 实现 ReAct Agent 主控循环（Thought → Action → Observation）
-- [ ] 设计并实现气象 API 工具封装（Tool Description Schema）
+- [x] 实现 ReAct Agent 主控循环（Thought → Action → Observation）
+- [x] 设计并实现气象 API 工具封装（Tool Description Schema）
 - [ ] 实现意图识别模块：自然语言 → 结构化检索参数
 - [ ] 实现缺失参数的上下文推理与动态补全逻辑
 - [ ] 构建 RAG 知识库（气象术语、地理编码、业务规则）
