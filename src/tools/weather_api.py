@@ -18,7 +18,7 @@ def get_current_time() -> str:
 @tool
 def search_city(location: str, adm: str = "") -> dict:
     """根据城市名称搜索城市信息，返回城市的LocationID、经纬度等。
-    用户提到任何地名时，应先调用此工具获取LocationID，再用于天气查询。
+    用户提到任何地名时，应先调用此工具获取LocationID或者经纬度，再用于天气查询。
 
     Args:
         location: 城市名称、经纬度坐标或LocationID。支持模糊搜索，如"北京"或"beij"
@@ -83,3 +83,115 @@ def get_forcast_weather(location: str, hours: str) -> dict:
             "precip": f"{hour['precip']}mm",
         })
     return {"hourly": hourly_list}
+
+
+@tool
+def get_current_weather(location: str) -> dict:
+    """获取指定地点的实时天气数据（近实时，有5-20分钟延迟）。
+
+    Args:
+        location: 城市的LocationID（如"101010100"）或经纬度坐标（如"116.41,39.92"）。
+                  LocationID可通过search_city工具获取。
+    """
+    url = f"https://{QWEATHER_API_HOST}/v7/weather/now"
+    params = {"location": location, "key": QWEATHER_API_KEY}
+
+    response = requests.get(url, params=params)
+    data = response.json()
+
+    if data.get("code") != "200":
+        return {"error": f"实时天气查询失败，状态码: {data.get('code')}"}
+
+    now = data["now"]
+    return {
+        "obsTime": now["obsTime"],
+        "temp": f"{now['temp']}°C",
+        "feelsLike": f"{now['feelsLike']}°C",
+        "text": now["text"],
+        "windDir": now["windDir"],
+        "windScale": f"{now['windScale']}级",
+        "windSpeed": f"{now['windSpeed']}km/h",
+        "humidity": f"{now['humidity']}%",
+        "precip": f"{now['precip']}mm",
+        "pressure": f"{now['pressure']}hPa",
+        "vis": f"{now['vis']}km",
+    }
+
+
+@tool
+def get_daily_forecast(location: str, days: str) -> dict:
+    """获取指定地点的逐日天气预报，包括每天的最高最低温度、白天夜间天气、日出日落等。
+
+    Args:
+        location: 城市的LocationID（如"101010100"）或经纬度坐标（如"116.41,39.92"）。
+                  LocationID可通过search_city工具获取。
+        days: 预报天数，可选值：
+              3d 3天预报。
+              7d 7天预报。
+              10d 10天预报。
+              15d 15天预报。
+              30d 30天预报。
+    """
+    url = f"https://{QWEATHER_API_HOST}/v7/weather/{days}"
+    params = {"location": location, "key": QWEATHER_API_KEY}
+
+    response = requests.get(url, params=params)
+    data = response.json()
+
+    if data.get("code") != "200":
+        return {"error": f"每日预报查询失败，状态码: {data.get('code')}"}
+
+    daily_list = []
+    for day in data.get("daily", []):
+        daily_list.append({
+            "fxDate": day["fxDate"],
+            "tempMax": f"{day['tempMax']}°C",
+            "tempMin": f"{day['tempMin']}°C",
+            "textDay": day["textDay"],
+            "textNight": day["textNight"],
+            "windDirDay": day["windDirDay"],
+            "windScaleDay": f"{day['windScaleDay']}级",
+            "windDirNight": day["windDirNight"],
+            "windScaleNight": f"{day['windScaleNight']}级",
+            "humidity": f"{day['humidity']}%",
+            "precip": f"{day['precip']}mm",
+            "uvIndex": day["uvIndex"],
+            "sunrise": day["sunrise"],
+            "sunset": day["sunset"],
+        })
+    return {"daily": daily_list}
+
+
+@tool
+def get_weather_warning(latitude: str, longitude: str) -> dict:
+    """获取指定经纬度位置当前生效的天气预警信息，如暴雨、大风、高温等预警。
+    经纬度可通过search_city工具获取。
+
+    Args:
+        latitude: 纬度，十进制，最多小数点后两位，如"39.90"
+        longitude: 经度，十进制，最多小数点后两位，如"116.40"
+    """
+    url = f"https://{QWEATHER_API_HOST}/weatheralert/v1/current/{latitude}/{longitude}"
+    params = {"key": QWEATHER_API_KEY, "localTime": "true"}
+
+    response = requests.get(url, params=params)
+    data = response.json()
+
+    metadata = data.get("metadata", {})
+    if metadata.get("zeroResult", False):
+        return {"alerts": [], "message": "当前该地区无预警信息"}
+
+    alerts_list = []
+    for alert in data.get("alerts", []):
+        alerts_list.append({
+            "headline": alert.get("headline", ""),
+            "severity": alert.get("severity", ""),
+            "eventType": alert.get("eventType", {}).get("name", ""),
+            "colorCode": alert.get("color", {}).get("code", ""),
+            "senderName": alert.get("senderName", ""),
+            "issuedTime": alert.get("issuedTime", ""),
+            "expireTime": alert.get("expireTime", ""),
+            "description": alert.get("description", ""),
+            "instruction": alert.get("instruction", ""),
+        })
+    return {"alerts": alerts_list}

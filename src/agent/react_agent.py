@@ -6,7 +6,14 @@ from langchain.agents import create_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
 from src.config.settings import LLM_MODEL, LLM_API_KEY, LLM_BASE_URL, SYSTEM_PROMPT
-from src.tools.weather_api import get_current_time, search_city, get_forcast_weather
+from src.tools.weather_api import (
+    get_current_time,
+    search_city,
+    get_forcast_weather,
+    get_current_weather,
+    get_daily_forecast,
+    get_weather_warning,
+)
 
 
 @dataclass
@@ -27,7 +34,14 @@ def create_weather_agent():
 
     agent = create_agent(
         model=model,
-        tools=[get_forcast_weather, search_city, get_current_time],
+        tools=[
+            get_current_time,
+            search_city,
+            get_current_weather,
+            get_forcast_weather,
+            get_daily_forecast,
+            get_weather_warning,
+        ],
         context_schema=Context,
         system_prompt=SYSTEM_PROMPT,
         checkpointer=checkpointer,
