@@ -86,4 +86,4 @@ def run_agent(query: str, thread_id: str = "1"):
 
 
 if __name__ == "__main__":
-    run_agent("过去五年来武汉的冬天是变冷了还是变热了？")
+    run_agent("接下来一周武汉有哪些日子适合骑车？")
