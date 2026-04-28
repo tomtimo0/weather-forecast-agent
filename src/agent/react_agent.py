@@ -27,8 +27,15 @@ class Context:
     user_id: str
 
 
+_agent_instance = None
+
+
 def create_weather_agent():
-    """创建天气查询 Agent 实例。"""
+    """创建天气查询 Agent 实例（全局单例，确保多轮对话共享同一份记忆）。"""
+    global _agent_instance
+    if _agent_instance is not None:
+        return _agent_instance
+
     model = ChatOpenAI(
         model=LLM_MODEL,
         api_key=LLM_API_KEY,
@@ -37,7 +44,7 @@ def create_weather_agent():
 
     checkpointer = InMemorySaver()
 
-    agent = create_agent(
+    _agent_instance = create_agent(
         model=model,
         tools=[
             get_current_time,
@@ -54,7 +61,7 @@ def create_weather_agent():
         system_prompt=SYSTEM_PROMPT,
         checkpointer=checkpointer,
     )
-    return agent
+    return _agent_instance
 
 
 def build_enhanced_query(query: str, intent: WeatherIntent) -> str:
@@ -119,5 +126,19 @@ def run_agent(query: str, thread_id: str = "1"):
             print()
 
 
+def chat_loop(thread_id: str = "1"):
+    """启动多轮对话循环，输入 'exit' 或 'quit' 退出。"""
+    print("天气助手已启动，输入问题开始对话（输入 exit 退出）\n")
+    while True:
+        query = input("你: ").strip()
+        if query.lower() in ("exit", "quit", "q"):
+            print("再见！")
+            break
+        if not query:
+            continue
+        run_agent(query, thread_id=thread_id)
+        print()
+
+
 if __name__ == "__main__":
-    run_agent("接下来一周武汉有哪些日子适合骑车？")
+    chat_loop()
