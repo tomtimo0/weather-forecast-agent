@@ -64,3 +64,35 @@ class WeatherIntent(BaseModel):
     reasoning: Optional[str] = Field(
         default=None, description="意图判定的简短理由，便于调试"
     )
+
+
+class CompletionNote(BaseModel):
+    """单条参数补全记录。"""
+
+    field: str = Field(description="被补全的字段，如 'time.date'、'locations[0].name'")
+    value: str = Field(description="补全后的值")
+    source: Literal[
+        "user_input",         # 用户明确给出
+        "context_inference",  # 从上下文/历史对话推断
+        "default",            # 使用合理默认值
+        "common_sense",       # 基于常识推断
+    ] = Field(description="补全来源")
+    reason: str = Field(description="为何这样补全的简短解释，将展示给用户")
+
+
+class CompletionResult(BaseModel):
+    """参数补全的完整结果。"""
+
+    is_complete: bool = Field(
+        description="所有关键参数是否齐全。False 表示需要向用户追问"
+    )
+    completed_intent: WeatherIntent = Field(
+        description="补全后的意图（关键参数缺失时仍返回原意图）"
+    )
+    notes: List[CompletionNote] = Field(
+        default_factory=list, description="所有补全操作的记录"
+    )
+    follow_up_question: Optional[str] = Field(
+        default=None,
+        description="当 is_complete=False 时，向用户提出的具体追问问题",
+    )

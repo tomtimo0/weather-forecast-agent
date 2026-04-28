@@ -107,12 +107,16 @@ d:\毕设\
 ├── learn/                             # ✅ 学习与参考代码
 ├── src/                               # ✅ 源代码根目录
 │   ├── agent/                         # ✅ Agent 核心模块
-│   │   ├── react_agent.py             # ✅ ReAct Agent 主控逻辑
+│   │   ├── react_agent.py             # ✅ ReAct Agent 主控逻辑（含意图识别+补全集成、多轮对话、chat_loop）
 │   │   ├── prompts/                   # Prompt 模板（待拆分，目前集中在 settings.py 的 SYSTEM_PROMPT）
 │   │   │   ├── system_prompt.py       # 系统级 Prompt
 │   │   │   ├── task_prompts.py        # 任务 Prompt 模板
 │   │   │   └── few_shot_examples.py   # Few-shot 示例
-│   │   └── memory.py                  # 对话记忆与上下文管理（目前用 InMemorySaver）
+│   │   └── memory.py                  # 对话记忆（目前用 LangGraph InMemorySaver + 模块级历史变量）
+│   ├── intent/                        # ✅ 意图识别 + 参数补全模块（对应第3章 Q1）
+│   │   ├── schema.py                  # ✅ Pydantic 数据模型（WeatherIntent / CompletionResult 等）
+│   │   ├── recognizer.py              # ✅ 自然语言 → 结构化意图
+│   │   └── completer.py               # ✅ 关键参数补全 / 缺失追问
 │   ├── tools/                         # ✅ 工具模块（对应第3章）
 │   │   ├── weather_api.py             # ✅ 气象 API 封装（9个工具）
 │   │   ├── code_executor.py           # 代码执行沙箱（待开发）
@@ -146,7 +150,8 @@ d:\毕设\
 │   │   └── run_eval.py                # 评测运行脚本
 │   ├── ablation/                      # 消融实验
 │   └── results/                       # 实验结果记录
-└── tests/                             # 单元测试（待开发）
+└── tests/                             # ✅ 单元测试
+    └── test_intent.py                 # ✅ 意图识别 8 类典型场景测试
 ```
 
 ---
@@ -328,7 +333,84 @@ Agent 收到的不是裸用户问题，而是"原始问题 + 结构化意图预�
 
 **对应研究问题**：Q1（自然语言查询 → 结构化检索参数的精准映射）
 
-### 7.4 仓库安全加固：密钥文件与 notebooks 排除版本控制
+### 7.4 多轮对话与上下文记忆
+
+**问题**：早期 `run_agent` 每次调用都新建 Agent 实例，`InMemorySaver` 每次都是新的，导致用户连续提问时上下文丢失，无法实现"那成都呢？"这类省略式追问。
+
+**最小改动方案**：
+
+1. **Agent 单例化**：用模块级变量 `_agent_instance` 缓存 Agent，所有调用共享同一份 `InMemorySaver`
+2. **`chat_loop()` 交互循环**：用 `while + input()` 持续接收用户输入，所有轮次传同一个 `thread_id`
+
+```python
+def create_weather_agent():
+    global _agent_instance
+    if _agent_instance is not None:
+        return _agent_instance
+    # ... 首次调用才真正创建
+```
+
+**机制**：LangGraph 的 `InMemorySaver + thread_id` 会自动累积消息历史，第二次调用时把上次的所有消息一起发给 LLM，模型自然能理解"那成都呢？"是问"成都今天天气"。
+
+**后续改进**：内存 Saver 重启即丢，可换成 `SQLiteSaver` / `RedisSaver` 实现持久化。
+
+### 7.5 缺失参数补全模块
+
+**问题**：意图识别能解析用户问题，但用户经常表达不完整，例如：
+- "明天天气怎么样？" → 缺地点
+- "北京天气怎么样？" → 缺时间
+- "我想从武汉出发" → 缺目的地和时间
+
+如果直接交给 Agent，要么靠 LLM 自由猜测（不可控），要么 Agent 反复试错（耗 Token）。
+
+**模块设计**（`src/intent/completer.py`）：
+
+接收意图识别输出的 `WeatherIntent`，用 LLM 做两件事：
+1. **判定关键参数是否齐全**（按意图类型不同有不同的必填字段清单）
+2. **可补全的字段**根据规则自动补，并在 `notes` 中记录补全来源
+
+```text
+WeatherIntent → completer → CompletionResult {
+    is_complete: bool,
+    completed_intent: WeatherIntent,
+    notes: List[CompletionNote],  # 每条补全记录(field, value, source, reason)
+    follow_up_question: Optional[str],  # 关键参数缺失时的追问
+}
+```
+
+**补全来源 4 类**（`source` 字段）：
+
+| 来源 | 含义 | 示例 |
+|------|------|------|
+| `user_input` | 用户明确给出 | "北京" → location |
+| `context_inference` | 从历史对话推断 | 上轮问"武汉"，本轮"那明天呢"沿用武汉 |
+| `default` | 合理默认值 | 未指定时间默认为"今天" |
+| `common_sense` | 常识推断 | "早上" → 06:00–09:00 |
+
+**关键参数缺失判定**：
+
+每种意图类型有自己的必填清单（见 `COMPLETER_PROMPT`），缺哪一项就让 LLM 生成具体的追问问题，例如：
+- `current_weather` 但 `locations` 为空 → "您想查询哪个城市？"
+- `travel_advice` 但只有 1 个 `location` → "出发地是哪里？"
+
+**集成到主流程**（`react_agent.py`）：
+
+```text
+用户问题 → 意图识别 → 参数补全 ─┬→ [关键缺失] → 直接追问，本轮结束
+                              └→ [齐全]    → 注入增强上下文 → Agent 执行 → 回答
+```
+
+为了让用户感知补全行为，`build_enhanced_query` 会在 Prompt 末尾要求：
+
+> 请在最终回答末尾用一两句话告知用户上述补全信息（仅在有补全时），便于用户确认。
+
+例如用户问"北京天气怎么样？"，Agent 回答末尾会自动附一句：
+
+> 已默认查询今天的天气（来源：默认值），如需其他时间请告知。
+
+**对应研究问题**：Q1（让 Agent 主动识别歧义、补全或追问，提高自然语言查询的鲁棒性）
+
+### 7.6 仓库安全加固：密钥文件与 notebooks 排除版本控制
 
 **问题**：初版 `settings.py` 将 LLM API Key、和风天气 API Key 以明文形式硬编码并提交到了公开仓库，存在被他人盗用导致账户欠费的风险。探索用 `notebooks/` 下的试验代码与主工程混在一起提交，也会污染 git 历史。
 
@@ -402,13 +484,30 @@ pip install requests
 #      QWEATHER_API_HOST = "..."          # 和风天气 API 主机
 #      SYSTEM_PROMPT   = """..."""        # Agent 系统提示词
 
-# 5. 运行 Agent
+# 5. 运行 Agent（进入交互式多轮对话）
 python -m src.agent.react_agent
 ```
 
 > **注意**：必须使用 `python -m src.agent.react_agent` 这种**模块**方式启动，不可直接 `python src/agent/react_agent.py`（会因 `from src.xxx import ...` 的绝对导入而报 `ModuleNotFoundError`）。
 
-测试意图识别：`python -m tests.test_intent`或`python -m src.intent.recognizer`
+**交互示例**：
+
+```
+天气助手已启动，输入问题开始对话（输入 exit 退出）
+
+你: 北京天气怎么样？
+（Agent 自动补全"今天"作为默认日期，回答末尾会告知补全信息）
+
+你: 那明天呢？
+（基于上下文推断，继续查询北京）
+
+你: exit
+再见！
+```
+
+**模块单测**：
+- 意图识别：`python -m tests.test_intent` 或 `python -m src.intent.recognizer`
+- 参数补全：`python -m src.intent.completer`
 
 
 ---
