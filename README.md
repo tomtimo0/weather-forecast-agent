@@ -167,7 +167,7 @@ d:\毕设\
 
 - [x] 实现 ReAct Agent 主控循环（Thought → Action → Observation）
 - [x] 设计并实现气象 API 工具封装（Tool Description Schema）
-- [ ] 实现意图识别模块：自然语言 → 结构化检索参数
+- [x] 实现意图识别模块：自然语言 → 结构化检索参数
 - [ ] 实现缺失参数的上下文推理与动态补全逻辑
 - [ ] 构建 RAG 知识库（气象术语、地理编码、业务规则）
 - [ ] 设计 System Prompt 与 Few-shot 示例模板
@@ -275,7 +275,60 @@ d:\毕设\
 
 **对应研究问题**：Q2（异构气象数据统一处理——多源、多时间粒度的工具封装与调度）
 
-### 7.3 仓库安全加固：密钥文件与 notebooks 排除版本控制
+### 7.3 意图识别模块：自然语言 → 结构化查询计划
+
+**目标**：在 Agent 接收用户问题之前，先用一个独立的 LLM 调用把自然语言解析为结构化的 `WeatherIntent` 对象，再作为额外上下文注入 Agent。这让"语言理解"和"工具执行"解耦，提升可解释性和可评估性。
+
+**模块结构**：
+
+```
+src/intent/
+├── schema.py        # Pydantic 数据模型
+└── recognizer.py    # 意图识别核心逻辑
+```
+
+**Pydantic Schema 定义**：
+- `WeatherIntent`：完整意图（意图类型 + 地点 + 时间 + 关注要素 + 建议工具 + 推理理由）
+- `LocationIntent`：地点对象（name + role），role 区分 target/departure/arrival/waypoint
+- `TimeIntent`：时间对象（raw_text + date + start_time + end_time）
+- `IntentType`：8 类意图枚举，覆盖实时/预报/历史/预警/生活指数/出行建议等
+
+**结构化输出实现**：
+
+```python
+llm = ChatOpenAI(...)
+recognizer = llm.with_structured_output(WeatherIntent, method="function_calling")
+intent = recognizer.invoke([
+    {"role": "system", "content": INTENT_RECOGNIZER_PROMPT},
+    {"role": "user", "content": query},
+])
+```
+
+> 注：DeepSeek 等第三方平台不支持 OpenAI 的 `response_format` json_schema 模式，必须显式指定 `method="function_calling"`，让模型把 Schema 当作虚拟工具调用来返回结构化结果。
+
+**集成方式**（`react_agent.py`）：
+
+```python
+def run_agent(query: str):
+    intent = recognize_intent(query)              # 1. 意图识别
+    enhanced_query = build_enhanced_query(query, intent)  # 2. 拼接增强 Prompt
+    agent.stream({"messages": [{"role": "user", "content": enhanced_query}]})  # 3. 交给 Agent
+```
+
+Agent 收到的不是裸用户问题，而是"原始问题 + 结构化意图预解析"的复合上下文，工具选择更精准。
+
+**测试覆盖**（`tests/test_intent.py`）：
+8 类典型场景各一条用例，运行后打印每条的实际意图、地点、时间、建议工具，并统计 PASS/FAIL 通过率。
+
+**为什么独立成模块而非完全交给 Agent 隐式处理**：
+- **可解释**：意图判定结果可单独打印审查
+- **可评估**：可以独立计算意图识别准确率，作为论文 Q1 的量化指标
+- **可调试**：出错时能定位是"识别错"还是"工具调用错"
+- **可演进**：未来可替换为更轻量的小模型或规则引擎，降低成本
+
+**对应研究问题**：Q1（自然语言查询 → 结构化检索参数的精准映射）
+
+### 7.4 仓库安全加固：密钥文件与 notebooks 排除版本控制
 
 **问题**：初版 `settings.py` 将 LLM API Key、和风天气 API Key 以明文形式硬编码并提交到了公开仓库，存在被他人盗用导致账户欠费的风险。探索用 `notebooks/` 下的试验代码与主工程混在一起提交，也会污染 git 历史。
 
@@ -354,6 +407,9 @@ python -m src.agent.react_agent
 ```
 
 > **注意**：必须使用 `python -m src.agent.react_agent` 这种**模块**方式启动，不可直接 `python src/agent/react_agent.py`（会因 `from src.xxx import ...` 的绝对导入而报 `ModuleNotFoundError`）。
+
+测试意图识别：`python -m tests.test_intent`或`python -m src.intent.recognizer`
+
 
 ---
 

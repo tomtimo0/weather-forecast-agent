@@ -6,6 +6,8 @@ from langchain.agents import create_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
 from src.config.settings import LLM_MODEL, LLM_API_KEY, LLM_BASE_URL, SYSTEM_PROMPT
+from src.intent.recognizer import recognize_intent
+from src.intent.schema import WeatherIntent
 from src.tools.weather_api import (
     get_current_time,
     search_city,
@@ -55,18 +57,50 @@ def create_weather_agent():
     return agent
 
 
+def build_enhanced_query(query: str, intent: WeatherIntent) -> str:
+    """将意图识别结果作为额外上下文与原始问题拼接。
+
+    Args:
+        query: 用户原始查询
+        intent: 已识别的结构化意图
+
+    Returns:
+        拼接后的增强查询，注入 Agent 的首条用户消息
+    """
+    return f"""用户原始问题：{query}
+
+【意图识别模块预解析结果】
+- 意图类型: {intent.intent}
+- 涉及地点: {[(loc.name, loc.role) for loc in intent.locations]}
+- 时间范围: {intent.time.model_dump() if intent.time else "未指定"}
+- 关注要素: {intent.variables}
+- 建议工具: {intent.needed_tools}
+- 推理理由: {intent.reasoning}
+
+请基于上述结构化意图调用合适的工具，回答用户的原始问题。"""
+
+
 def run_agent(query: str, thread_id: str = "1"):
     """运行 Agent 并流式输出中间过程。
+
+    流程：先用意图识别模块解析用户问题，再把结构化意图注入 Agent 上下文。
 
     Args:
         query: 用户输入的自然语言查询
         thread_id: 对话线程 ID，用于多轮对话
     """
+    print("=== 意图识别 ===")
+    intent = recognize_intent(query)
+    print(intent.model_dump_json(indent=2))
+    print()
+
+    enhanced_query = build_enhanced_query(query, intent)
+
     agent = create_weather_agent()
     config = {"configurable": {"thread_id": thread_id}}
 
     for chunk in agent.stream(
-        {"messages": [{"role": "user", "content": query}]},
+        {"messages": [{"role": "user", "content": enhanced_query}]},
         config=config,
         stream_mode="updates",
     ):
