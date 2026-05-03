@@ -59,20 +59,37 @@ def create_recognizer():
     return llm.with_structured_output(WeatherIntent, method="function_calling")
 
 
-def recognize_intent(query: str) -> WeatherIntent:
+def recognize_intent(query: str, max_retries: int = 1) -> WeatherIntent:
     """识别用户查询的气象意图。
 
     Args:
         query: 用户的自然语言查询
+        max_retries: 当 LLM 返回 None（function_calling 偶发失败）时的额外重试次数
 
     Returns:
-        WeatherIntent: 结构化意图对象
+        WeatherIntent: 结构化意图对象。当多次仍失败时，返回包含原始 query
+        的 ``unknown`` 兜底意图，让下游流程不至于 crash，并在 reasoning 中
+        说明失败原因，便于调试。
     """
     recognizer = create_recognizer()
-    return recognizer.invoke([
+    messages = [
         {"role": "system", "content": INTENT_RECOGNIZER_PROMPT},
         {"role": "user", "content": query},
-    ])
+    ]
+    last_error: str = ""
+    for attempt in range(max_retries + 1):
+        try:
+            result = recognizer.invoke(messages)
+        except Exception as exc:
+            last_error = f"调用异常：{exc}"
+            continue
+        if isinstance(result, WeatherIntent):
+            return result
+        last_error = "LLM 未触发结构化输出（返回 None），可能是 function_calling 偶发失败。"
+    return WeatherIntent(
+        intent="unknown",
+        reasoning=f"意图识别回退：{last_error} 原始问题已透传给 Agent。",
+    )
 
 
 if __name__ == "__main__":

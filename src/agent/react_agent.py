@@ -9,6 +9,7 @@ from src.config.settings import LLM_MODEL, LLM_API_KEY, LLM_BASE_URL, SYSTEM_PRO
 from src.intent.completer import complete_intent, format_completion_notes
 from src.intent.recognizer import recognize_intent
 from src.intent.schema import CompletionResult, WeatherIntent
+from src.tools.knowledge_tool import search_knowledge
 from src.tools.weather_api import (
     get_current_time,
     search_city,
@@ -57,6 +58,7 @@ def create_weather_agent():
             get_weather_indices,
             get_historical_hourly,
             get_historical_daily,
+            search_knowledge,
         ],
         context_schema=Context,
         system_prompt=SYSTEM_PROMPT,

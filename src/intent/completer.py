@@ -68,15 +68,18 @@ def create_completer():
 def complete_intent(
     intent: WeatherIntent,
     conversation_context: Optional[str] = None,
+    max_retries: int = 1,
 ) -> CompletionResult:
     """补全意图中的缺失参数。
 
     Args:
         intent: 意图识别模块输出的原始意图
         conversation_context: 历史对话摘要（可选），用于上下文推断
+        max_retries: 当 LLM 返回 None 时的额外重试次数
 
     Returns:
-        CompletionResult: 补全结果，包含补全后意图、补全日志、追问问题
+        CompletionResult: 补全结果。当 LLM 多次返回 None 时，回退为"原意图原样透传，
+        is_complete=True 不追问"，避免主流程 crash。
     """
     completer = create_completer()
     now = datetime.now()
@@ -87,10 +90,25 @@ def complete_intent(
         original_intent=intent.model_dump_json(indent=2),
     )
 
-    return completer.invoke([
+    messages = [
         {"role": "system", "content": prompt},
         {"role": "user", "content": "请补全或追问。"},
-    ])
+    ]
+
+    for _ in range(max_retries + 1):
+        try:
+            result = completer.invoke(messages)
+        except Exception:
+            continue
+        if isinstance(result, CompletionResult):
+            return result
+
+    return CompletionResult(
+        is_complete=True,
+        completed_intent=intent,
+        notes=[],
+        follow_up_question=None,
+    )
 
 
 def format_completion_notes(notes: List) -> str:

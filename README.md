@@ -119,12 +119,14 @@ d:\毕设\
 │   │   └── completer.py               # ✅ 关键参数补全 / 缺失追问
 │   ├── tools/                         # ✅ 工具模块（对应第3章）
 │   │   ├── weather_api.py             # ✅ 气象 API 封装（9个工具）
+│   │   ├── knowledge_tool.py          # ✅ RAG 知识检索工具（search_knowledge）
 │   │   ├── code_executor.py           # 代码执行沙箱（待开发）
 │   │   └── tool_registry.py           # 工具注册与描述管理（待开发）
-│   ├── rag/                           # RAG 模块（对应第2.3节，待开发）
-│   │   ├── knowledge_base.py          # 领域知识库管理
-│   │   ├── embedding.py               # 向量嵌入
-│   │   └── retriever.py               # 知识检索器
+│   ├── rag/                           # ✅ RAG 模块（对应第3.4节）
+│   │   ├── schema.py                  # ✅ KnowledgeEntry / RetrievalHit 数据模型
+│   │   ├── embedding.py               # ✅ SiliconFlow OpenAI 兼容嵌入封装（BAAI/bge-m3）
+│   │   ├── knowledge_base.py          # ✅ JSONL 加载 + ChromaDB 持久化 + BM25
+│   │   └── retriever.py               # ✅ 混合检索器（向量+BM25 加权融合）
 │   ├── analysis/                      # 数据分析模块（对应第4章，待开发）
 │   │   ├── code_generator.py          # 分析代码自动生成
 │   │   ├── semantic_bridge.py         # 数据-文本语义桥接
@@ -134,16 +136,17 @@ d:\毕设\
 │   └── utils/                         # 公共工具函数（待开发）
 │       ├── logger.py                  # 日志工具
 │       └── data_utils.py              # 数据处理工具
-├── data/                              # 数据目录（待开发）
-│   ├── knowledge/                     # RAG 知识库原始数据
-│   │   ├── weather_terms.json         # 气象术语库
-│   │   ├── geo_mapping.json           # 地理编码映射
-│   │   └── business_rules.json        # 气象业务规则
-│   ├── semantic_mapping/              # 语义桥接映射表
-│   │   └── value_to_text.json         # 数值-语义特征映射
-│   └── test_cases/                    # 测试用例与数据集
-│       ├── benchmark.json             # 评测数据集
-│       └── scenarios/                 # 典型场景用例
+├── data/                              # 数据目录
+│   ├── knowledge/                     # ✅ RAG 知识库原始数据（JSONL，已 .gitignore 索引文件）
+│   │   ├── grading_standard.jsonl     # ✅ 分级标准（降水/风力/能见度/温度等）
+│   │   ├── term_definition.jsonl      # ✅ 术语定义（雷暴/台风/寒潮/AQI 等）
+│   │   └── operation_guideline.jsonl  # ✅ 作业与出行规范（高空作业/户外/驾驶等）
+│   ├── chroma_db/                     # ✅ ChromaDB 持久化向量索引（自动生成）
+│   ├── semantic_mapping/              # 语义桥接映射表（待开发）
+│   │   └── value_to_text.json
+│   └── test_cases/                    # 测试用例与数据集（待开发）
+│       ├── benchmark.json
+│       └── scenarios/
 ├── experiments/                       # 实验相关（对应第5章，待开发）
 │   ├── eval/                          # 评测脚本
 │   │   ├── metrics.py                 # 评测指标定义
@@ -151,7 +154,8 @@ d:\毕设\
 │   ├── ablation/                      # 消融实验
 │   └── results/                       # 实验结果记录
 └── tests/                             # ✅ 单元测试
-    └── test_intent.py                 # ✅ 意图识别 8 类典型场景测试
+    ├── test_intent.py                 # ✅ 意图识别 8 类典型场景测试
+    └── test_rag.py                    # ✅ RAG 知识库与混合检索测试
 ```
 
 ---
@@ -173,10 +177,10 @@ d:\毕设\
 - [x] 实现 ReAct Agent 主控循环（Thought → Action → Observation）
 - [x] 设计并实现气象 API 工具封装（Tool Description Schema）
 - [x] 实现意图识别模块：自然语言 → 结构化检索参数
-- [ ] 实现缺失参数的上下文推理与动态补全逻辑
-- [ ] 构建 RAG 知识库（气象术语、地理编码、业务规则）
+- [x] 实现缺失参数的上下文推理与动态补全逻辑
+- [x] 构建 RAG 知识库（气象术语、分级标准、作业规范）
 - [ ] 设计 System Prompt 与 Few-shot 示例模板
-- [ ] 集成 RAG 检索到 Agent Prompt 中
+- [x] 集成 RAG 检索到 Agent 工具链（search_knowledge）
 
 **里程碑**：Agent 能够理解自然语言气象查询，自动调用正确 API 并返回原始数据
 
@@ -410,7 +414,77 @@ WeatherIntent → completer → CompletionResult {
 
 **对应研究问题**：Q1（让 Agent 主动识别歧义、补全或追问，提高自然语言查询的鲁棒性）
 
-### 7.6 仓库安全加固：密钥文件与 notebooks 排除版本控制
+### 7.6 RAG 知识库：领域知识检索增强
+
+**目标**：让 Agent 在涉及"术语解释 / 分级阈值 / 作业规范"类结论时，必须先查权威知识，避免靠 LLM 自由发挥编造数值或条款，从源头降低幻觉。
+
+**三层知识结构**（`data/knowledge/*.jsonl`）：
+
+| 类别 | 用途 | 示例 |
+|------|------|------|
+| `term_definition` | 气象术语定义 | "雷暴是什么"、"台风/寒潮/AQI" |
+| `grading_standard` | 数值分级标准 | "24h 降水量 50–99.9mm = 暴雨"、"蒲福风级 7 级" |
+| `operation_guideline` | 作业/出行规范 | "高空作业 6 级风停止"、"高温 ≥ 40°C 停工" |
+
+每条 JSONL 记录采用 `KnowledgeEntry` Schema：
+
+```python
+{
+    "id": "grading_precip_24h_rainstorm",
+    "category": "grading_standard",
+    "topic": "降水等级",
+    "title": "24小时降水量：暴雨",
+    "content": "24小时降水量在 50.0～99.9 毫米之间为暴雨…",
+    "source": {"org": "中国气象局", "doc_title": "GB/T 28592-2012", "clause": "4.1"},
+    "confidence": "official",
+    "version": "1.0.0",
+    ...
+}
+```
+
+每条都强制带 **出处（org/doc_title/clause）+ 可信度（official/industry/common）+ 版本号**，便于回答中可追溯、便于后续按可信度排序。
+
+**模块结构**（`src/rag/`）：
+
+```
+schema.py          → KnowledgeEntry / RetrievalHit / KnowledgeSource 数据模型
+embedding.py       → OpenAI 兼容嵌入客户端（默认 SiliconFlow + BAAI/bge-m3）
+knowledge_base.py  → JSONL 加载 + ChromaDB 持久化 + BM25 内存索引
+retriever.py       → 混合检索器（向量+BM25 加权融合，默认权重 0.6 / 0.4）
+```
+
+**混合检索策略**：
+
+```
+用户查询
+   ├──[向量召回]──→ ChromaDB cosine Top-N → 归一化为 [0,1] 相似度
+   └──[BM25 召回]─→ rank_bm25 词法 Top-N  → 归一化为 [0,1] 分数
+                              │
+                              ▼
+              融合分 = 0.6·向量分 + 0.4·BM25 分
+                              │
+                              ▼
+                          排序取 Top-K
+```
+
+设计要点：
+- **持久化**：ChromaDB 写入 `data/chroma_db/`，重启不需要重新嵌入
+- **增量索引**：`reindex(force=False)` 只对未入库的条目调嵌入 API，节省 Token
+- **中英混合分词**：BM25 用"词+字"双粒度（`小雨` 与单字 `雨`、`雪` 都能命中）
+- **类别过滤**：`retriever.retrieve(query, category="grading_standard")` 可只在分级标准里搜
+
+**集成到 Agent**（`src/tools/knowledge_tool.py`）：
+
+把检索包装为一个新工具 `search_knowledge` 加入 Agent 的工具列表，并在 `SYSTEM_PROMPT` 中明确：
+- 涉及"X 算什么级别"、"是否适合做 Y" 等结论性判断 → 必须先调 `search_knowledge`
+- 最终回答中必须显式引用条目出处（如 "依据 GB/T 28592-2012"）
+- 检索失败时不允许编造，应说明"未找到权威依据"
+
+**对应研究问题**：
+- **Q1**：意图识别 + 参数补全 + 知识检索三层协作，把模糊自然语言映射到精准结构化检索
+- **Q3**：把"分级阈值"、"作业适宜条件"等会引发幻觉的判断从 LLM 内部知识转移到外部可验证知识库
+
+### 7.7 仓库安全加固：密钥文件与 notebooks 排除版本控制
 
 **问题**：初版 `settings.py` 将 LLM API Key、和风天气 API Key 以明文形式硬编码并提交到了公开仓库，存在被他人盗用导致账户欠费的风险。探索用 `notebooks/` 下的试验代码与主工程混在一起提交，也会污染 git 历史。
 
@@ -474,6 +548,7 @@ conda activate weather311
 # 3. 安装核心依赖
 pip install langchain langchain-openai langgraph
 pip install requests
+pip install chromadb rank_bm25  # RAG 模块依赖
 
 # 4. 配置 API 密钥
 #    新建 src/config/settings.py（该文件已 .gitignore），填入：
@@ -508,6 +583,8 @@ python -m src.agent.react_agent
 **模块单测**：
 - 意图识别：`python -m tests.test_intent` 或 `python -m src.intent.recognizer`
 - 参数补全：`python -m src.intent.completer`
+- RAG 检索：`python -m tests.test_rag`（首次会调用嵌入 API 建索引，约 1 元以内）
+- RAG 工具：`python -m src.tools.knowledge_tool`
 
 
 ---
