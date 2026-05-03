@@ -226,6 +226,13 @@ class KnowledgeBase:
     # ------------------------------------------------------------------
     # 工具方法
     # ------------------------------------------------------------------
+    def get_by_id(self, entry_id: str) -> Optional[KnowledgeEntry]:
+        """按 ID 精确查找知识条目，未命中返回 None。
+
+        语义桥接模块通过 grade_id 直接命中权威条款，避免重复跑向量检索。
+        """
+        return self._entry_index.get(entry_id)
+
     def stats(self) -> Dict[str, int]:
         """返回知识库基本统计信息。"""
         from collections import Counter
