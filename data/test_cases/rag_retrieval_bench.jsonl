@@ -1,0 +1,43 @@
+{"id":"term_001_drizzle","category":"term","description":"概念性问题：毛毛雨","query":"什么是毛毛雨？","relevant_ids":["term_drizzle"],"expected_categories":["term_definition"]}
+{"id":"term_002_thunderstorm","category":"term","description":"概念性问题：雷暴","query":"雷暴是什么？","relevant_ids":["term_thunderstorm"],"expected_categories":["term_definition"]}
+{"id":"term_003_typhoon","category":"term","description":"概念性问题：台风（含分级）","query":"台风分几级？","relevant_ids":["term_typhoon"],"expected_categories":["term_definition"]}
+{"id":"term_004_cold_wave","category":"term","description":"概念性问题：寒潮判定","query":"什么是寒潮？降温多少算寒潮？","relevant_ids":["term_cold_wave"],"expected_categories":["term_definition"]}
+{"id":"term_005_apparent_temp","category":"term","description":"概念性问题：体感温度","query":"体感温度和气温有什么区别？","relevant_ids":["term_apparent_temperature"],"expected_categories":["term_definition"]}
+{"id":"term_006_uv","category":"term","description":"概念性问题：紫外线指数","query":"紫外线指数 UV index 怎么看？","relevant_ids":["term_uv_index"],"expected_categories":["term_definition"]}
+{"id":"term_007_aqi","category":"term","description":"概念性问题：AQI","query":"AQI 是什么意思？多少算重度污染？","relevant_ids":["term_aqi"],"expected_categories":["term_definition"]}
+{"id":"term_008_dew_point","category":"term","description":"概念性问题：露点","query":"露点温度是什么？","relevant_ids":["term_dew_point"],"expected_categories":["term_definition"]}
+{"id":"grade_001_rain_heavy","category":"grade_precip","description":"24h 大雨阈值查询","query":"24小时降水量多少毫米算大雨？","relevant_ids":["grading_precip_24h_heavy"],"expected_categories":["grading_standard"]}
+{"id":"grade_002_rain_moderate","category":"grade_precip","description":"24h 中雨阈值查询","query":"24小时下雨10毫米是中雨吗？","relevant_ids":["grading_precip_24h_moderate"],"expected_categories":["grading_standard"]}
+{"id":"grade_003_rain_rainstorm","category":"grade_precip","description":"24h 暴雨阈值查询","query":"24小时降水80毫米是暴雨吗？","relevant_ids":["grading_precip_24h_rainstorm"],"expected_categories":["grading_standard"]}
+{"id":"grade_004_rain_heavy_rainstorm","category":"grade_precip","description":"24h 大暴雨阈值查询","query":"降水200毫米算什么级别？","relevant_ids":["grading_precip_24h_heavy_rainstorm"],"expected_categories":["grading_standard"]}
+{"id":"grade_005_rain_extreme","category":"grade_precip","description":"24h 特大暴雨查询","query":"特大暴雨的降水量是多少？","relevant_ids":["grading_precip_24h_extreme_rainstorm"],"expected_categories":["grading_standard"]}
+{"id":"grade_006_rain_12h_heavy","category":"grade_precip","description":"12h 大雨阈值查询","query":"12小时降水量25毫米算什么？","relevant_ids":["grading_precip_12h_heavy"],"expected_categories":["grading_standard"]}
+{"id":"grade_007_rain_light","category":"grade_precip","description":"24h 小雨阈值查询","query":"小雨是多少毫米？","relevant_ids":["grading_precip_24h_light","grading_precip_12h_light"],"expected_categories":["grading_standard"]}
+{"id":"grade_008_wind_5","category":"grade_wind","description":"5 级风查询（清劲风）","query":"5 级风是什么风？","relevant_ids":["grading_wind_beaufort_5"],"expected_categories":["grading_standard"]}
+{"id":"grade_009_wind_7","category":"grade_wind","description":"7 级风查询（疾风）","query":"7 级风对应蒲福风级是什么？","relevant_ids":["grading_wind_beaufort_7"],"expected_categories":["grading_standard"]}
+{"id":"grade_010_wind_8","category":"grade_wind","description":"8 级风查询（大风）","query":"什么是 8 级大风？","relevant_ids":["grading_wind_beaufort_8"],"expected_categories":["grading_standard"]}
+{"id":"grade_011_wind_10","category":"grade_wind","description":"10 级风查询（狂风）","query":"10 级风有多大？","relevant_ids":["grading_wind_beaufort_10"],"expected_categories":["grading_standard"]}
+{"id":"grade_012_wind_12","category":"grade_wind","description":"12 级风查询（飓风）","query":"12 级飓风风速多少？","relevant_ids":["grading_wind_beaufort_12"],"expected_categories":["grading_standard"]}
+{"id":"grade_013_wind_breeze_name","category":"grade_wind","description":"按风级中文名反查","query":"清劲风是几级？","relevant_ids":["grading_wind_beaufort_5"],"expected_categories":["grading_standard"]}
+{"id":"grade_014_wind_strong_name","category":"grade_wind","description":"按风级中文名反查","query":"强风是几级风？","relevant_ids":["grading_wind_beaufort_6"],"expected_categories":["grading_standard"]}
+{"id":"grade_015_temp_high","category":"grade_temp","description":"高温预警分级","query":"高温红色预警的标准是多少度？","relevant_ids":["grading_temperature_high_warning"],"expected_categories":["grading_standard"]}
+{"id":"grade_016_visibility_fog","category":"grade_visibility","description":"能见度等级","query":"什么算大雾？能见度低于多少米？","relevant_ids":["grading_visibility_haze"],"expected_categories":["grading_standard"]}
+{"id":"grade_017_humidity_comfort","category":"grade_humidity","description":"湿度舒适区间","query":"室内相对湿度多少最舒服？","relevant_ids":["grading_humidity_comfort"],"expected_categories":["grading_standard"]}
+{"id":"op_001_high_altitude_wind","category":"op_high_altitude","description":"高空作业风力强制停止","query":"几级风必须停止高空作业？","relevant_ids":["op_high_altitude_wind"],"expected_categories":["operation_guideline"]}
+{"id":"op_002_high_altitude_thunder","category":"op_high_altitude","description":"高空作业雷雨停止","query":"高空作业遇到雷雨能继续吗？","relevant_ids":["op_high_altitude_thunder"],"expected_categories":["operation_guideline"]}
+{"id":"op_003_high_altitude_visibility","category":"op_high_altitude","description":"高空作业能见度限制","query":"雾天可以高空作业吗？","relevant_ids":["op_high_altitude_visibility"],"expected_categories":["operation_guideline"]}
+{"id":"op_004_outdoor_high_temp","category":"op_outdoor","description":"40 度高温户外作业限制","query":"40 度高温还能户外作业吗？","relevant_ids":["op_outdoor_high_temp"],"expected_categories":["operation_guideline"]}
+{"id":"op_005_outdoor_sport","category":"op_outdoor","description":"跑步天气适宜性","query":"今天适合跑步吗？什么天气适合户外运动？","relevant_ids":["op_outdoor_sport"],"expected_categories":["operation_guideline"]}
+{"id":"op_006_driving_rain","category":"op_driving","description":"雨天驾驶建议","query":"暴雨天怎么开车？","relevant_ids":["op_driving_rain"],"expected_categories":["operation_guideline"]}
+{"id":"op_007_aviation_visibility","category":"op_aviation","description":"民航低能见度","query":"机场雾天会停飞吗？能见度多少米起飞？","relevant_ids":["op_aviation_low_visibility"],"expected_categories":["operation_guideline"]}
+{"id":"op_008_clothing","category":"op_clothing","description":"穿衣建议","query":"15 度穿什么衣服合适？","relevant_ids":["op_clothing_temperature"],"expected_categories":["operation_guideline"]}
+{"id":"op_009_agriculture","category":"op_agri","description":"春播气温条件","query":"什么温度可以播种玉米？","relevant_ids":["op_agriculture_sowing"],"expected_categories":["operation_guideline"]}
+{"id":"op_010_carwash","category":"op_life","description":"洗车天气","query":"今天适合洗车吗？","relevant_ids":["op_carwash"],"expected_categories":["operation_guideline"]}
+{"id":"multi_001_high_altitude_all","category":"multi","description":"高空作业全部限制条件（应同时召回 3 条）","query":"高空作业有哪些气象限制条件？","relevant_ids":["op_high_altitude_wind","op_high_altitude_thunder","op_high_altitude_visibility"],"expected_categories":["operation_guideline"]}
+{"id":"multi_002_rainstorm","category":"multi","description":"暴雨同时跨等级 + 驾驶建议","query":"暴雨怎么应对？","relevant_ids":["grading_precip_24h_rainstorm","op_driving_rain"],"expected_categories":["grading_standard","operation_guideline"]}
+{"id":"multi_003_typhoon_wind","category":"multi","description":"台风对应高级别风力（跨 term 与 grading）","query":"台风对应几级风？","relevant_ids":["term_typhoon","grading_wind_beaufort_12"],"expected_categories":["term_definition","grading_standard"]}
+{"id":"multi_004_thunderstorm_safety","category":"multi","description":"雷暴 + 高空作业雷电限制（跨 term 与 op）","query":"打雷的时候高空作业要怎么处理？","relevant_ids":["term_thunderstorm","op_high_altitude_thunder"],"expected_categories":["term_definition","operation_guideline"]}
+{"id":"multi_005_typhoon_safety","category":"multi","description":"台风 + 高空作业（跨 term 与 op）","query":"台风天高空施工允许吗？","relevant_ids":["term_typhoon","op_high_altitude_wind"],"expected_categories":["term_definition","operation_guideline"]}
+{"id":"para_001_synonym_rain","category":"paraphrase","description":"同义改写：'下大雨' 应仍能召回大雨条目","query":"下了一天大雨，量是多少？","relevant_ids":["grading_precip_24h_heavy"],"expected_categories":["grading_standard"]}
+{"id":"para_002_colloquial_wind","category":"paraphrase","description":"口语化：'刮大风' 应能召回 6-8 级","query":"今天刮大风，多大算大风？","relevant_ids":["grading_wind_beaufort_8"],"expected_categories":["grading_standard"]}
+{"id":"para_003_synonym_fog","category":"paraphrase","description":"同义改写：'起雾'","query":"今天早晨起雾很厉害，能见度低于多少算大雾？","relevant_ids":["grading_visibility_haze"],"expected_categories":["grading_standard"]}
