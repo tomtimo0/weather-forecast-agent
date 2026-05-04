@@ -9,6 +9,7 @@ from src.config.settings import LLM_MODEL, LLM_API_KEY, LLM_BASE_URL, SYSTEM_PRO
 from src.intent.completer import complete_intent, format_completion_notes
 from src.intent.recognizer import recognize_intent
 from src.intent.schema import CompletionResult, WeatherIntent
+from src.tools.bridge_tool import bridge_weather_data
 from src.tools.knowledge_tool import search_knowledge
 from src.tools.weather_api import (
     get_current_time,
@@ -38,6 +39,12 @@ def create_weather_agent():
     if _agent_instance is not None:
         return _agent_instance
 
+    # 提前热身 RAG 单例，避免首次工具调用并发命中 ChromaDB 冷启动 bug
+    from src.rag.knowledge_base import get_knowledge_base
+    from src.rag.retriever import get_retriever
+    get_knowledge_base()
+    get_retriever()
+
     model = ChatOpenAI(
         model=LLM_MODEL,
         api_key=LLM_API_KEY,
@@ -59,6 +66,7 @@ def create_weather_agent():
             get_historical_hourly,
             get_historical_daily,
             search_knowledge,
+            bridge_weather_data,
         ],
         context_schema=Context,
         system_prompt=SYSTEM_PROMPT,

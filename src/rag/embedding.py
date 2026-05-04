@@ -48,14 +48,20 @@ class EmbeddingClient:
         return resp.data[0].embedding
 
 
+import threading
+
 _default_client: EmbeddingClient | None = None
+_client_lock = threading.Lock()
 
 
 def get_embedding_client() -> EmbeddingClient:
-    """获取进程级的默认嵌入客户端单例。"""
+    """获取进程级的默认嵌入客户端单例（double-checked locking，避免并发初始化）。"""
     global _default_client
-    if _default_client is None:
-        _default_client = EmbeddingClient()
+    if _default_client is not None:
+        return _default_client
+    with _client_lock:
+        if _default_client is None:
+            _default_client = EmbeddingClient()
     return _default_client
 
 

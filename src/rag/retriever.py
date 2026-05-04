@@ -85,14 +85,20 @@ class HybridRetriever:
         ]
 
 
+import threading
+
 _default_retriever: Optional[HybridRetriever] = None
+_retriever_lock = threading.Lock()
 
 
 def get_retriever() -> HybridRetriever:
-    """获取进程级单例检索器。"""
+    """获取进程级单例检索器（double-checked locking，避免并发初始化）。"""
     global _default_retriever
-    if _default_retriever is None:
-        _default_retriever = HybridRetriever()
+    if _default_retriever is not None:
+        return _default_retriever
+    with _retriever_lock:
+        if _default_retriever is None:
+            _default_retriever = HybridRetriever()
     return _default_retriever
 
 

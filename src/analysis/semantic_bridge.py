@@ -3,8 +3,11 @@
 把任意工具返回的气象数据 dict（如 weather_api 工具的输出）
 经过「分类 → 富化 → 合成」三步，加工为 LLM 友好的语义文本。
 
-最小可行版本仅覆盖「24h/12h 降水量」一类要素。
-后续按 wind/temp/humidity 顺序扩展 classifiers + 注册到 dispatcher 即可。
+当前覆盖要素：
+    - 24h / 12h 降水量
+    - 蒲福风级（windScale / windScaleDay / windScaleNight）
+
+后续按 temp / humidity / visibility 等扩展 classifiers + 注册到 dispatcher 即可。
 """
 
 from typing import Dict, List, Literal, Optional
@@ -12,6 +15,10 @@ from typing import Dict, List, Literal, Optional
 from src.analysis.classifiers.precipitation import (
     classify_precipitation,
     parse_precip_value,
+)
+from src.analysis.classifiers.wind_scale import (
+    classify_wind_scale,
+    parse_wind_scale,
 )
 from src.analysis.compose import compose_labels_for_llm
 from src.analysis.enrichers.rag_enricher import enrich_with_rag
@@ -68,7 +75,7 @@ def bridge_weather_dict(
 def _classify_all(data: Dict) -> List[Optional[SemanticLabel]]:
     """根据 data 中存在的字段调用对应分类器，缺失的字段跳过。
 
-    最小可行版本仅支持降水量；后续每加一个 classifier 在此处加一段调度。
+    每加一个 classifier，在此处加一段字段名调度即可。
     """
     out: List[Optional[SemanticLabel]] = []
 
@@ -85,6 +92,15 @@ def _classify_all(data: Dict) -> List[Optional[SemanticLabel]]:
         v = parse_precip_value(data["precip_12h"])
         if v is not None:
             out.append(classify_precipitation(v, "12h"))
+
+    # 风力等级：和风返回的字段名是 windScale / windScaleDay / windScaleNight
+    # 同一调用通常只关注其中一项；按"显式 wind_scale > 通用 windScale > 白天 > 夜间"优先级取首个非空
+    for key in ("wind_scale", "windScale", "windScaleDay", "windScaleNight"):
+        if key in data:
+            v = parse_wind_scale(data[key])
+            if v is not None:
+                out.append(classify_wind_scale(v))
+            break
 
     return out
 

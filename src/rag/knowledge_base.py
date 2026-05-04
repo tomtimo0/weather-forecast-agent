@@ -244,18 +244,30 @@ class KnowledgeBase:
         }
 
 
+import threading
+
 _default_kb: Optional[KnowledgeBase] = None
+_kb_lock = threading.Lock()
 
 
 def get_knowledge_base(auto_index: bool = True) -> KnowledgeBase:
-    """获取进程级单例知识库实例（首次调用时自动加载并增量索引）。"""
+    """获取进程级单例知识库实例（首次调用时自动加载并增量索引）。
+
+    用 double-checked locking 保护单例创建：LangGraph 并行调度多个工具时，
+    若两个工具同时首次访问会触发 ChromaDB 的 PersistentClient 并发初始化 bug
+    （RustBindingsAPI 'bindings' AttributeError），加锁后只有第一个调用真正
+    建立单例，其它调用直接复用。
+    """
     global _default_kb
-    if _default_kb is None:
-        kb = KnowledgeBase()
-        kb.load()
-        if auto_index:
-            kb.reindex(force=False)
-        _default_kb = kb
+    if _default_kb is not None:
+        return _default_kb
+    with _kb_lock:
+        if _default_kb is None:
+            kb = KnowledgeBase()
+            kb.load()
+            if auto_index:
+                kb.reindex(force=False)
+            _default_kb = kb
     return _default_kb
 
 
