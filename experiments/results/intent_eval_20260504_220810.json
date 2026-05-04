@@ -1,0 +1,3043 @@
+{
+  "timestamp": "20260504_220810",
+  "n_cases": 35,
+  "model": "Pro/zai-org/GLM-5.1",
+  "overall": {
+    "n_cases": 35,
+    "end_to_end_pass_rate": 0.9142857142857143,
+    "intent_accuracy": 0.9714285714285714,
+    "location_set_recall": 0.9655172413793104,
+    "location_set_precision": 0.9558823529411765,
+    "location_role_accuracy": 1.0,
+    "time_field_present_rate": 0.9166666666666666,
+    "completion_decision_accuracy": 1.0,
+    "follow_up_trigger_accuracy": 1.0,
+    "completion_field_coverage": 0.5
+  },
+  "by_category": {
+    "current_weather": {
+      "n_cases": 4,
+      "end_to_end_pass_rate": 1.0,
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": null,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null
+    },
+    "hourly_forecast": {
+      "n_cases": 5,
+      "end_to_end_pass_rate": 1.0,
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null
+    },
+    "daily_forecast": {
+      "n_cases": 5,
+      "end_to_end_pass_rate": 1.0,
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null
+    },
+    "weather_warning": {
+      "n_cases": 3,
+      "end_to_end_pass_rate": 1.0,
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": null,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null
+    },
+    "life_index": {
+      "n_cases": 4,
+      "end_to_end_pass_rate": 0.75,
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 0.75,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null
+    },
+    "historical_hourly": {
+      "n_cases": 2,
+      "end_to_end_pass_rate": 1.0,
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null
+    },
+    "historical_daily": {
+      "n_cases": 2,
+      "end_to_end_pass_rate": 1.0,
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null
+    },
+    "travel_advice": {
+      "n_cases": 5,
+      "end_to_end_pass_rate": 1.0,
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 0.9,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": 1.0
+    },
+    "context_inference": {
+      "n_cases": 3,
+      "end_to_end_pass_rate": 0.3333333333333333,
+      "intent_accuracy": 0.6666666666666666,
+      "location_set_recall": 0.5,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 0.3333333333333333,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": 0.3333333333333333
+    },
+    "adversarial": {
+      "n_cases": 2,
+      "end_to_end_pass_rate": 1.0,
+      "intent_accuracy": 1.0,
+      "location_set_recall": null,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": null,
+      "time_field_present_rate": null,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null
+    }
+  },
+  "case_metrics": [
+    {
+      "id": "current_001_simple",
+      "category": "current_weather",
+      "query": "武汉现在天气怎么样？",
+      "intent_pred": "current_weather",
+      "intent_expected": [
+        "current_weather"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": null,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "current_002_rain",
+      "category": "current_weather",
+      "query": "现在外面下雨吗？",
+      "intent_pred": "current_weather",
+      "intent_expected": [
+        "current_weather"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": null,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": null,
+      "time_field_present_rate": null,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "current_003_wind",
+      "category": "current_weather",
+      "query": "刚刚北京风大不大？",
+      "intent_pred": "historical_hourly",
+      "intent_expected": [
+        "current_weather",
+        "historical_hourly"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": null,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "current_004_temp",
+      "category": "current_weather",
+      "query": "此刻蓉城温度多少？",
+      "intent_pred": "current_weather",
+      "intent_expected": [
+        "current_weather"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": null,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "hourly_001_morning",
+      "category": "hourly_forecast",
+      "query": "北京明天早上8点天气如何？",
+      "intent_pred": "hourly_forecast",
+      "intent_expected": [
+        "hourly_forecast"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "hourly_002_evening",
+      "category": "hourly_forecast",
+      "query": "今晚9点上海会下雨吗？",
+      "intent_pred": "hourly_forecast",
+      "intent_expected": [
+        "hourly_forecast"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "hourly_003_range",
+      "category": "hourly_forecast",
+      "query": "明天下午3点到5点深圳的天气怎样？",
+      "intent_pred": "hourly_forecast",
+      "intent_expected": [
+        "hourly_forecast"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "hourly_004_dusk",
+      "category": "hourly_forecast",
+      "query": "今天傍晚7点之后会下雨吗，我在杭州",
+      "intent_pred": "hourly_forecast",
+      "intent_expected": [
+        "hourly_forecast"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "hourly_005_full",
+      "category": "hourly_forecast",
+      "query": "明天广州每个小时的天气情况怎么样？",
+      "intent_pred": "hourly_forecast",
+      "intent_expected": [
+        "hourly_forecast"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "daily_001_three",
+      "category": "daily_forecast",
+      "query": "成都未来三天的天气怎么样？",
+      "intent_pred": "daily_forecast",
+      "intent_expected": [
+        "daily_forecast"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "daily_002_week",
+      "category": "daily_forecast",
+      "query": "这周武汉天气怎么样？",
+      "intent_pred": "daily_forecast",
+      "intent_expected": [
+        "daily_forecast"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "daily_003_rain_week",
+      "category": "daily_forecast",
+      "query": "未来一周长沙会下雨吗？",
+      "intent_pred": "daily_forecast",
+      "intent_expected": [
+        "daily_forecast"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "daily_004_no_loc",
+      "category": "daily_forecast",
+      "query": "下周天气趋势怎样？",
+      "intent_pred": "daily_forecast",
+      "intent_expected": [
+        "daily_forecast"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": null,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": null,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "daily_005_ten_days",
+      "category": "daily_forecast",
+      "query": "杭州接下来10天的天气",
+      "intent_pred": "daily_forecast",
+      "intent_expected": [
+        "daily_forecast"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "warning_001_general",
+      "category": "weather_warning",
+      "query": "上海有没有天气预警？",
+      "intent_pred": "weather_warning",
+      "intent_expected": [
+        "weather_warning"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": null,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "warning_002_rain",
+      "category": "weather_warning",
+      "query": "广州现在有暴雨预警吗？",
+      "intent_pred": "weather_warning",
+      "intent_expected": [
+        "weather_warning"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": null,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "warning_003_typhoon",
+      "category": "weather_warning",
+      "query": "海南台风预警查一下",
+      "intent_pred": "weather_warning",
+      "intent_expected": [
+        "weather_warning"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": null,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "index_001_carwash",
+      "category": "life_index",
+      "query": "明天广州适合洗车吗？",
+      "intent_pred": "life_index",
+      "intent_expected": [
+        "life_index"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "index_002_dressing",
+      "category": "life_index",
+      "query": "明天北京要穿什么衣服？",
+      "intent_pred": "life_index",
+      "intent_expected": [
+        "life_index"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "index_003_running",
+      "category": "life_index",
+      "query": "明天武汉跑步合适吗？",
+      "intent_pred": "life_index",
+      "intent_expected": [
+        "life_index"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "index_004_no_loc",
+      "category": "life_index",
+      "query": "今天去爬山合适吗？",
+      "intent_pred": "life_index",
+      "intent_expected": [
+        "life_index"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": null,
+      "location_set_precision": 0.0,
+      "location_role_accuracy": null,
+      "time_field_present_rate": null,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": false,
+      "failures": [
+        "地点错增：期望空，实际识别 ['当前位置']"
+      ]
+    },
+    {
+      "id": "hist_h_001_xmas",
+      "category": "historical_hourly",
+      "query": "去年12月25日深圳的逐小时气温是多少？",
+      "intent_pred": "historical_hourly",
+      "intent_expected": [
+        "historical_hourly"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "hist_h_002_lastweek",
+      "category": "historical_hourly",
+      "query": "上周三下午北京有没有下雨？",
+      "intent_pred": "historical_hourly",
+      "intent_expected": [
+        "historical_hourly"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "hist_d_001_august",
+      "category": "historical_daily",
+      "query": "2024年8月武汉每天的最高温是多少？",
+      "intent_pred": "historical_daily",
+      "intent_expected": [
+        "historical_daily"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "hist_d_002_yearly",
+      "category": "historical_daily",
+      "query": "过去一年北京下雨的天数有多少",
+      "intent_pred": "historical_daily",
+      "intent_expected": [
+        "historical_daily"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "travel_001_train",
+      "category": "travel_advice",
+      "query": "明天早八到晚六，从成都坐高铁到武汉，有什么穿衣建议？",
+      "intent_pred": "travel_advice",
+      "intent_expected": [
+        "travel_advice"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "travel_002_drive",
+      "category": "travel_advice",
+      "query": "周末从北京自驾到张家口，需要带伞吗？",
+      "intent_pred": "travel_advice",
+      "intent_expected": [
+        "travel_advice"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "travel_003_flight",
+      "category": "travel_advice",
+      "query": "下周三从上海飞昆明，需要注意什么天气？",
+      "intent_pred": "travel_advice",
+      "intent_expected": [
+        "travel_advice"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "travel_004_waypoint",
+      "category": "travel_advice",
+      "query": "从西安到敦煌，途经张掖，路上天气如何？",
+      "intent_pred": "travel_advice",
+      "intent_expected": [
+        "travel_advice"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": null,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": 1.0,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "travel_005_no_dest",
+      "category": "travel_advice",
+      "query": "明天从北京出发去那里要带伞吗？",
+      "intent_pred": "travel_advice",
+      "intent_expected": [
+        "travel_advice"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 0.5,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "ctx_001_relative_time",
+      "category": "context_inference",
+      "query": "那明天呢？",
+      "intent_pred": "daily_forecast",
+      "intent_expected": [
+        "daily_forecast",
+        "hourly_forecast"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": null,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": null,
+      "time_field_present_rate": 1.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": 1.0,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "ctx_002_switch_loc",
+      "category": "context_inference",
+      "query": "那成都呢？",
+      "intent_pred": "current_weather",
+      "intent_expected": [
+        "daily_forecast"
+      ],
+      "intent_accuracy": 0.0,
+      "location_set_recall": 1.0,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": 1.0,
+      "time_field_present_rate": 0.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": 0.0,
+      "end_to_end_pass": false,
+      "failures": [
+        "意图错误：期望 {'daily_forecast'}，实际 current_weather",
+        "时间字段缺失：期望 ['date']，缺 ['date']",
+        "补全字段未覆盖：缺 ['time.date']，notes 实际 []"
+      ]
+    },
+    {
+      "id": "ctx_003_switch_intent",
+      "category": "context_inference",
+      "query": "那需要防晒吗？",
+      "intent_pred": "life_index",
+      "intent_expected": [
+        "life_index"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": 0.0,
+      "location_set_precision": null,
+      "location_role_accuracy": null,
+      "time_field_present_rate": 0.0,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": 0.0,
+      "end_to_end_pass": false,
+      "failures": [
+        "地点漏识别：缺少 [['wuhan', '武汉']]",
+        "时间字段缺失：期望 ['date']，缺 ['date']",
+        "补全字段未覆盖：缺 ['locations', 'time.date']，notes 实际 []"
+      ]
+    },
+    {
+      "id": "adv_001_offtopic",
+      "category": "adversarial",
+      "query": "今天股市行情怎么样？",
+      "intent_pred": "unknown",
+      "intent_expected": [
+        "unknown"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": null,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": null,
+      "time_field_present_rate": null,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    },
+    {
+      "id": "adv_002_movie",
+      "category": "adversarial",
+      "query": "推荐一部好看的电影吧",
+      "intent_pred": "unknown",
+      "intent_expected": [
+        "unknown"
+      ],
+      "intent_accuracy": 1.0,
+      "location_set_recall": null,
+      "location_set_precision": 1.0,
+      "location_role_accuracy": null,
+      "time_field_present_rate": null,
+      "completion_decision_accuracy": 1.0,
+      "follow_up_trigger_accuracy": 1.0,
+      "completion_field_coverage": null,
+      "end_to_end_pass": true,
+      "failures": []
+    }
+  ],
+  "raw_outputs": [
+    {
+      "id": "current_001_simple",
+      "query": "武汉现在天气怎么样？",
+      "context": null,
+      "intent": {
+        "intent": "current_weather",
+        "locations": [
+          {
+            "name": "武汉",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "今天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [],
+        "needed_tools": [
+          "search_city",
+          "get_current_weather",
+          "get_current_time"
+        ],
+        "reasoning": "用户问'武汉现在天气怎么样'，明确询问当前时刻的天气状况，属于current_weather意图，地点为武汉，时间为现在。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "current_weather",
+          "locations": [
+            {
+              "name": "武汉",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": null,
+            "date": "今天",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [],
+          "needed_tools": [
+            "search_city",
+            "get_current_weather",
+            "get_current_time"
+          ],
+          "reasoning": "用户问'武汉现在天气怎么样'，明确询问当前时刻的天气状况，属于current_weather意图，地点为武汉，时间为现在。"
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "今天",
+            "source": "default",
+            "reason": "查询当前天气，默认日期为今天"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "current_002_rain",
+      "query": "现在外面下雨吗？",
+      "context": null,
+      "intent": {
+        "intent": "current_weather",
+        "locations": [],
+        "time": {
+          "raw_text": null,
+          "date": "今天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "precipitation"
+        ],
+        "needed_tools": [
+          "get_current_time",
+          "search_city",
+          "get_current_weather"
+        ],
+        "reasoning": "用户问'现在外面下雨吗'，明确询问此刻的降水情况，属于当前天气查询（current_weather）。用户未指定地点，需后续确认或使用默认定位。关注变量为降水（precipitation）。"
+      },
+      "completion": {
+        "is_complete": false,
+        "completed_intent": {
+          "intent": "current_weather",
+          "locations": [],
+          "time": {
+            "raw_text": null,
+            "date": "今天",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [
+            "precipitation"
+          ],
+          "needed_tools": [
+            "get_current_time",
+            "search_city",
+            "get_current_weather"
+          ],
+          "reasoning": "用户问'现在外面下雨吗'，明确询问此刻的降水情况，属于当前天气查询（current_weather）。用户未指定地点，需后续确认或使用默认定位。关注变量为降水（precipitation）。"
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "今天",
+            "source": "default",
+            "reason": "未指定日期，默认查询今天"
+          }
+        ],
+        "follow_up_question": "您想查询哪个城市的天气？"
+      },
+      "error": null
+    },
+    {
+      "id": "current_003_wind",
+      "query": "刚刚北京风大不大？",
+      "context": null,
+      "intent": {
+        "intent": "historical_hourly",
+        "locations": [
+          {
+            "name": "北京",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "今天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "wind"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_historical_hourly",
+          "get_current_time"
+        ],
+        "reasoning": "用户问'刚刚北京风大不大'，'刚刚'表示过去不久的时间，属于查询近期历史天气，且关注的是风力要素，因此判定为historical_hourly意图。需要get_current_time来确定当前时间以回溯'刚刚'对应的时间段。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "historical_hourly",
+          "locations": [
+            {
+              "name": "北京",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": "刚刚",
+            "date": "今天",
+            "start_time": "21:00",
+            "end_time": "21:56"
+          },
+          "variables": [
+            "wind"
+          ],
+          "needed_tools": [
+            "search_city",
+            "get_historical_hourly",
+            "get_current_time"
+          ],
+          "reasoning": "用户问'刚刚北京风大不大'，'刚刚'表示过去不久的时间，属于查询近期历史天气，且关注的是风力要素，因此判定为historical_hourly意图。"
+        },
+        "notes": [
+          {
+            "field": "time.start_time",
+            "value": "21:00",
+            "source": "common_sense",
+            "reason": "'刚刚'通常指过去1小时左右，当前时间21:56，推断起始时间为21:00"
+          },
+          {
+            "field": "time.end_time",
+            "value": "21:56",
+            "source": "context_inference",
+            "reason": "根据当前系统时间21:56，作为查询结束时间"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "current_004_temp",
+      "query": "此刻蓉城温度多少？",
+      "context": null,
+      "intent": {
+        "intent": "current_weather",
+        "locations": [
+          {
+            "name": "成都",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "今天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_current_weather",
+          "get_current_time"
+        ],
+        "reasoning": "用户问'此刻'蓉城的温度，蓉城是成都的别称，意图为查询当前实时天气，关注温度要素。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "current_weather",
+          "locations": [
+            {
+              "name": "成都",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": null,
+            "date": "今天",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [
+            "temperature"
+          ],
+          "needed_tools": [
+            "search_city",
+            "get_current_weather",
+            "get_current_time"
+          ],
+          "reasoning": "用户问'此刻'蓉城的温度，蓉城是成都的别称，意图为查询当前实时天气，关注温度要素。"
+        },
+        "notes": [
+          {
+            "field": "locations[0].name",
+            "value": "成都",
+            "source": "user_input",
+            "reason": "用户使用'蓉城'指代成都，已识别并补全"
+          },
+          {
+            "field": "time.date",
+            "value": "今天",
+            "source": "default",
+            "reason": "查询当前天气，默认为今天"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "hourly_001_morning",
+      "query": "北京明天早上8点天气如何？",
+      "context": null,
+      "intent": {
+        "intent": "hourly_forecast",
+        "locations": [
+          {
+            "name": "北京",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "明天",
+          "start_time": "08:00",
+          "end_time": null
+        },
+        "variables": [],
+        "needed_tools": [
+          "search_city",
+          "get_forcast_weather",
+          "get_current_time"
+        ],
+        "reasoning": "用户询问北京明天早上8点的天气，属于未来特定时刻的逐小时预报查询，意图为hourly_forecast。时间涉及相对日期'明天'，需调用get_current_time确定具体日期。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "hourly_forecast",
+          "locations": [
+            {
+              "name": "北京",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": "明天早上8点",
+            "date": "2026-05-05",
+            "start_time": "08:00",
+            "end_time": null
+          },
+          "variables": [],
+          "needed_tools": [
+            "search_city",
+            "get_forcast_weather",
+            "get_current_time"
+          ],
+          "reasoning": "用户询问北京明天早上8点的天气，属于未来特定时刻的逐小时预报查询，意图为hourly_forecast。时间涉及相对日期'明天'，需调用get_current_time确定具体日期。"
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "2026-05-05",
+            "source": "context_inference",
+            "reason": "当前日期为2026-05-04，'明天'即2026-05-05"
+          },
+          {
+            "field": "time.raw_text",
+            "value": "明天早上8点",
+            "source": "context_inference",
+            "reason": "根据用户查询的日期和起始时间，补全原始时间表达"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "hourly_002_evening",
+      "query": "今晚9点上海会下雨吗？",
+      "context": null,
+      "intent": {
+        "intent": "hourly_forecast",
+        "locations": [
+          {
+            "name": "上海",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "今天",
+          "start_time": "21:00",
+          "end_time": "21:00"
+        },
+        "variables": [
+          "precipitation"
+        ],
+        "needed_tools": [
+          "get_current_time",
+          "search_city",
+          "get_forcast_weather"
+        ],
+        "reasoning": "用户询问今晚9点上海是否下雨，属于未来特定小时的天气预报查询，意图为hourly_forecast；关注降水要素；时间为今天21:00；地点为上海。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "hourly_forecast",
+          "locations": [
+            {
+              "name": "上海",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": null,
+            "date": "今天",
+            "start_time": "21:00",
+            "end_time": "21:00"
+          },
+          "variables": [
+            "precipitation"
+          ],
+          "needed_tools": [
+            "get_current_time",
+            "search_city",
+            "get_forcast_weather"
+          ],
+          "reasoning": null
+        },
+        "notes": [],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "hourly_003_range",
+      "query": "明天下午3点到5点深圳的天气怎样？",
+      "context": null,
+      "intent": {
+        "intent": "hourly_forecast",
+        "locations": [
+          {
+            "name": "深圳",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "明天",
+          "start_time": "15:00",
+          "end_time": "17:00"
+        },
+        "variables": [
+          "temperature",
+          "precipitation",
+          "wind",
+          "humidity",
+          "weather_condition"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_forcast_weather",
+          "get_current_time"
+        ],
+        "reasoning": "用户询问明天下午3点到5点深圳的天气，属于未来特定时段的逐小时预报查询，意图为 hourly_forecast。时间涉及相对日期'明天'，需调用 get_current_time 确定具体日期。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "hourly_forecast",
+          "locations": [
+            {
+              "name": "深圳",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": "明天下午3点到5点",
+            "date": "2026-05-05",
+            "start_time": "15:00",
+            "end_time": "17:00"
+          },
+          "variables": [
+            "temperature",
+            "precipitation",
+            "wind",
+            "humidity",
+            "weather_condition"
+          ],
+          "needed_tools": [
+            "search_city",
+            "get_forcast_weather",
+            "get_current_time"
+          ],
+          "reasoning": "用户询问明天下午3点到5点深圳的天气，属于未来特定时段的逐小时预报查询，意图为 hourly_forecast。时间涉及相对日期'明天'，需调用 get_current_time 确定具体日期。"
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "2026-05-05",
+            "source": "context_inference",
+            "reason": "根据当前日期2026-05-04，将'明天'转换为绝对日期2026-05-05"
+          },
+          {
+            "field": "time.raw_text",
+            "value": "明天下午3点到5点",
+            "source": "context_inference",
+            "reason": "根据用户指定的时间段补全原始时间表达"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "hourly_004_dusk",
+      "query": "今天傍晚7点之后会下雨吗，我在杭州",
+      "context": null,
+      "intent": {
+        "intent": "hourly_forecast",
+        "locations": [
+          {
+            "name": "杭州",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "今天",
+          "start_time": "19:00",
+          "end_time": null
+        },
+        "variables": [
+          "precipitation"
+        ],
+        "needed_tools": [
+          "get_current_time",
+          "search_city",
+          "get_forcast_weather"
+        ],
+        "reasoning": "用户询问今天傍晚7点之后是否会下雨，属于对未来特定时段逐小时天气的查询，意图为hourly_forecast；关注要素为降水；地点为杭州；时间为今天19:00起。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "hourly_forecast",
+          "locations": [
+            {
+              "name": "杭州",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": null,
+            "date": "今天",
+            "start_time": "19:00",
+            "end_time": null
+          },
+          "variables": [
+            "precipitation"
+          ],
+          "needed_tools": [
+            "get_current_time",
+            "search_city",
+            "get_forcast_weather"
+          ],
+          "reasoning": null
+        },
+        "notes": [],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "hourly_005_full",
+      "query": "明天广州每个小时的天气情况怎么样？",
+      "context": null,
+      "intent": {
+        "intent": "hourly_forecast",
+        "locations": [
+          {
+            "name": "广州",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "明天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature",
+          "precipitation",
+          "wind",
+          "humidity",
+          "weather_condition"
+        ],
+        "needed_tools": [
+          "get_current_time",
+          "search_city",
+          "get_forcast_weather"
+        ],
+        "reasoning": "用户询问'明天广州每个小时的天气'，明确指向未来逐小时预报，属于 hourly_forecast 意图。地点为广州，时间为明天，需先获取当前时间确定具体日期。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "hourly_forecast",
+          "locations": [
+            {
+              "name": "广州",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": "明天",
+            "date": "2026-05-05",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [
+            "temperature",
+            "precipitation",
+            "wind",
+            "humidity",
+            "weather_condition"
+          ],
+          "needed_tools": [
+            "get_current_time",
+            "search_city",
+            "get_forcast_weather"
+          ],
+          "reasoning": "用户询问明天广州逐小时天气，地点和时间均已明确，将相对日期'明天'转换为绝对日期即可。"
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "2026-05-05",
+            "source": "context_inference",
+            "reason": "当前日期为2026-05-04，'明天'即2026-05-05"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "daily_001_three",
+      "query": "成都未来三天的天气怎么样？",
+      "context": null,
+      "intent": {
+        "intent": "daily_forecast",
+        "locations": [
+          {
+            "name": "成都",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "未来三天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [],
+        "needed_tools": [
+          "search_city",
+          "get_daily_forecast",
+          "get_current_time"
+        ],
+        "reasoning": "用户询问成都未来三天的天气，属于逐日预报查询，意图为daily_forecast。涉及相对时间'未来三天'，需调用get_current_time确定当前日期。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "daily_forecast",
+          "locations": [
+            {
+              "name": "成都",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": "未来三天",
+            "date": "2026-05-04",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [],
+          "needed_tools": [
+            "search_city",
+            "get_daily_forecast",
+            "get_current_time"
+          ],
+          "reasoning": null
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "2026-05-04",
+            "source": "context_inference",
+            "reason": "用户说"
+          },
+          {
+            "field": "time.date",
+            "value": "2026-05-04",
+            "source": "context_inference",
+            "reason": "用户说"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "daily_002_week",
+      "query": "这周武汉天气怎么样？",
+      "context": null,
+      "intent": {
+        "intent": "daily_forecast",
+        "locations": [
+          {
+            "name": "武汉",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "这周",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature",
+          "precipitation",
+          "wind"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_daily_forecast",
+          "get_current_time"
+        ],
+        "reasoning": "用户问'这周武汉天气怎么样'，属于查询未来多天的整体天气情况，意图为daily_forecast；地点为武汉，角色为target；时间为'这周'，涉及相对时间需调用get_current_time确定当前日期。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "daily_forecast",
+          "locations": [
+            {
+              "name": "武汉",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": "这周",
+            "date": "2026-05-04 至 2026-05-10",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [
+            "temperature",
+            "precipitation",
+            "wind"
+          ],
+          "needed_tools": [
+            "search_city",
+            "get_daily_forecast"
+          ],
+          "reasoning": null
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "2026-05-04 至 2026-05-10",
+            "source": "context_inference",
+            "reason": "当前日期为2026-05-04（周一），\"这周\"即本周一至周日，转换为2026-05-04至2026-05-10"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "daily_003_rain_week",
+      "query": "未来一周长沙会下雨吗？",
+      "context": null,
+      "intent": {
+        "intent": "daily_forecast",
+        "locations": [
+          {
+            "name": "长沙",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "未来一周",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "precipitation"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_daily_forecast",
+          "get_current_time"
+        ],
+        "reasoning": "用户询问未来一周长沙是否下雨，属于逐日天气预报查询，关注降水要素，时间范围为未来一周，需用 get_daily_forecast 获取逐日预报，同时需要 get_current_time 确定当前日期以计算未来一周的起止。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "daily_forecast",
+          "locations": [
+            {
+              "name": "长沙",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": "未来一周",
+            "date": "2026-05-04~2026-05-10",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [
+            "precipitation"
+          ],
+          "needed_tools": [
+            "search_city",
+            "get_daily_forecast",
+            "get_current_time"
+          ],
+          "reasoning": null
+        },
+        "notes": [
+          {
+            "field": "time.raw_text",
+            "value": "未来一周",
+            "source": "context_inference",
+            "reason": "根据用户意图补全原始时间表达"
+          },
+          {
+            "field": "time.date",
+            "value": "2026-05-04~2026-05-10",
+            "source": "context_inference",
+            "reason": "将\"未来一周\"转换为具体日期范围（今天2026-05-04起7天）"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "daily_004_no_loc",
+      "query": "下周天气趋势怎样？",
+      "context": null,
+      "intent": {
+        "intent": "daily_forecast",
+        "locations": [],
+        "time": {
+          "raw_text": null,
+          "date": "下周",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature",
+          "precipitation",
+          "wind"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_daily_forecast",
+          "get_current_time"
+        ],
+        "reasoning": "用户询问'下周天气趋势'，属于未来多天的整体天气走势查询，应归为 daily_forecast。时间涉及相对日期'下周'，需调用 get_current_time 确定具体日期范围。用户未指定地点，需后续追问或使用默认城市。"
+      },
+      "completion": {
+        "is_complete": false,
+        "completed_intent": {
+          "intent": "daily_forecast",
+          "locations": [],
+          "time": {
+            "raw_text": "下周",
+            "date": "下周",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [
+            "temperature",
+            "precipitation",
+            "wind"
+          ],
+          "needed_tools": [
+            "search_city",
+            "get_daily_forecast",
+            "get_current_time"
+          ],
+          "reasoning": null
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "2026-05-11 至 2026-05-17",
+            "source": "context_inference",
+            "reason": "当前为2026-05-04（周一），'下周'对应下周一至周日，即5月11日至5月17日"
+          }
+        ],
+        "follow_up_question": "您想查询哪个城市的下周天气趋势？"
+      },
+      "error": null
+    },
+    {
+      "id": "daily_005_ten_days",
+      "query": "杭州接下来10天的天气",
+      "context": null,
+      "intent": {
+        "intent": "daily_forecast",
+        "locations": [
+          {
+            "name": "杭州",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "今天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature",
+          "precipitation",
+          "wind",
+          "humidity"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_daily_forecast",
+          "get_current_time"
+        ],
+        "reasoning": "用户询问杭州'接下来10天'的天气，属于逐日预报查询，意图为daily_forecast。时间涉及相对日期'接下来10天'，需调用get_current_time确定当前日期。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "daily_forecast",
+          "locations": [
+            {
+              "name": "杭州",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": "接下来10天",
+            "date": "今天",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [
+            "temperature",
+            "precipitation",
+            "wind",
+            "humidity"
+          ],
+          "needed_tools": [
+            "search_city",
+            "get_daily_forecast",
+            "get_current_time"
+          ],
+          "reasoning": "用户询问杭州'接下来10天'的天气，属于逐日预报查询，意图为daily_forecast。时间涉及相对日期'接下来10天'，需调用get_current_time确定当前日期。"
+        },
+        "notes": [
+          {
+            "field": "time.raw_text",
+            "value": "接下来10天",
+            "source": "context_inference",
+            "reason": "根据意图推理记录，用户原始查询为'接下来10天'，补全原始时间表达"
+          },
+          {
+            "field": "time.date",
+            "value": "今天",
+            "source": "default",
+            "reason": "未指定具体起始日期，默认从今天开始查询逐日预报"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "warning_001_general",
+      "query": "上海有没有天气预警？",
+      "context": null,
+      "intent": {
+        "intent": "weather_warning",
+        "locations": [
+          {
+            "name": "上海",
+            "role": "target"
+          }
+        ],
+        "time": null,
+        "variables": [],
+        "needed_tools": [
+          "search_city",
+          "get_weather_warning"
+        ],
+        "reasoning": "用户明确询问上海是否有天气预警，属于 weather_warning 意图类型。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "weather_warning",
+          "locations": [
+            {
+              "name": "上海",
+              "role": "target"
+            }
+          ],
+          "time": null,
+          "variables": [],
+          "needed_tools": [
+            "search_city",
+            "get_weather_warning"
+          ],
+          "reasoning": "用户明确询问上海是否有天气预警，属于 weather_warning 意图类型。"
+        },
+        "notes": [],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "warning_002_rain",
+      "query": "广州现在有暴雨预警吗？",
+      "context": null,
+      "intent": {
+        "intent": "weather_warning",
+        "locations": [
+          {
+            "name": "广州",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "今天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "warning"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_weather_warning",
+          "get_current_time"
+        ],
+        "reasoning": "用户询问广州当前是否有暴雨预警，属于天气预警查询（weather_warning），地点为广州，时间为当前。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "weather_warning",
+          "locations": [
+            {
+              "name": "广州",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": null,
+            "date": "2026-05-04",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [
+            "warning"
+          ],
+          "needed_tools": [
+            "search_city",
+            "get_weather_warning",
+            "get_current_time"
+          ],
+          "reasoning": "用户询问广州当前是否有暴雨预警，属于天气预警查询（weather_warning），地点为广州，时间为当前。"
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "2026-05-04",
+            "source": "default",
+            "reason": "用户提到"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "warning_003_typhoon",
+      "query": "海南台风预警查一下",
+      "context": null,
+      "intent": {
+        "intent": "weather_warning",
+        "locations": [
+          {
+            "name": "海南",
+            "role": "target"
+          }
+        ],
+        "time": null,
+        "variables": [
+          "typhoon",
+          "warning"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_weather_warning"
+        ],
+        "reasoning": "用户明确提到'台风预警'，属于查询极端天气预警信息，意图为 weather_warning。地点为海南，角色为 target。无需指定时间，默认查询当前生效的预警。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "weather_warning",
+          "locations": [
+            {
+              "name": "海南",
+              "role": "target"
+            }
+          ],
+          "time": null,
+          "variables": [
+            "typhoon",
+            "warning"
+          ],
+          "needed_tools": [
+            "search_city",
+            "get_weather_warning"
+          ],
+          "reasoning": "用户明确提到'台风预警'，属于查询极端天气预警信息，意图为 weather_warning。地点为海南，角色为 target。weather_warning 仅需 locations 参数，已齐全。"
+        },
+        "notes": [],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "index_001_carwash",
+      "query": "明天广州适合洗车吗？",
+      "context": null,
+      "intent": {
+        "intent": "life_index",
+        "locations": [
+          {
+            "name": "广州",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "明天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "car_washing"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_weather_indices",
+          "get_current_time"
+        ],
+        "reasoning": "用户问'适合洗车吗'，属于生活指数类查询（life_index），关注洗车指数；地点为广州，时间为明天。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "life_index",
+          "locations": [
+            {
+              "name": "广州",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": null,
+            "date": "明天",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [
+            "car_washing"
+          ],
+          "needed_tools": [
+            "search_city",
+            "get_weather_indices",
+            "get_current_time"
+          ],
+          "reasoning": "用户问'适合洗车吗'，属于生活指数类查询（life_index），关注洗车指数；地点为广州，时间为明天。"
+        },
+        "notes": [],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "index_002_dressing",
+      "query": "明天北京要穿什么衣服？",
+      "context": null,
+      "intent": {
+        "intent": "life_index",
+        "locations": [
+          {
+            "name": "北京",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "明天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature",
+          "life_index"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_weather_indices",
+          "get_current_time"
+        ],
+        "reasoning": "用户问'要穿什么衣服'，属于生活指数/穿衣建议类查询，意图为life_index；地点为北京；时间为明天，需获取当前时间以确定具体日期。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "life_index",
+          "locations": [
+            {
+              "name": "北京",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": "明天",
+            "date": "2026-05-05",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [
+            "temperature",
+            "life_index"
+          ],
+          "needed_tools": [
+            "search_city",
+            "get_weather_indices",
+            "get_current_time"
+          ],
+          "reasoning": "用户问'要穿什么衣服'，属于生活指数/穿衣建议类查询，意图为life_index；地点为北京；时间为明天，需获取当前时间以确定具体日期。"
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "2026-05-05",
+            "source": "context_inference",
+            "reason": "\"明天\"对应2026-05-05（当前日期2026-05-04的后一天）"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "index_003_running",
+      "query": "明天武汉跑步合适吗？",
+      "context": null,
+      "intent": {
+        "intent": "life_index",
+        "locations": [
+          {
+            "name": "武汉",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "明天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "exercise",
+          "temperature",
+          "precipitation",
+          "air_quality"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_current_time",
+          "get_weather_indices",
+          "get_forcast_weather"
+        ],
+        "reasoning": "用户问'明天武汉跑步合适吗'，属于生活指数类查询（运动适宜度），需获取武汉明天的生活指数（如运动指数）以及相关天气要素（温度、降水、空气质量等）来综合判断。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "life_index",
+          "locations": [
+            {
+              "name": "武汉",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": "明天",
+            "date": "2026-05-05",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [
+            "exercise",
+            "temperature",
+            "precipitation",
+            "air_quality"
+          ],
+          "needed_tools": [
+            "search_city",
+            "get_current_time",
+            "get_weather_indices",
+            "get_forcast_weather"
+          ],
+          "reasoning": "用户问'明天武汉跑步合适吗'，属于生活指数类查询（运动适宜度），需获取武汉明天的生活指数（如运动指数）以及相关天气要素（温度、降水、空气质量等）来综合判断。"
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "2026-05-05",
+            "source": "context_inference",
+            "reason": "用户说'明天'，根据当前日期2026-05-04推算为2026-05-05"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "index_004_no_loc",
+      "query": "今天去爬山合适吗？",
+      "context": null,
+      "intent": {
+        "intent": "life_index",
+        "locations": [
+          {
+            "name": "当前位置",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "今天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "life_index"
+        ],
+        "needed_tools": [
+          "get_current_time",
+          "search_city",
+          "get_weather_indices"
+        ],
+        "reasoning": "用户问'今天去爬山合适吗'，属于生活指数类查询（life_index），判断某项活动是否适宜。未指定地点，默认为当前位置；时间为今天。"
+      },
+      "completion": {
+        "is_complete": false,
+        "completed_intent": {
+          "intent": "life_index",
+          "locations": [
+            {
+              "name": "当前位置",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": null,
+            "date": "今天",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [
+            "life_index"
+          ],
+          "needed_tools": [
+            "get_current_time",
+            "search_city",
+            "get_weather_indices"
+          ],
+          "reasoning": "用户问'今天去爬山合适吗'，属于生活指数类查询（life_index），判断某项活动是否适宜。未指定地点，默认为当前位置；时间为今天。"
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "今天",
+            "source": "default",
+            "reason": "未指定日期，默认查询今天"
+          }
+        ],
+        "follow_up_question": "您想查询哪个城市的生活指数？请告诉我您所在的城市名称。"
+      },
+      "error": null
+    },
+    {
+      "id": "hist_h_001_xmas",
+      "query": "去年12月25日深圳的逐小时气温是多少？",
+      "context": null,
+      "intent": {
+        "intent": "historical_hourly",
+        "locations": [
+          {
+            "name": "深圳",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "去年12月25日",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_historical_hourly"
+        ],
+        "reasoning": "用户询问'去年12月25日'深圳的'逐小时气温'，属于查询过去某天的逐小时历史天气数据，意图为historical_hourly，关注变量为temperature。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "historical_hourly",
+          "locations": [
+            {
+              "name": "深圳",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": "去年12月25日",
+            "date": "2025-12-25",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [
+            "temperature"
+          ],
+          "needed_tools": [
+            "search_city",
+            "get_historical_hourly"
+          ],
+          "reasoning": "用户询问'去年12月25日'深圳的逐小时气温，属于查询过去某天的逐小时历史天气数据，意图为historical_hourly，关注变量为temperature。"
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "2025-12-25",
+            "source": "common_sense",
+            "reason": "当前为2026年，'去年12月25日'即2025-12-25"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "hist_h_002_lastweek",
+      "query": "上周三下午北京有没有下雨？",
+      "context": null,
+      "intent": {
+        "intent": "historical_hourly",
+        "locations": [
+          {
+            "name": "北京",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "上周三",
+          "start_time": "12:00",
+          "end_time": "18:00"
+        },
+        "variables": [
+          "precipitation"
+        ],
+        "needed_tools": [
+          "get_current_time",
+          "search_city",
+          "get_historical_hourly"
+        ],
+        "reasoning": "用户询问'上周三下午'北京是否下雨，属于过去某天特定时段的逐小时天气查询，意图为historical_hourly。时间涉及相对日期'上周三'，需get_current_time辅助计算绝对日期；关注天气要素为降水（precipitation）。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "historical_hourly",
+          "locations": [
+            {
+              "name": "北京",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": "上周三下午",
+            "date": "2026-04-29",
+            "start_time": "12:00",
+            "end_time": "18:00"
+          },
+          "variables": [
+            "precipitation"
+          ],
+          "needed_tools": [
+            "search_city",
+            "get_historical_hourly"
+          ],
+          "reasoning": null
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "2026-04-29",
+            "source": "context_inference",
+            "reason": "今天是2026-05-04（周一），上周三即2026-04-29"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "hist_d_001_august",
+      "query": "2024年8月武汉每天的最高温是多少？",
+      "context": null,
+      "intent": {
+        "intent": "historical_daily",
+        "locations": [
+          {
+            "name": "武汉",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "2024-08",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_historical_daily"
+        ],
+        "reasoning": "用户询问2024年8月武汉每天的最高温，属于查询过去某段时间逐日的天气数据，意图为historical_daily。时间范围为2024年8月整月，关注变量为温度（最高温）。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "historical_daily",
+          "locations": [
+            {
+              "name": "武汉",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": "2024年8月",
+            "date": "2024-08-01",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [
+            "temperature"
+          ],
+          "needed_tools": [
+            "search_city",
+            "get_historical_daily"
+          ],
+          "reasoning": "用户询问2024年8月武汉每天的最高温，属于查询过去某段时间逐日的天气数据，意图为historical_daily。时间范围为2024年8月整月，关注变量为温度（最高温）。"
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "2024-08-01",
+            "source": "context_inference",
+            "reason": "用户指定2024年8月，补全为该月起始日期2024-08-01，查询范围覆盖8月整月（至2024-08-31）"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "hist_d_002_yearly",
+      "query": "过去一年北京下雨的天数有多少",
+      "context": null,
+      "intent": {
+        "intent": "historical_daily",
+        "locations": [
+          {
+            "name": "北京",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "过去一年",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "precipitation"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_historical_daily",
+          "get_current_time"
+        ],
+        "reasoning": "用户询问'过去一年北京下雨的天数'，属于查询历史逐日天气数据以统计降水天数，意图为historical_daily。地点为北京，关注要素为降水（precipitation），时间范围为'过去一年'，需用get_current_time确定当前日期以计算起止范围。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "historical_daily",
+          "locations": [
+            {
+              "name": "北京",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": "过去一年",
+            "date": "2025-05-04~2026-05-04",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [
+            "precipitation"
+          ],
+          "needed_tools": [
+            "search_city",
+            "get_historical_daily",
+            "get_current_time"
+          ],
+          "reasoning": null
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "2025-05-04~2026-05-04",
+            "source": "context_inference",
+            "reason": "用户说'过去一年'，根据当前日期2026-05-04推算起止范围为2025-05-04至2026-05-04"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "travel_001_train",
+      "query": "明天早八到晚六，从成都坐高铁到武汉，有什么穿衣建议？",
+      "context": null,
+      "intent": {
+        "intent": "travel_advice",
+        "locations": [
+          {
+            "name": "成都",
+            "role": "departure"
+          },
+          {
+            "name": "武汉",
+            "role": "arrival"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "明天",
+          "start_time": "08:00",
+          "end_time": "18:00"
+        },
+        "variables": [
+          "temperature",
+          "life_index"
+        ],
+        "needed_tools": [
+          "get_current_time",
+          "search_city",
+          "get_forcast_weather",
+          "get_weather_indices"
+        ],
+        "reasoning": "用户描述了从成都到武汉的高铁出行计划，并询问穿衣建议。这属于跨地点出行场景，需要综合出发地和目的地的天气预报及生活指数（穿衣指数）来给出建议，因此判定为 travel_advice 意图。时间范围为明天08:00-18:00，关注温度和穿衣相关生活指数。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "travel_advice",
+          "locations": [
+            {
+              "name": "成都",
+              "role": "departure"
+            },
+            {
+              "name": "武汉",
+              "role": "arrival"
+            }
+          ],
+          "time": {
+            "raw_text": null,
+            "date": "2026-05-05",
+            "start_time": "08:00",
+            "end_time": "18:00"
+          },
+          "variables": [
+            "temperature",
+            "life_index"
+          ],
+          "needed_tools": [
+            "get_current_time",
+            "search_city",
+            "get_forcast_weather",
+            "get_weather_indices"
+          ],
+          "reasoning": "用户描述了从成都到武汉的高铁出行计划，并询问穿衣建议。这属于跨地点出行场景，需要综合出发地和目的地的天气预报及生活指数（穿衣指数）来给出建议，因此判定为 travel_advice 意图。时间范围为明天08:00-18:00，关注温度和穿衣相关生活指数。"
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "2026-05-05",
+            "source": "common_sense",
+            "reason": "用户说\"明天\"，根据当前日期2026-05-04推算为2026-05-05"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "travel_002_drive",
+      "query": "周末从北京自驾到张家口，需要带伞吗？",
+      "context": null,
+      "intent": {
+        "intent": "travel_advice",
+        "locations": [
+          {
+            "name": "北京",
+            "role": "departure"
+          },
+          {
+            "name": "张家口",
+            "role": "arrival"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "周末",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "precipitation"
+        ],
+        "needed_tools": [
+          "get_current_time",
+          "search_city",
+          "get_forcast_weather",
+          "get_weather_indices"
+        ],
+        "reasoning": "用户描述了从北京自驾到张家口的出行计划，属于travel_advice场景；问'需要带伞吗'关注的是降水情况；时间为'周末'是相对时间，需get_current_time确定具体日期；需查询出发地和目的地的天气预报及生活指数。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "travel_advice",
+          "locations": [
+            {
+              "name": "北京",
+              "role": "departure"
+            },
+            {
+              "name": "张家口",
+              "role": "arrival"
+            }
+          ],
+          "time": {
+            "raw_text": "周末",
+            "date": "2026-05-09至2026-05-10",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [
+            "precipitation"
+          ],
+          "needed_tools": [
+            "get_current_time",
+            "search_city",
+            "get_forcast_weather",
+            "get_weather_indices"
+          ],
+          "reasoning": null
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "2026-05-09至2026-05-10",
+            "source": "context_inference",
+            "reason": "今天是2026-05-04（周一），'周末'指即将到来的周六、周日，即5月9日至10日"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "travel_003_flight",
+      "query": "下周三从上海飞昆明，需要注意什么天气？",
+      "context": null,
+      "intent": {
+        "intent": "travel_advice",
+        "locations": [
+          {
+            "name": "上海",
+            "role": "departure"
+          },
+          {
+            "name": "昆明",
+            "role": "arrival"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "下周三",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature",
+          "precipitation",
+          "wind"
+        ],
+        "needed_tools": [
+          "get_current_time",
+          "search_city",
+          "get_forcast_weather",
+          "get_weather_indices"
+        ],
+        "reasoning": "用户描述了从上海飞昆明的出行计划，涉及出发地和目的地两个地点，需要综合查询两地的天气预报和生活指数以给出出行建议，属于travel_advice意图。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "travel_advice",
+          "locations": [
+            {
+              "name": "上海",
+              "role": "departure"
+            },
+            {
+              "name": "昆明",
+              "role": "arrival"
+            }
+          ],
+          "time": {
+            "raw_text": "下周三",
+            "date": "2026-05-13",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [
+            "temperature",
+            "precipitation",
+            "wind"
+          ],
+          "needed_tools": [
+            "get_current_time",
+            "search_city",
+            "get_forcast_weather",
+            "get_weather_indices"
+          ],
+          "reasoning": "用户描述了从上海飞昆明的出行计划，涉及出发地和目的地两个地点，需要综合查询两地的天气预报和生活指数以给出出行建议，属于travel_advice意图。"
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "2026-05-13",
+            "source": "context_inference",
+            "reason": "今天是2026-05-04（周一），\"下周三\"解析为2026-05-13"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "travel_004_waypoint",
+      "query": "从西安到敦煌，途经张掖，路上天气如何？",
+      "context": null,
+      "intent": {
+        "intent": "travel_advice",
+        "locations": [
+          {
+            "name": "西安",
+            "role": "departure"
+          },
+          {
+            "name": "张掖",
+            "role": "waypoint"
+          },
+          {
+            "name": "敦煌",
+            "role": "arrival"
+          }
+        ],
+        "time": null,
+        "variables": [
+          "temperature",
+          "precipitation",
+          "wind"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_forcast_weather",
+          "get_weather_indices",
+          "get_current_time"
+        ],
+        "reasoning": "用户描述了从西安出发、途经张掖、到达敦煌的出行路线，询问路上天气，属于多地点出行综合天气查询，意图为 travel_advice。三个地点分别标注为出发地、途经点、目的地。未指定具体时间，默认查询近期预报。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "travel_advice",
+          "locations": [
+            {
+              "name": "西安",
+              "role": "departure"
+            },
+            {
+              "name": "张掖",
+              "role": "waypoint"
+            },
+            {
+              "name": "敦煌",
+              "role": "arrival"
+            }
+          ],
+          "time": {
+            "raw_text": null,
+            "date": "今天",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [
+            "temperature",
+            "precipitation",
+            "wind"
+          ],
+          "needed_tools": [
+            "search_city",
+            "get_forcast_weather",
+            "get_weather_indices",
+            "get_current_time"
+          ],
+          "reasoning": null
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "今天",
+            "source": "default",
+            "reason": "未指定出行日期，默认查询今天（2026-05-04）的天气"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "travel_005_no_dest",
+      "query": "明天从北京出发去那里要带伞吗？",
+      "context": null,
+      "intent": {
+        "intent": "travel_advice",
+        "locations": [
+          {
+            "name": "北京",
+            "role": "departure"
+          },
+          {
+            "name": "那里",
+            "role": "arrival"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "明天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "precipitation"
+        ],
+        "needed_tools": [
+          "get_current_time",
+          "search_city",
+          "get_forcast_weather",
+          "get_weather_indices"
+        ],
+        "reasoning": "用户描述了从北京出发去某地的出行计划，并询问是否需要带伞，属于出行建议类意图（travel_advice）。关注降水要素。目的地'那里'指代不明，可能需要追问用户确认具体目的地。"
+      },
+      "completion": {
+        "is_complete": false,
+        "completed_intent": {
+          "intent": "travel_advice",
+          "locations": [
+            {
+              "name": "北京",
+              "role": "departure"
+            },
+            {
+              "name": "那里",
+              "role": "arrival"
+            }
+          ],
+          "time": {
+            "raw_text": "明天",
+            "date": "明天",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [
+            "precipitation"
+          ],
+          "needed_tools": [
+            "get_current_time",
+            "search_city",
+            "get_forcast_weather",
+            "get_weather_indices"
+          ],
+          "reasoning": null
+        },
+        "notes": [
+          {
+            "field": "time.date",
+            "value": "明天",
+            "source": "user_input",
+            "reason": "用户明确指定了明天出行"
+          }
+        ],
+        "follow_up_question": "您说的"
+      },
+      "error": null
+    },
+    {
+      "id": "ctx_001_relative_time",
+      "query": "那明天呢？",
+      "context": "上一轮：用户问『武汉现在天气怎么样？』，助手回答了武汉实时天气。",
+      "intent": {
+        "intent": "daily_forecast",
+        "locations": [],
+        "time": {
+          "raw_text": null,
+          "date": "明天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [],
+        "needed_tools": [
+          "get_current_time",
+          "search_city",
+          "get_daily_forecast"
+        ],
+        "reasoning": "用户问'那明天呢？'，是典型的追问句式，意图查询明天的天气概况。由于没有指定具体小时，判定为 daily_forecast。地点未在本句中提及，需依赖上下文补充。涉及相对时间'明天'，需调用 get_current_time。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "daily_forecast",
+          "locations": [
+            {
+              "name": "武汉",
+              "role": "target"
+            }
+          ],
+          "time": {
+            "raw_text": "明天",
+            "date": "明天",
+            "start_time": null,
+            "end_time": null
+          },
+          "variables": [],
+          "needed_tools": [
+            "get_current_time",
+            "search_city",
+            "get_daily_forecast"
+          ],
+          "reasoning": null
+        },
+        "notes": [
+          {
+            "field": "locations[0].name",
+            "value": "武汉",
+            "source": "context_inference",
+            "reason": "用户上一轮询问武汉天气，本轮追问"
+          },
+          {
+            "field": "time.date",
+            "value": "明天",
+            "source": "user_input",
+            "reason": "用户明确指定了"
+          }
+        ],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "ctx_002_switch_loc",
+      "query": "那成都呢？",
+      "context": "上一轮：用户问『查一下北京明天的天气』，助手回答了北京明天的预报。",
+      "intent": {
+        "intent": "current_weather",
+        "locations": [
+          {
+            "name": "成都",
+            "role": "target"
+          }
+        ],
+        "time": null,
+        "variables": [],
+        "needed_tools": [
+          "search_city",
+          "get_current_weather"
+        ],
+        "reasoning": "用户问'那成都呢？'，是承接上文对某地天气的查询，转而询问成都的天气。缺乏上下文时默认理解为查询成都当前天气，意图为 current_weather。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "current_weather",
+          "locations": [
+            {
+              "name": "成都",
+              "role": "target"
+            }
+          ],
+          "time": null,
+          "variables": [],
+          "needed_tools": [
+            "search_city",
+            "get_current_weather"
+          ],
+          "reasoning": null
+        },
+        "notes": [],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "ctx_003_switch_intent",
+      "query": "那需要防晒吗？",
+      "context": "上一轮：用户问『武汉明天天气』，助手回答了武汉明天的预报。",
+      "intent": {
+        "intent": "life_index",
+        "locations": [],
+        "time": null,
+        "variables": [
+          "uv_index"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_weather_indices"
+        ],
+        "reasoning": "用户问'需要防晒吗'，属于生活指数类问题，关注紫外线指数/防晒指数。但用户未提及地点，可能是延续上文对话，需结合上下文补充地点信息。"
+      },
+      "completion": {
+        "is_complete": true,
+        "completed_intent": {
+          "intent": "life_index",
+          "locations": [],
+          "time": null,
+          "variables": [
+            "uv_index"
+          ],
+          "needed_tools": [
+            "search_city",
+            "get_weather_indices"
+          ],
+          "reasoning": "用户问'需要防晒吗'，属于生活指数类问题，关注紫外线指数/防晒指数。但用户未提及地点，可能是延续上文对话，需结合上下文补充地点信息。"
+        },
+        "notes": [],
+        "follow_up_question": null
+      },
+      "error": null
+    },
+    {
+      "id": "adv_001_offtopic",
+      "query": "今天股市行情怎么样？",
+      "context": null,
+      "intent": {
+        "intent": "unknown",
+        "locations": [],
+        "time": null,
+        "variables": [],
+        "needed_tools": [],
+        "reasoning": "用户询问的是股市行情，与气象查询无关，不属于任何气象意图类型。"
+      },
+      "completion": {
+        "is_complete": false,
+        "completed_intent": {
+          "intent": "unknown",
+          "locations": [],
+          "time": null,
+          "variables": [],
+          "needed_tools": [],
+          "reasoning": "用户询问的是股市行情，与气象查询无关，不属于任何气象意图类型。"
+        },
+        "notes": [],
+        "follow_up_question": "抱歉，我只能提供天气相关的查询服务，无法查询股市行情。您想了解哪个城市的天气情况呢？"
+      },
+      "error": null
+    },
+    {
+      "id": "adv_002_movie",
+      "query": "推荐一部好看的电影吧",
+      "context": null,
+      "intent": {
+        "intent": "unknown",
+        "locations": [],
+        "time": null,
+        "variables": [],
+        "needed_tools": [],
+        "reasoning": "用户询问的是电影推荐，与气象查询完全无关，不属于任何气象意图类型。"
+      },
+      "completion": {
+        "is_complete": false,
+        "completed_intent": {
+          "intent": "unknown",
+          "locations": [],
+          "time": null,
+          "variables": [],
+          "needed_tools": [],
+          "reasoning": "用户询问的是电影推荐，与气象查询完全无关，不属于任何气象意图类型。"
+        },
+        "notes": [],
+        "follow_up_question": "抱歉，我只能帮您查询天气相关的信息（如当前天气、天气预报、气象预警、生活指数、出行建议等）。请问您有需要查询的天气问题吗？"
+      },
+      "error": null
+    }
+  ]
+}
