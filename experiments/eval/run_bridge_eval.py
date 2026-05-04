@@ -74,13 +74,31 @@ def _run_case(case: Dict[str, Any], mode: str, llm_cache: Dict[str, Any] | None 
     )
 
 
+def _save_llm_cache_safe(llm_cache: Dict[str, Any] | None) -> None:
+    """容错地把 llm_cache 落盘，任何失败都吞掉，确保不阻塞主流程。"""
+    if llm_cache is None:
+        return
+    try:
+        from experiments.eval.llm_baseline import DEFAULT_CACHE_PATH, save_cache
+        save_cache(llm_cache, DEFAULT_CACHE_PATH)
+    except Exception as exc:  # noqa: BLE001
+        print(f"[warn] 保存 LLM baseline 缓存失败：{exc}")
+
+
 def run_one_mode(
     cases: List[Dict[str, Any]],
     mode: str,
     llm_cache: Dict[str, Any] | None = None,
     show_progress: bool = False,
+    incremental_save_every: int = 1,
 ):
-    """对所有用例在指定 mode 下跑一遍，返回 (case_metrics, failures) 二元组。"""
+    """对所有用例在指定 mode 下跑一遍，返回 (case_metrics, failures) 二元组。
+
+    Args:
+        incremental_save_every: 每跑完 N 条 LLM baseline 调用增量落盘一次缓存
+            （非 LLM 档无副作用），保证中途 KeyboardInterrupt / 进程崩溃时
+            已完成的 LLM 调用结果不会丢失，避免重复消耗 token。
+    """
     case_results: List[Dict[str, Any]] = []
     failures: List[Dict[str, Any]] = []
     n = len(cases)
@@ -88,7 +106,14 @@ def run_one_mode(
         result = _run_case(case, mode, llm_cache)
         if show_progress:
             tag = "缓存" if result.get("cache_hit") else "调用"
-            print(f"  [{mode}] {idx:>2}/{n} {tag} {case['id']}")
+            print(f"  [{mode}] {idx:>2}/{n} {tag} {case['id']}", flush=True)
+        if (
+            mode == LLM_BASELINE_MODE
+            and not result.get("cache_hit")
+            and llm_cache is not None
+            and idx % incremental_save_every == 0
+        ):
+            _save_llm_cache_safe(llm_cache)
         m = evaluate_case(case["expected"], result, mode)
         m["id"] = case["id"]
         m["category"] = case.get("category", "unknown")
@@ -329,21 +354,26 @@ def main() -> None:
 
     all_case_metrics: Dict[str, List[Dict[str, Any]]] = {}
     all_failures: Dict[str, List[Dict[str, Any]]] = {}
-    for mode in modes:
-        if mode == LLM_BASELINE_MODE:
-            print(f"\n[mode={mode}] 开始（命中缓存的条目几乎瞬时返回）")
-            case_metrics, failures = run_one_mode(
-                cases, mode, llm_cache=llm_cache, show_progress=True
-            )
-        else:
-            case_metrics, failures = run_one_mode(cases, mode)
-        all_case_metrics[mode] = case_metrics
-        all_failures[mode] = failures
-
-    if llm_cache is not None:
-        from experiments.eval.llm_baseline import DEFAULT_CACHE_PATH, save_cache
-        save_cache(llm_cache, DEFAULT_CACHE_PATH)
-        print(f"\n已保存 LLM baseline 缓存（{len(llm_cache)} 条）→ {DEFAULT_CACHE_PATH}")
+    try:
+        for mode in modes:
+            if mode == LLM_BASELINE_MODE:
+                print(f"\n[mode={mode}] 开始（命中缓存的条目几乎瞬时返回）")
+                case_metrics, failures = run_one_mode(
+                    cases, mode, llm_cache=llm_cache, show_progress=True
+                )
+            else:
+                case_metrics, failures = run_one_mode(cases, mode)
+            all_case_metrics[mode] = case_metrics
+            all_failures[mode] = failures
+    except KeyboardInterrupt:
+        print("\n[interrupt] 用户中断，先落盘已完成的 LLM baseline 缓存…")
+        _save_llm_cache_safe(llm_cache)
+        raise
+    finally:
+        if llm_cache is not None:
+            _save_llm_cache_safe(llm_cache)
+            from experiments.eval.llm_baseline import DEFAULT_CACHE_PATH
+            print(f"\n已保存 LLM baseline 缓存（{len(llm_cache)} 条）→ {DEFAULT_CACHE_PATH}")
 
     overall = {mode: aggregate(all_case_metrics[mode]) for mode in modes}
     by_cat = {mode: aggregate_by_category(all_case_metrics[mode], cases) for mode in modes}

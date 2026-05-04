@@ -8,11 +8,26 @@
 新增要素时仅需在 ``semantic_bridge._classify_all`` 加一段调度。
 """
 
+from src.analysis.classifiers.humidity import (
+    HUMIDITY_GRADES,
+    classify_humidity,
+    parse_humidity,
+)
 from src.analysis.classifiers.precipitation import (
     PRECIP_12H_GRADES,
     PRECIP_24H_GRADES,
     classify_precipitation,
     parse_precip_value,
+)
+from src.analysis.classifiers.temperature import (
+    TEMPERATURE_GRADES,
+    classify_temperature,
+    parse_temperature,
+)
+from src.analysis.classifiers.visibility import (
+    VISIBILITY_GRADES,
+    classify_visibility,
+    parse_visibility,
 )
 from src.analysis.classifiers.wind_scale import (
     WIND_BEAUFORT_GRADES,
@@ -30,4 +45,13 @@ __all__ = [
     "classify_wind_scale",
     "classify_wind_speed",
     "parse_wind_scale",
+    "TEMPERATURE_GRADES",
+    "classify_temperature",
+    "parse_temperature",
+    "VISIBILITY_GRADES",
+    "classify_visibility",
+    "parse_visibility",
+    "HUMIDITY_GRADES",
+    "classify_humidity",
+    "parse_humidity",
 ]

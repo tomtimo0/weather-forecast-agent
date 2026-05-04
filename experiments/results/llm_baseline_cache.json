@@ -566,5 +566,324 @@
     "labels": [],
     "semantic_text": "",
     "llm_error": ""
+  },
+  "fd2edf163549995e": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": ""
+  },
+  "ee0716d5d2c1a4e5": {
+    "labels": [
+      {
+        "variable": "temp",
+        "raw_value": "-15°C",
+        "grade": "低温作业Ⅲ级",
+        "grade_id": "cold_work_3",
+        "impact": "-15°C 户外作业存在中度冻伤与失温风险，手部灵活性显著下降，应缩短连续暴露时间、加强防寒保暖并安排轮换休息。",
+        "citation": "GB/T 14440-1993 §3（国家技术监督局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[temp] -15°C → 低温作业Ⅲ级\n  影响：-15°C 户外作业存在中度冻伤与失温风险，手部灵活性显著下降，应缩短连续暴露时间、加强防寒保暖并安排轮换休息。\n  依据：GB/T 14440-1993 §3（国家技术监督局）",
+    "llm_error": ""
+  },
+  "0e4d5c024cac38e3": {
+    "labels": [
+      {
+        "variable": "temp",
+        "raw_value": "-0.1°C",
+        "grade": null,
+        "grade_id": null,
+        "impact": "气温低于0°C，路面可能出现结冰或暗冰，出行需注意防滑、减速慢行，尤其是桥梁和背阴路段。",
+        "citation": null,
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[temp] -0.1°C\n  影响：气温低于0°C，路面可能出现结冰或暗冰，出行需注意防滑、减速慢行，尤其是桥梁和背阴路段。",
+    "llm_error": ""
+  },
+  "94492bdbb158ad89": {
+    "labels": [
+      {
+        "variable": "temp",
+        "raw_value": "0°C",
+        "grade": null,
+        "grade_id": null,
+        "impact": null,
+        "citation": null,
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[temp] 0°C",
+    "llm_error": ""
+  },
+  "9f96f90fc47b6dc0": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": ""
+  },
+  "1f05a5c6b716ac61": {
+    "labels": [
+      {
+        "variable": "temp",
+        "raw_value": "15°C",
+        "grade": null,
+        "grade_id": null,
+        "impact": null,
+        "citation": null,
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[temp] 15°C",
+    "llm_error": ""
+  },
+  "c0ae295475b0932d": {
+    "labels": [
+      {
+        "variable": "temp",
+        "raw_value": "18°C",
+        "grade": null,
+        "grade_id": null,
+        "impact": null,
+        "citation": null,
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[temp] 18°C",
+    "llm_error": ""
+  },
+  "554de941c6f477cb": {
+    "labels": [
+      {
+        "variable": "temp",
+        "raw_value": "23.9°C",
+        "grade": null,
+        "grade_id": null,
+        "impact": null,
+        "citation": null,
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[temp] 23.9°C",
+    "llm_error": ""
+  },
+  "6d20bcdc8a5e53a5": {
+    "labels": [
+      {
+        "variable": "temp",
+        "raw_value": "28°C",
+        "grade": "热",
+        "grade_id": null,
+        "impact": "气温较高，建议穿着轻薄透气的短袖、短裤等夏装，户外活动注意防晒防暑。",
+        "citation": "GB/T 35228-2017 §5（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[temp] 28°C → 热\n  影响：气温较高，建议穿着轻薄透气的短袖、短裤等夏装，户外活动注意防晒防暑。\n  依据：GB/T 35228-2017 §5（中国气象局）",
+    "llm_error": ""
+  },
+  "e25c80442112d3bd": {
+    "labels": [
+      {
+        "variable": "temp",
+        "raw_value": "32°C",
+        "grade": null,
+        "grade_id": null,
+        "impact": "32°C未达到气象高温预警阈值（≥35°C），但在户外作业场景下长时间暴露仍有中暑风险，建议增加饮水与休息频次、避免正午时段连续作业。",
+        "citation": "《防暑降温措施管理办法》安监总安健〔2012〕89号 §5、§8（国家安全生产监督管理总局等）；高温预警信号标准见《气象灾害预警信号发布与传播办法》中国气象局令第16号 §附录（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[temp] 32°C\n  影响：32°C未达到气象高温预警阈值（≥35°C），但在户外作业场景下长时间暴露仍有中暑风险，建议增加饮水与休息频次、避免正午时段连续作业。\n  依据：《防暑降温措施管理办法》安监总安健〔2012〕89号 §5、§8（国家安全生产监督管理总局等）；高温预警信号标准见《气象灾害预警信号发布与传播办法》中国气象局令第16号 §附录（中国气象局）",
+    "llm_error": ""
+  },
+  "2ca28542fc11291f": {
+    "labels": [
+      {
+        "variable": "temp",
+        "raw_value": "35°C",
+        "grade": "高温黄色预警",
+        "grade_id": null,
+        "impact": "日最高气温≥35°C，户外作业人员中暑风险显著升高，应减少连续作业时间、增加休息频次并采取防暑降温措施。",
+        "citation": "中国气象局《气象灾害预警信号发布与传播办法》(2007) 附则·高温预警信号",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[temp] 35°C → 高温黄色预警\n  影响：日最高气温≥35°C，户外作业人员中暑风险显著升高，应减少连续作业时间、增加休息频次并采取防暑降温措施。\n  依据：中国气象局《气象灾害预警信号发布与传播办法》(2007) 附则·高温预警信号",
+    "llm_error": "LLM 未触发结构化输出（function_calling 偶发失败）"
+  },
+  "9b3d36834e8c7419": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": ""
+  },
+  "2cbf6a5a5c17d494": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": "LLM 未触发结构化输出（function_calling 偶发失败）"
+  },
+  "c2fe9ce9e1c63656": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": ""
+  },
+  "0c13d43985752d2f": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": ""
+  },
+  "7271f0bb0e1a9e5e": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": ""
+  },
+  "9efe5b2951f0c3c5": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": ""
+  },
+  "d4b02ea49a12872c": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": ""
+  },
+  "f3f8d20ff6f1055b": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": ""
+  },
+  "68525b306a55edd6": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": ""
+  },
+  "0f64716426548d13": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": ""
+  },
+  "64273151463adc16": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": "LLM 未触发结构化输出（function_calling 偶发失败）"
+  },
+  "5de76238323fbb9e": {
+    "labels": [
+      {
+        "variable": "humidity",
+        "raw_value": "20%",
+        "grade": null,
+        "grade_id": null,
+        "impact": "相对湿度20%远低于人体舒适下限（30%），空气极度干燥，易导致皮肤干裂、呼吸道黏膜受损、咽喉不适，显著增加呼吸道感染风险，在健康场景下需重点关注。",
+        "citation": "GB/T 18883-2022 §4.2（国家市场监督管理总局/国家卫生健康委员会）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[humidity] 20%\n  影响：相对湿度20%远低于人体舒适下限（30%），空气极度干燥，易导致皮肤干裂、呼吸道黏膜受损、咽喉不适，显著增加呼吸道感染风险，在健康场景下需重点关注。\n  依据：GB/T 18883-2022 §4.2（国家市场监督管理总局/国家卫生健康委员会）",
+    "llm_error": ""
+  },
+  "3a2b7636a284a3d7": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": ""
+  },
+  "982a95203bb21421": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": ""
+  },
+  "1f11d0b83f446722": {
+    "labels": [
+      {
+        "variable": "humidity",
+        "raw_value": "60%",
+        "grade": null,
+        "grade_id": null,
+        "impact": null,
+        "citation": null,
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[humidity] 60%",
+    "llm_error": "LLM 未触发结构化输出（function_calling 偶发失败）"
+  },
+  "8048771d43612aaa": {
+    "labels": [
+      {
+        "variable": "humidity",
+        "raw_value": "70%",
+        "grade": null,
+        "grade_id": null,
+        "impact": null,
+        "citation": null,
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[humidity] 70%",
+    "llm_error": ""
+  },
+  "ab3728829167c060": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": ""
+  },
+  "d5b7ecc1e422be74": {
+    "labels": [
+      {
+        "variable": "humidity",
+        "raw_value": "95%",
+        "grade": null,
+        "grade_id": null,
+        "impact": null,
+        "citation": null,
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[humidity] 95%",
+    "llm_error": ""
+  },
+  "f1d5ddff4456bbf3": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": ""
+  },
+  "06e864582635a22f": {
+    "labels": [
+      {
+        "variable": "precip_24h",
+        "raw_value": "35mm",
+        "grade": "大雨",
+        "grade_id": null,
+        "impact": "施工场景下，工地易积水，露天混凝土浇筑和土方作业应暂停，需加强基坑排水与边坡稳定监测。",
+        "citation": "GB/T 28592-2012 §4.1（中国气象局）",
+        "source": "llm_baseline"
+      },
+      {
+        "variable": "wind_scale",
+        "raw_value": "7级",
+        "grade": "疾风",
+        "grade_id": null,
+        "impact": "施工场景下，7级风对高空作业和塔吊运行构成安全威胁，应停止露天攀登、悬空等高处作业，并加固临时设施和围挡。",
+        "citation": "GB/T 28591-2012 §4（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[precip_24h] 35mm → 大雨\n  影响：施工场景下，工地易积水，露天混凝土浇筑和土方作业应暂停，需加强基坑排水与边坡稳定监测。\n  依据：GB/T 28592-2012 §4.1（中国气象局）\n\n[wind_scale] 7级 → 疾风\n  影响：施工场景下，7级风对高空作业和塔吊运行构成安全威胁，应停止露天攀登、悬空等高处作业，并加固临时设施和围挡。\n  依据：GB/T 28591-2012 §4（中国气象局）",
+    "llm_error": "LLM 未触发结构化输出（function_calling 偶发失败）"
+  },
+  "c5d001b9d875803f": {
+    "labels": [
+      {
+        "variable": "humidity",
+        "raw_value": "85%",
+        "grade": null,
+        "grade_id": null,
+        "impact": null,
+        "citation": null,
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[humidity] 85%",
+    "llm_error": ""
   }
 }

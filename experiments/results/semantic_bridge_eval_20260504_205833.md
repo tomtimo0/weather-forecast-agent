@@ -1,6 +1,6 @@
 # 语义桥接评测报告
 
-- 评测时间：20260504_211924
+- 评测时间：20260504_205833
 - 用例总数：**71**
 - 评测档位：off, rule_only, rule_plus_rag, llm_baseline
 - 评测集：`data/test_cases/semantic_bridge_bench.jsonl`

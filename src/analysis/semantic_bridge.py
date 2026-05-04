@@ -4,17 +4,33 @@
 经过「分类 → 富化 → 合成」三步，加工为 LLM 友好的语义文本。
 
 当前覆盖要素：
-    - 24h / 12h 降水量
+    - 24h / 12h 降水量（precipitation）
     - 蒲福风级（windScale / windScaleDay / windScaleNight）
+    - 气温（temp / tempMax / tempMin / feelsLike）
+    - 能见度（vis 单位 km / visibility 单位 m）
+    - 相对湿度（humidity / rh）
 
-后续按 temp / humidity / visibility 等扩展 classifiers + 注册到 dispatcher 即可。
+新增要素时只需在 ``classifiers`` 下加分类器，并在 ``_classify_all`` 注册
+对应字段名映射。
 """
 
 from typing import Dict, List, Literal, Optional
 
+from src.analysis.classifiers.humidity import (
+    classify_humidity,
+    parse_humidity,
+)
 from src.analysis.classifiers.precipitation import (
     classify_precipitation,
     parse_precip_value,
+)
+from src.analysis.classifiers.temperature import (
+    classify_temperature,
+    parse_temperature,
+)
+from src.analysis.classifiers.visibility import (
+    classify_visibility,
+    parse_visibility,
 )
 from src.analysis.classifiers.wind_scale import (
     classify_wind_scale,
@@ -75,7 +91,14 @@ def bridge_weather_dict(
 def _classify_all(data: Dict) -> List[Optional[SemanticLabel]]:
     """根据 data 中存在的字段调用对应分类器，缺失的字段跳过。
 
-    每加一个 classifier，在此处加一段字段名调度即可。
+    字段名 → 分类器 的映射约定：
+    - 降水：``precip_24h`` / ``precip``（24h），``precip_12h``
+    - 风力：``wind_scale`` / ``windScale`` / ``windScaleDay`` / ``windScaleNight``
+    - 气温：``temp`` / ``temperature`` / ``tempMax`` / ``tempMin`` / ``feelsLike``
+    - 能见度：``visibility``（米）/ ``vis``（千米，和风天气约定）
+    - 相对湿度：``humidity`` / ``rh``
+
+    每个要素采用"首个非空字段优先"策略，避免同时输出多条同要素 label。
     """
     out: List[Optional[SemanticLabel]] = []
 
@@ -102,12 +125,45 @@ def _classify_all(data: Dict) -> List[Optional[SemanticLabel]]:
                 out.append(classify_wind_scale(v))
             break
 
+    # 气温：优先级 temp > temperature > tempMax > tempMin > feelsLike
+    # （tempMax/tempMin 来自 daily 工具，feelsLike 来自体感字段；只取一项避免 label 冗余）
+    for key in ("temp", "temperature", "tempMax", "tempMin", "feelsLike"):
+        if key in data:
+            v = parse_temperature(data[key])
+            if v is not None:
+                out.append(classify_temperature(v))
+            break
+
+    # 能见度：visibility 字段约定单位为米；vis 字段（和风天气）约定单位为千米
+    if "visibility" in data:
+        v = parse_visibility(data["visibility"], unit="m")
+        if v is not None:
+            out.append(classify_visibility(v))
+    elif "vis" in data:
+        v = parse_visibility(data["vis"], unit="km")
+        if v is not None:
+            out.append(classify_visibility(v))
+
+    # 相对湿度：humidity / rh（取首个非空）
+    for key in ("humidity", "rh"):
+        if key in data:
+            v = parse_humidity(data[key])
+            if v is not None:
+                out.append(classify_humidity(v))
+            break
+
     return out
 
 
 if __name__ == "__main__":
-    # 模拟和风天气 get_current_weather 的部分返回
-    sample = {"temp": "17°C", "precip": "35mm", "windScale": "7级"}
+    # 模拟和风天气 get_current_weather 的部分返回（覆盖 5 类要素）
+    sample = {
+        "temp": "17°C",
+        "precip": "35mm",
+        "windScale": "7级",
+        "vis": "0.4",       # km，对应 400 m → 浓雾
+        "humidity": "85%",
+    }
 
     print("=== mode=off（baseline）===")
     print(bridge_weather_dict(sample, mode="off")["semantic_text"] or "(空)")

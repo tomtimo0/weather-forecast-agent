@@ -996,6 +996,130 @@ python -m experiments.eval.run_rag_weight_sweep --weights 0.0 0.4 0.6 0.8 1.0
 
 ---
 
+### 7.15 通路 A+B 联合复测：三类新分类器（温/能/湿）扩展 + 4 档消融最终数据
+
+**目标**：在 7.13/7.14 完成「初版 RAG」与「初版语义桥接」评测的基础上，按
+论文章节"双通路 RAG 的可扩展性"要求，把语义桥接框架扩展到三类新要素
+（温度 / 能见度 / 湿度），并对扩展后的系统重跑通路 A 与通路 B 的全量评测。
+
+**扩展规模**：
+
+| 维度 | 第一轮（7.12–7.14） | **第二轮（本节）** | 新增 |
+|---|---:|---:|---|
+| KB 总条目数 | 44 条 | **62 条** | +18 条 grading_standard（temp 7 + vis 7 + hum 6，含细粒度建筑规范引用） |
+| 分类器模块数 | 2（precip / wind） | **5** | +temperature.py / visibility.py / humidity.py |
+| 通路 A 评测集 | 43 用例 | **60 用例** | +17 条 grade_temp / grade_vis / grade_hum 查询 |
+| 通路 B 评测集 | 40 用例 | **71 用例** | +31 条 temperature / visibility / humidity / multi 五要素同输入 |
+
+**通路 A 复测：权重重新扫描后的最优解迁移**（`run_rag_weight_sweep.py`，60 用例）
+
+| vector_w | bm25_w | Top-1 | MRR | 备注 |
+|---:|---:|---:|---:|---|
+| 0.00 | 1.00 | 81.7% | 0.872 | 纯 BM25 |
+| 0.50 | 0.50 | 78.3% | 0.851 | |
+| 0.70 | 0.30 | 80.0% | 0.864 | |
+| 0.80 | 0.20 | 81.7% | 0.872 | 第一轮最优 |
+| 0.85 | 0.15 | 83.3% | 0.892 | |
+| **0.90** | **0.10** | **85.0%** | **0.908** | ← **第二轮最优** |
+| 0.95 | 0.05 | 85.0% | 0.908 | 平台期，与 0.90 并列最优 |
+| 1.00 | 0.00 | 81.7% | 0.872 | 纯 vector |
+
+**核心发现：最优权重随 KB 体量动态漂移**
+
+```
+KB 44 条 / 评测 43 条 → vector_weight = 0.80 最优（top1 90.7%, MRR 0.936）
+KB 62 条 / 评测 60 条 → vector_weight = 0.90 最优（top1 85.0%, MRR 0.908）
+```
+
+- KB 扩大后相邻条目语义距离变近，BM25 词法噪声在小权重下反而成为干扰，
+  最优 `vector_weight` 从 0.80 上调到 0.90
+- 但 BM25 权重并未归零：纯 BM25=0（v_w=1.0）反而比 0.10 略差
+  （top1 81.7% < 85.0%），证明词法召回仍有 **3.3 pp 边际增益**
+- 已同步更新 `src/config/settings.py::RAG_VECTOR_WEIGHT = 0.9`
+
+**论文价值**：「最优权重的随 KB 漂移」本身就是一条独立的工程结论——
+混合检索的权重不能"一次调好用到底"，需要随知识库体量重新校准。
+
+**通路 B 复测：4 档消融在 71 条用例上的最终数据**
+（`run_bridge_eval.py --with-llm-baseline`，71 用例 × 4 档 = 284 次桥接 / 调用）
+
+| 指标 | mode=off | rule_only | rule_plus_rag | **llm_baseline** |
+|---|---:|---:|---:|---:|
+| 覆盖率 | 0.0% | 100.0% | 100.0% | **74.6%** |
+| grade 准确率 | 5.6% | 100.0% | 100.0% | **47.9%** |
+| **grade_id 准确率** | 5.6% | **100.0%** | **100.0%** | **5.6%** |
+| **must_cite 命中率** | — | — | **100.0%** | **25.4%** |
+| 场景过滤负例通过率 | — | — | 100.0% | **66.7%** |
+| source 字段匹配率 | — | — | 100.0% | **0.0%** |
+| citation 出现率 | — | — | — | 82.0% |
+| citation 标准号真实性 | — | — | — | 72.0% |
+
+**关键观察**（与首版 40 条数据对比）：
+
+1. **rule_only / rule_plus_rag 在 71 条扩展集上仍保持 100%**——证明语义
+   桥接框架对新增分类器**无副作用、零回归**，扩展性得到验证。
+2. **LLM baseline 关键指标全面下滑**：覆盖率 97.2% → 74.6%（−22.6 pp）、
+   grade 准确率 85.0% → 47.9%（−37.1 pp）、citation 真实性 100% → 72.0%
+   （−28 pp）。原因：新加入的温度 / 湿度类用例引用 GB/T 35228 / GB 50736
+   等 LLM 训练语料中曝光度极低的标准，LLM 编造的 citation 大量不在白名单内；
+   能见度 9 条用例 LLM 几乎全部返回空 labels（直接拒答）。
+
+| 类别 | 用例数 | rule_only · grade_id | rule_plus_rag · grade_id | **llm_baseline · grade_id** | llm · cite 真实 |
+|---|---:|---:|---:|---:|---:|
+| precipitation_24h | 11 | 100% | 100% | **0%** | 100% |
+| precipitation_12h | 5 | 100% | 100% | **0%** | 100% |
+| wind | 16 | 100% | 100% | **0%** | 100% |
+| **temperature** | **12** | **100%** | **100%** | **0%** | **0%** |
+| **visibility** | **9** | **100%** | **100%** | **0%** | **—** |
+| **humidity** | **8** | **100%** | **100%** | **0%** | **0%** |
+| scene_filter | 3 | 100% | 100% | 0% | 66.7% |
+| multi | 3 | 100% | 100% | 0% | 100% |
+| fallback | 4 | 100% | 100% | 100% | — |
+
+**核心发现：LLM 知识覆盖不均衡 + RAG 必要性的"双指标对比"升级版**
+
+```
+LLM citation 出现率 82.0% ↔ 真实性 72.0% ↔ 与 KB 严格一致命中率 25.4%
+```
+
+三段式滑落（82.0% → 72.0% → 25.4%）等价于："LLM 在 18% 的情况下根本不答；
+答了的里头 1/4 编造了不存在的标准号；剩下的真实标准号里又有 65% 条款引错"，
+合计 **74.6% 的 LLM citation 都存在不同程度的错误**。这是论文 Q3 章节
+"为什么必须做 RAG + 结构化 KB"的最直接量化证据。
+
+**完整论文素材**：`docs/写作文档/LLM幻觉对照实验-论文素材.md`（已基于 71 条
+更新，含 6 类典型幻觉案例 + 与「知识库标准核对表」的对应关系闭环论证）。
+
+**复现命令**：
+
+```bash
+# 通路 A 三档检索器消融（60 用例 × 3 档，约 12 秒）
+python -m experiments.eval.run_rag_eval
+
+# 通路 A 权重扫描复测（60 用例 × 8 个权重点，约 12 秒）
+python -m experiments.eval.run_rag_weight_sweep --weights 0.0 0.5 0.7 0.8 0.85 0.9 0.95 1.0
+
+# 通路 B 4 档消融（71 用例 × 4 档，首次约 25 分钟，缓存后约 7 秒）
+python -m experiments.eval.run_bridge_eval --with-llm-baseline
+```
+
+**复测稳定性加固**（Issue：首跑时遇到 SiliconFlow 服务端 socket idle hang，
+某条用例上超 10 分钟无响应、无 token 消耗）：
+
+- `experiments/eval/llm_baseline.py::_get_llm()` 增加 `timeout=60` 与
+  `max_retries=2`，单次请求最多 ~3 分钟必定返回，hang 不可能再次发生。
+- `experiments/eval/run_bridge_eval.py` 在每条 LLM 调用之后**增量落盘**
+  `llm_baseline_cache.json`，主循环包在 `try/finally` 中，
+  保证 `KeyboardInterrupt` 也能保留已完成进度，重跑可继续从断点处生效。
+
+**对应研究问题**：
+- **Q1**：异构数据检索能力评测在扩展 KB 后仍有 85% top-1 准确率
+- **Q2**：双通路 RAG 框架可扩展性验证（5 类要素全部 100% 桥接成功率）
+- **Q3**：升级版"LLM 幻觉双指标对比"——把 RAG 必要性的论证从 5 类要素
+  扩展到 9 类，并新增「LLM 在冷门领域直接拒答」这一新失败模式
+
+---
+
 ## 八、核心参考文献速查
 
 | 主题 | 关键文献 | 用途 |
@@ -1081,15 +1205,16 @@ python -m src.agent.react_agent
 - 语义桥接（确定性，零网络）：`python -m src.tools.bridge_tool`
 - 语义桥接·风力端到端（精度 + 多分类器协作）：`python -m tests.test_wind_scale_bridge`
 - 语义桥接子模块：`python -m src.analysis.classifiers.precipitation` / `python -m src.analysis.classifiers.wind_scale` / `python -m src.analysis.enrichers.rag_enricher`
-- **语义桥接消融评测**（通路 B；40 用例 × 三档 = 120 次桥接，约 6 秒）：`python -m experiments.eval.run_bridge_eval`
+- **语义桥接消融评测**（通路 B；71 用例 × 三档 = 213 次桥接，约 6 秒）：`python -m experiments.eval.run_bridge_eval`
   - 输出 `experiments/results/semantic_bridge_eval_<时间戳>.json` + `.md`，论文可直接引用
-- **LLM baseline 消融评测**（4 档对比，含 LLM 自由发挥；首次约 7 分钟，缓存后约 30 秒）：
+- **LLM baseline 消融评测**（4 档对比，含 LLM 自由发挥；首次约 25 分钟，缓存后约 7 秒）：
   `python -m experiments.eval.run_bridge_eval --with-llm-baseline`
   - 强制重跑：加 `--force-llm`
-- **通路 A 检索器消融评测**（43 用例 × vector / bm25 / hybrid 三档，约 12 秒）：`python -m experiments.eval.run_rag_eval`
+  - 已加固防 hang：`timeout=60` + `max_retries=2` + 每条用例增量落盘 cache
+- **通路 A 检索器消融评测**（60 用例 × vector / bm25 / hybrid 三档，约 12 秒）：`python -m experiments.eval.run_rag_eval`
   - 输出 `experiments/results/rag_retrieval_eval_<时间戳>.{json,md}`，含 Top-1 / MRR / Recall@K / Category@K
-- **通路 A 权重扫描实验**（43 用例 × 7 个权重点，约 12 秒，启用 query embedding 缓存）：`python -m experiments.eval.run_rag_weight_sweep`
-  - 输出 `experiments/results/rag_weight_sweep_<时间戳>.{json,md}`，证明 vector_weight=0.8 为最优权重
+- **通路 A 权重扫描实验**（60 用例 × 8 个权重点，约 12 秒，启用 query embedding 缓存）：`python -m experiments.eval.run_rag_weight_sweep`
+  - 输出 `experiments/results/rag_weight_sweep_<时间戳>.{json,md}`，证明 vector_weight=0.9 为扩展后最优权重（KB 62 条评测集 60 条）
 
 
 ---

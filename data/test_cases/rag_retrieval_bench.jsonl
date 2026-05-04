@@ -40,4 +40,21 @@
 {"id":"multi_005_typhoon_safety","category":"multi","description":"台风 + 高空作业（跨 term 与 op）","query":"台风天高空施工允许吗？","relevant_ids":["term_typhoon","op_high_altitude_wind"],"expected_categories":["term_definition","operation_guideline"]}
 {"id":"para_001_synonym_rain","category":"paraphrase","description":"同义改写：'下大雨' 应仍能召回大雨条目","query":"下了一天大雨，量是多少？","relevant_ids":["grading_precip_24h_heavy"],"expected_categories":["grading_standard"]}
 {"id":"para_002_colloquial_wind","category":"paraphrase","description":"口语化：'刮大风' 应能召回 6-8 级","query":"今天刮大风，多大算大风？","relevant_ids":["grading_wind_beaufort_8"],"expected_categories":["grading_standard"]}
-{"id":"para_003_synonym_fog","category":"paraphrase","description":"同义改写：'起雾'","query":"今天早晨起雾很厉害，能见度低于多少算大雾？","relevant_ids":["grading_visibility_haze"],"expected_categories":["grading_standard"]}
+{"id":"para_003_synonym_fog","category":"paraphrase","description":"同义改写：'起雾'","query":"今天早晨起雾很厉害，能见度低于多少算大雾？","relevant_ids":["grading_visibility_haze","grading_visibility_fog"],"expected_categories":["grading_standard"]}
+{"id":"grade_temp_001_comfort","category":"grade_temp","description":"舒适气温区间查询","query":"室内多少度最舒服？","relevant_ids":["grading_temperature_comfortable"],"expected_categories":["grading_standard"]}
+{"id":"grade_temp_002_cold","category":"grade_temp","description":"低温寒冷查询","query":"零下5度算寒冷吗？","relevant_ids":["grading_temperature_cold"],"expected_categories":["grading_standard"]}
+{"id":"grade_temp_003_cool","category":"grade_temp","description":"凉爽区间查询","query":"15度算什么气温？","relevant_ids":["grading_temperature_cool"],"expected_categories":["grading_standard"]}
+{"id":"grade_temp_004_warm","category":"grade_temp","description":"温暖区间查询","query":"28度算暖和还是热？","relevant_ids":["grading_temperature_warm"],"expected_categories":["grading_standard"]}
+{"id":"grade_temp_005_hot","category":"grade_temp","description":"炎热区间查询","query":"32度气温属于什么级别？","relevant_ids":["grading_temperature_hot"],"expected_categories":["grading_standard"]}
+{"id":"grade_temp_006_chilly","category":"grade_temp","description":"偏冷区间查询","query":"5度气温穿什么衣服？","relevant_ids":["grading_temperature_chilly","op_clothing_temperature"],"expected_categories":["grading_standard","operation_guideline"]}
+{"id":"grade_vis_001_excellent","category":"grade_visibility","description":"极佳能见度查询","query":"能见度10公里以上算什么？","relevant_ids":["grading_visibility_excellent"],"expected_categories":["grading_standard"]}
+{"id":"grade_vis_002_dense_fog","category":"grade_visibility","description":"浓雾区间查询","query":"能见度300米属于什么级别？","relevant_ids":["grading_visibility_dense_fog"],"expected_categories":["grading_standard"]}
+{"id":"grade_vis_003_heavy_dense","category":"grade_visibility","description":"强浓雾红色预警查询","query":"大雾红色预警的能见度阈值是多少？","relevant_ids":["grading_visibility_heavy_dense_fog","grading_visibility_extreme"],"expected_categories":["grading_standard"]}
+{"id":"grade_vis_004_mist","category":"grade_visibility","description":"轻雾/轻霾区间查询","query":"能见度3公里属于轻雾还是浓雾？","relevant_ids":["grading_visibility_mist"],"expected_categories":["grading_standard"]}
+{"id":"grade_vis_005_fog_yellow","category":"grade_visibility","description":"大雾黄色预警阈值查询","query":"能见度500米属于雾还是浓雾？","relevant_ids":["grading_visibility_fog"],"expected_categories":["grading_standard"]}
+{"id":"grade_hum_001_dry","category":"grade_humidity","description":"干燥区间查询","query":"相对湿度30%算干燥吗？","relevant_ids":["grading_humidity_dry","grading_humidity_very_dry"],"expected_categories":["grading_standard"]}
+{"id":"grade_hum_002_humid","category":"grade_humidity","description":"潮湿区间查询","query":"湿度85%算潮湿吗？","relevant_ids":["grading_humidity_very_humid"],"expected_categories":["grading_standard"]}
+{"id":"grade_hum_003_extreme","category":"grade_humidity","description":"极潮湿查询","query":"相对湿度95%属于什么级别？","relevant_ids":["grading_humidity_extreme"],"expected_categories":["grading_standard"]}
+{"id":"grade_hum_004_very_dry","category":"grade_humidity","description":"极干燥查询","query":"湿度只有20%是不是太干了？","relevant_ids":["grading_humidity_very_dry"],"expected_categories":["grading_standard"]}
+{"id":"multi_006_temp_humidity","category":"multi","description":"温湿度组合：高温+高湿","query":"35度高温配合90%湿度危险吗？","relevant_ids":["grading_temperature_high_warning","grading_humidity_extreme","op_outdoor_high_temp"],"expected_categories":["grading_standard","operation_guideline"]}
+{"id":"para_004_synonym_humid","category":"paraphrase","description":"同义改写：'闷热'","query":"今天又闷又湿，湿度多少算闷？","relevant_ids":["grading_humidity_humid","grading_humidity_very_humid"],"expected_categories":["grading_standard"]}

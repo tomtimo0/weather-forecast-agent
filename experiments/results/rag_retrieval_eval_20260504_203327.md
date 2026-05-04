@@ -1,6 +1,6 @@
 # 通路 A（RAG 检索）评测报告
 
-- 评测时间：20260504_203504
+- 评测时间：20260504_203327
 - 用例总数：**60**
 - 评测档位：vector, bm25, hybrid
 - 每档返回 Top-K：5（统计 K=[1, 3, 5]）
@@ -10,17 +10,17 @@
 
 | 指标 | mode=vector | mode=bm25 | mode=hybrid |
 |---|---|---|---|
-| Top-1 命中率（top1_hit_rate） | 0.817 | 0.633 | 0.850 |
-| MRR（首个相关条目排名倒数） | 0.889 | 0.737 | 0.908 |
-| Recall@1 | 71.9% | 56.1% | 75.3% |
-| Recall@3 | 89.7% | 79.4% | 90.6% |
-| Recall@5 | 97.8% | 85.8% | 96.9% |
-| Precision@1 | 81.7% | 63.3% | 85.0% |
-| Precision@3 | 35.6% | 31.7% | 35.6% |
-| Precision@5 | 24.0% | 21.0% | 23.7% |
-| Category@1（类别一致率） | 96.7% | 85.0% | 95.0% |
-| Category@3（类别一致率） | 81.1% | 74.4% | 82.2% |
-| Category@5（类别一致率） | 78.3% | 71.0% | 78.7% |
+| Top-1 命中率（top1_hit_rate） | 0.817 | 0.633 | 0.783 |
+| MRR（首个相关条目排名倒数） | 0.889 | 0.737 | 0.858 |
+| Recall@1 | 71.9% | 56.1% | 68.6% |
+| Recall@3 | 89.7% | 79.4% | 87.2% |
+| Recall@5 | 97.8% | 85.8% | 94.4% |
+| Precision@1 | 81.7% | 63.3% | 78.3% |
+| Precision@3 | 35.6% | 31.7% | 34.4% |
+| Precision@5 | 24.0% | 21.0% | 23.0% |
+| Category@1（类别一致率） | 96.7% | 85.0% | 93.3% |
+| Category@3（类别一致率） | 81.1% | 74.4% | 83.3% |
+| Category@5（类别一致率） | 78.3% | 71.0% | 77.3% |
 
 ## 二、按用例类别拆分（Recall@5）
 
@@ -28,8 +28,8 @@
 |---|---|---|---|---|
 | grade_humidity | 5 | 100.0% | 80.0% | 100.0% |
 | grade_precip | 7 | 85.7% | 85.7% | 85.7% |
-| grade_temp | 7 | 100.0% | 71.4% | 100.0% |
-| grade_visibility | 6 | 100.0% | 75.0% | 100.0% |
+| grade_temp | 7 | 100.0% | 71.4% | 85.7% |
+| grade_visibility | 6 | 100.0% | 75.0% | 91.7% |
 | grade_wind | 7 | 100.0% | 100.0% | 100.0% |
 | multi | 6 | 94.4% | 66.7% | 86.1% |
 | op_agri | 1 | 100.0% | 100.0% | 100.0% |
@@ -46,11 +46,11 @@
 
 | 类别 | 用例数 | vector · top1 | bm25 · top1 | hybrid · top1 |
 |---|---|---|---|---|
-| grade_humidity | 5 | 100.0% | 60.0% | 80.0% |
+| grade_humidity | 5 | 100.0% | 60.0% | 60.0% |
 | grade_precip | 7 | 71.4% | 42.9% | 71.4% |
-| grade_temp | 7 | 71.4% | 57.1% | 71.4% |
-| grade_visibility | 6 | 50.0% | 33.3% | 66.7% |
-| grade_wind | 7 | 100.0% | 71.4% | 100.0% |
+| grade_temp | 7 | 71.4% | 57.1% | 57.1% |
+| grade_visibility | 6 | 50.0% | 33.3% | 50.0% |
+| grade_wind | 7 | 100.0% | 71.4% | 85.7% |
 | multi | 6 | 83.3% | 83.3% | 83.3% |
 | op_agri | 1 | 100.0% | 100.0% | 100.0% |
 | op_aviation | 1 | 0.0% | 100.0% | 0.0% |
@@ -266,18 +266,30 @@
   - 实际 top-5: `['term_dew_point', 'grading_humidity_very_humid', 'grading_humidity_comfort', 'term_apparent_temperature', 'grading_humidity_humid']`
   - 指标：top1_hit=False, mrr=0.500, recall@1=0.000, precision@1=0.000, category@1=0.000, recall@3=0.500, precision@3=0.333, category@3=0.667, recall@5=1.000, precision@5=0.400, category@5=0.600
 
-### mode=hybrid（9 条）
+### mode=hybrid（13 条）
 
 - **grade_004_rain_heavy_rainstorm** [grade_precip] 24h 大暴雨阈值查询
   - query: `降水200毫米算什么级别？`
   - 期望相关 ids: `['grading_precip_24h_heavy_rainstorm']`
-  - 实际 top-5: `['grading_precip_24h_extreme_rainstorm', 'grading_precip_24h_light', 'grading_precip_24h_rainstorm', 'grading_precip_12h_light', 'grading_precip_24h_moderate']`
+  - 实际 top-5: `['grading_precip_24h_extreme_rainstorm', 'grading_precip_24h_light', 'grading_precip_12h_light', 'grading_precip_12h_moderate', 'grading_precip_24h_rainstorm']`
   - 指标：top1_hit=False, mrr=0.000, recall@1=0.000, precision@1=0.000, category@1=1.000, recall@3=0.000, precision@3=0.000, category@3=1.000, recall@5=0.000, precision@5=0.000, category@5=1.000
 
 - **grade_006_rain_12h_heavy** [grade_precip] 12h 大雨阈值查询
   - query: `12小时降水量25毫米算什么？`
   - 期望相关 ids: `['grading_precip_12h_heavy']`
   - 实际 top-5: `['grading_precip_12h_rainstorm', 'grading_precip_12h_heavy', 'grading_precip_12h_moderate', 'grading_precip_12h_light', 'grading_precip_24h_heavy']`
+  - 指标：top1_hit=False, mrr=0.500, recall@1=0.000, precision@1=0.000, category@1=1.000, recall@3=1.000, precision@3=0.333, category@3=1.000, recall@5=1.000, precision@5=0.200, category@5=1.000
+
+- **grade_014_wind_strong_name** [grade_wind] 按风级中文名反查
+  - query: `强风是几级风？`
+  - 期望相关 ids: `['grading_wind_beaufort_6']`
+  - 实际 top-5: `['term_typhoon', 'grading_wind_beaufort_6', 'grading_wind_beaufort_8', 'grading_wind_beaufort_5', 'grading_wind_beaufort_7']`
+  - 指标：top1_hit=False, mrr=0.500, recall@1=0.000, precision@1=0.000, category@1=0.000, recall@3=1.000, precision@3=0.333, category@3=0.667, recall@5=1.000, precision@5=0.200, category@5=0.800
+
+- **grade_016_visibility_fog** [grade_visibility] 能见度等级
+  - query: `什么算大雾？能见度低于多少米？`
+  - 期望相关 ids: `['grading_visibility_haze']`
+  - 实际 top-5: `['grading_visibility_fog', 'grading_visibility_haze', 'grading_visibility_heavy_dense_fog', 'grading_visibility_extreme', 'grading_visibility_dense_fog']`
   - 指标：top1_hit=False, mrr=0.500, recall@1=0.000, precision@1=0.000, category@1=1.000, recall@3=1.000, precision@3=0.333, category@3=1.000, recall@5=1.000, precision@5=0.200, category@5=1.000
 
 - **op_007_aviation_visibility** [op_aviation] 民航低能见度
@@ -289,40 +301,52 @@
 - **multi_002_rainstorm** [multi] 暴雨同时跨等级 + 驾驶建议
   - query: `暴雨怎么应对？`
   - 期望相关 ids: `['grading_precip_24h_rainstorm', 'op_driving_rain']`
-  - 实际 top-5: `['term_thunderstorm', 'grading_precip_24h_heavy_rainstorm', 'grading_precip_24h_extreme_rainstorm', 'op_driving_rain', 'grading_precip_12h_rainstorm']`
-  - 指标：top1_hit=False, mrr=0.250, recall@1=0.000, precision@1=0.000, category@1=0.000, recall@3=0.000, precision@3=0.000, category@3=0.667, recall@5=0.500, precision@5=0.200, category@5=0.800
+  - 实际 top-5: `['term_thunderstorm', 'grading_precip_24h_heavy_rainstorm', 'grading_precip_12h_rainstorm', 'grading_precip_24h_extreme_rainstorm', 'op_driving_rain']`
+  - 指标：top1_hit=False, mrr=0.200, recall@1=0.000, precision@1=0.000, category@1=0.000, recall@3=0.000, precision@3=0.000, category@3=0.667, recall@5=0.500, precision@5=0.200, category@5=0.800
 
 - **grade_temp_003_cool** [grade_temp] 凉爽区间查询
   - query: `15度算什么气温？`
   - 期望相关 ids: `['grading_temperature_cool']`
-  - 实际 top-5: `['op_clothing_temperature', 'grading_temperature_chilly', 'grading_temperature_cold', 'grading_temperature_warm', 'grading_temperature_cool']`
-  - 指标：top1_hit=False, mrr=0.200, recall@1=0.000, precision@1=0.000, category@1=0.000, recall@3=0.000, precision@3=0.000, category@3=0.667, recall@5=1.000, precision@5=0.200, category@5=0.800
+  - 实际 top-5: `['op_clothing_temperature', 'grading_temperature_chilly', 'grading_temperature_cold', 'grading_temperature_warm', 'grading_temperature_hot']`
+  - 指标：top1_hit=False, mrr=0.000, recall@1=0.000, precision@1=0.000, category@1=0.000, recall@3=0.000, precision@3=0.000, category@3=0.667, recall@5=0.000, precision@5=0.000, category@5=0.800
+
+- **grade_temp_004_warm** [grade_temp] 温暖区间查询
+  - query: `28度算暖和还是热？`
+  - 期望相关 ids: `['grading_temperature_warm']`
+  - 实际 top-5: `['grading_temperature_comfortable', 'grading_temperature_warm', 'grading_temperature_cool', 'term_dew_point', 'term_apparent_temperature']`
+  - 指标：top1_hit=False, mrr=0.500, recall@1=0.000, precision@1=0.000, category@1=1.000, recall@3=1.000, precision@3=0.333, category@3=1.000, recall@5=1.000, precision@5=0.200, category@5=0.600
 
 - **grade_temp_005_hot** [grade_temp] 炎热区间查询
   - query: `32度气温属于什么级别？`
   - 期望相关 ids: `['grading_temperature_hot']`
-  - 实际 top-5: `['grading_temperature_warm', 'grading_temperature_hot', 'grading_temperature_cold', 'grading_temperature_high_warning', 'grading_temperature_chilly']`
-  - 指标：top1_hit=False, mrr=0.500, recall@1=0.000, precision@1=0.000, category@1=1.000, recall@3=1.000, precision@3=0.333, category@3=1.000, recall@5=1.000, precision@5=0.200, category@5=1.000
+  - 实际 top-5: `['grading_wind_beaufort_12', 'grading_temperature_warm', 'grading_temperature_cold', 'grading_temperature_hot', 'grading_temperature_high_warning']`
+  - 指标：top1_hit=False, mrr=0.250, recall@1=0.000, precision@1=0.000, category@1=1.000, recall@3=0.000, precision@3=0.000, category@3=1.000, recall@5=1.000, precision@5=0.200, category@5=1.000
 
 - **grade_vis_002_dense_fog** [grade_visibility] 浓雾区间查询
   - query: `能见度300米属于什么级别？`
   - 期望相关 ids: `['grading_visibility_dense_fog']`
-  - 实际 top-5: `['grading_visibility_extreme', 'grading_visibility_dense_fog', 'grading_visibility_fog', 'grading_visibility_heavy_dense_fog', 'grading_visibility_haze']`
-  - 指标：top1_hit=False, mrr=0.500, recall@1=0.000, precision@1=0.000, category@1=1.000, recall@3=1.000, precision@3=0.333, category@3=1.000, recall@5=1.000, precision@5=0.200, category@5=1.000
+  - 实际 top-5: `['grading_visibility_extreme', 'grading_visibility_fog', 'grading_visibility_haze', 'grading_visibility_mist', 'grading_visibility_dense_fog']`
+  - 指标：top1_hit=False, mrr=0.200, recall@1=0.000, precision@1=0.000, category@1=1.000, recall@3=0.000, precision@3=0.000, category@3=1.000, recall@5=1.000, precision@5=0.200, category@5=1.000
 
 - **grade_vis_005_fog_yellow** [grade_visibility] 大雾黄色预警阈值查询
   - query: `能见度500米属于雾还是浓雾？`
   - 期望相关 ids: `['grading_visibility_fog']`
-  - 实际 top-5: `['grading_visibility_haze', 'grading_visibility_fog', 'grading_visibility_dense_fog', 'grading_visibility_heavy_dense_fog', 'grading_visibility_extreme']`
+  - 实际 top-5: `['grading_visibility_haze', 'grading_visibility_dense_fog', 'grading_visibility_fog', 'grading_visibility_heavy_dense_fog', 'grading_visibility_extreme']`
+  - 指标：top1_hit=False, mrr=0.333, recall@1=0.000, precision@1=0.000, category@1=1.000, recall@3=1.000, precision@3=0.333, category@3=1.000, recall@5=1.000, precision@5=0.200, category@5=1.000
+
+- **grade_hum_003_extreme** [grade_humidity] 极潮湿查询
+  - query: `相对湿度95%属于什么级别？`
+  - 期望相关 ids: `['grading_humidity_extreme']`
+  - 实际 top-5: `['grading_humidity_very_dry', 'grading_humidity_extreme', 'grading_humidity_very_humid', 'grading_humidity_dry', 'grading_humidity_humid']`
   - 指标：top1_hit=False, mrr=0.500, recall@1=0.000, precision@1=0.000, category@1=1.000, recall@3=1.000, precision@3=0.333, category@3=1.000, recall@5=1.000, precision@5=0.200, category@5=1.000
 
 - **grade_hum_004_very_dry** [grade_humidity] 极干燥查询
   - query: `湿度只有20%是不是太干了？`
   - 期望相关 ids: `['grading_humidity_very_dry']`
-  - 实际 top-5: `['grading_humidity_dry', 'grading_humidity_very_dry', 'grading_humidity_comfort', 'grading_humidity_humid', 'grading_humidity_very_humid']`
-  - 指标：top1_hit=False, mrr=0.500, recall@1=0.000, precision@1=0.000, category@1=1.000, recall@3=1.000, precision@3=0.333, category@3=1.000, recall@5=1.000, precision@5=0.200, category@5=1.000
+  - 实际 top-5: `['grading_humidity_dry', 'grading_humidity_very_dry', 'grading_humidity_comfort', 'grading_humidity_humid', 'term_dew_point']`
+  - 指标：top1_hit=False, mrr=0.500, recall@1=0.000, precision@1=0.000, category@1=1.000, recall@3=1.000, precision@3=0.333, category@3=1.000, recall@5=1.000, precision@5=0.200, category@5=0.800
 
 ## 五、关键结论（自动摘要）
 
-- **混合检索的边际增益**：Recall@5 上 hybrid=96.9% vs vector=97.8% / bm25=85.8%；MRR 上 hybrid=0.908 vs vector=0.889 / bm25=0.737。
-- **Top-1 命中率**：hybrid=85.0% vs vector=81.7% / bm25=63.3%，反映实际作为 LLM 上下文最重要的「第一引用项」准确度。
+- **混合检索的边际增益**：Recall@5 上 hybrid=94.4% vs vector=97.8% / bm25=85.8%；MRR 上 hybrid=0.858 vs vector=0.889 / bm25=0.737。
+- **Top-1 命中率**：hybrid=78.3% vs vector=81.7% / bm25=63.3%，反映实际作为 LLM 上下文最重要的「第一引用项」准确度。

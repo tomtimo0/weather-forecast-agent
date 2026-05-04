@@ -190,7 +190,12 @@ _llm_singleton = None
 
 
 def _get_llm():
-    """惰性创建 LLM 客户端单例。"""
+    """惰性创建 LLM 客户端单例。
+
+    设置 ``timeout=60`` 与 ``max_retries=2`` 防止 SiliconFlow 服务端偶发的
+    socket idle hang 把整个评测脚本卡死（曾在 71 条用例的某条上观察到
+    超过 10 分钟无响应、无 token 消耗的现象）。
+    """
     global _llm_singleton
     if _llm_singleton is None:
         llm = ChatOpenAI(
@@ -198,6 +203,8 @@ def _get_llm():
             api_key=LLM_API_KEY,
             base_url=LLM_BASE_URL,
             temperature=0,
+            timeout=60,
+            max_retries=2,
         )
         _llm_singleton = llm.with_structured_output(
             LLMBaselineResult, method="function_calling"
