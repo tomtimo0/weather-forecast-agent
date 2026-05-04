@@ -154,10 +154,12 @@ d:\毕设\
 │       └── rag_retrieval_bench.jsonl  # 待开发：Agent 向量检索评测
 ├── experiments/                       # ✅ 实验相关（对应第5章）
 │   ├── eval/                          # ✅ 评测脚本
-│   │   ├── metrics.py                 # ✅ 评测指标定义（解耦的纯函数）
-│   │   └── run_bridge_eval.py         # ✅ 语义桥接三档消融评测主入口
+│   │   ├── metrics.py                 # ✅ 评测指标定义（解耦纯函数 + 真实标准号白名单）
+│   │   ├── llm_baseline.py            # ✅ LLM baseline（让 LLM 自由发挥处理裸数据，含缓存）
+│   │   └── run_bridge_eval.py         # ✅ 三档/四档消融评测主入口（--with-llm-baseline）
 │   └── results/                       # ✅ 实验结果（JSON + Markdown 双输出）
-│       └── semantic_bridge_eval_latest.md # ✅ 最新评测报告（论文可直接引用）
+│       ├── semantic_bridge_eval_latest.md # ✅ 最新评测报告（论文可直接引用）
+│       └── llm_baseline_cache.json    # ✅ LLM 调用结果缓存（按输入摘要）
 └── tests/                             # ✅ 单元测试
     ├── test_intent.py                 # ✅ 意图识别 8 类典型场景测试
     ├── test_rag.py                    # ✅ RAG 知识库与混合检索测试
@@ -211,6 +213,7 @@ d:\毕设\
 - [ ] 意图识别准确率评估（Q1 评估，待补 intent_bench）
 - [ ] 端到端任务完成率（待补 e2e_bench）
 - [x] 执行语义桥接消融实验（off / rule_only / rule_plus_rag 三档，详见 7.12 节）
+- [x] 执行 LLM baseline 对照实验（GLM-5.1 自由发挥 vs 双通路 RAG，详见 7.13 节）
 - [ ] 执行 RAG 检索消融（待补 rag_retrieval_bench）
 - [ ] 执行代码生成消融（直接 LLM 计算 vs 代码执行）
 - [ ] 整理实验结果，绘制图表
@@ -760,8 +763,7 @@ ChromaDB 1.x 在并发回退路径上有 bug——`RustBindingsAPI.stop()` 里
 无网络/LLM/嵌入开销）。这是代码侧确定性桥接的另一个核心优势：可大规模回归测试。
 
 **未来扩展该评测集的方向**：
-- 加 LLM baseline：用 LLM 直接处理裸数据，看它能否正确推断等级 + 引用条款，
-  形成更强的负对照
+- ~~加 LLM baseline：用 LLM 直接处理裸数据~~ → 已完成，详见 7.13 节
 - 加 temperature / visibility 分类器后，扩 20+ 条对应用例
 - 把端到端 Agent 调用 → 桥接 → 综合回答的评测纳入 e2e_bench，测整链路任务完成率
 
@@ -769,6 +771,99 @@ ChromaDB 1.x 在并发回退路径上有 bug——`RustBindingsAPI.stop()` 里
 - **Q3**：用确定性规则 + 硬链接 RAG 替代 LLM 数值推理，从源头消除"数值幻觉"
 - **Q2**：异构数据（mm / 级 / ℃）经统一桥接进入语义空间，结果可机器评测、
   可消融对比
+
+### 7.13 LLM baseline 对照：自由发挥 vs 双通路 RAG（论文 Q3 核心实证）
+
+**目标**：在同一份 40 条评测集上加入第 4 档 `mode=llm_baseline`——让 LLM 在
+不依赖外部知识库与确定性桥接的情况下，**完全凭内置知识**给出分级名 + 影响 +
+权威条款引用，量化「不做 RAG / 不做桥接时」LLM 的真实幻觉风险。
+
+**公平性原则**（`experiments/eval/llm_baseline.py`）：
+
+- prompt **不**告诉 LLM 具体分级阈值（如"≥50mm 是暴雨"）
+- prompt **不**告诉 LLM 具体标准编号（如"GB/T 28592-2012"）
+- 只告知任务："请输出 grade + impact + 权威标准编号 + 条款号"，让它**自由发挥**
+- 用 `with_structured_output(method="function_calling")` 拿到与 `SemanticLabel`
+  同构的输出，metrics 直接复用
+
+**新增评测指标**（专为 LLM baseline 设计）：
+
+- `citation_present_rate`：LLM 是否给出了 citation 字段
+- `citation_authenticity`（粗粒度）：citation 是否含真实存在的国标 / 行业标准号
+  （白名单见 `metrics.KNOWN_REAL_STANDARDS`）
+
+**4 档完整对比**（40 用例 × 4 档 = 160 次评估，LLM baseline 首次约 7 分钟，
+缓存后约 30 秒）：
+
+| 指标 | mode=off | mode=rule_only | mode=rule_plus_rag | **mode=llm_baseline** |
+|---|---:|---:|---:|---:|
+| 覆盖率（应有 labels 的用例） | 0.0% | 100.0% | 100.0% | **97.2%** |
+| 标签条数一致 | 10.0% | 100.0% | 100.0% | **97.5%** |
+| **分级名准确率（grade）** | 10.0% | 100.0% | 100.0% | **85.0%** |
+| **分级 ID 准确率（grade_id）** | 10.0% | 100.0% | 100.0% | **10.0%** |
+| **must_cite 关键字命中率** | — | — | 100.0% | **42.4%** |
+| 场景过滤负例通过率 | — | — | 100.0% | **50.0%** |
+| source 字段匹配率 | — | — | 100.0% | **0.0%** |
+| **citation 出现率** | — | — | — | **100.0%** |
+| **citation 标准号真实性（粗粒度）** | — | — | — | **100.0%** |
+
+**核心发现：LLM 幻觉的「真实却错」悖论**
+
+LLM baseline **同时呈现两个看似矛盾的指标**——
+
+```
+citation 标准号真实性 = 100.0%   ← 粗粒度：LLM 给的标准号都真实存在
+must_cite 关键字命中率 = 42.4%   ← 严格：与 KB 期望的标准号 + 条款号一致
+```
+
+差距 **57.6%** 即为论文 Q3 章节最有价值的实证：**LLM 知道有哪些标准（标准号
+都是真实的），但不知道该用哪一个、哪一条**——这正是"看似权威、实则错引"的
+经典幻觉模式，比"完全编造"更危险，因为它会通过用户对权威标准号的信任绕过审查。
+
+**典型幻觉案例**（详见 `docs/写作文档/LLM幻觉对照实验-论文素材.md`）：
+
+1. **条款号幻觉（最典型）**：LLM 在 4 次需要引用 JGJ 80-2016 的场合给出
+   4 个不同的条款号（§5.1.3 / §5.1.6 / §3.0.3 / §3.0.5），全部错误
+   （真实条款是 §3.0.8）。这恰好与我们之前在「知识库标准核对表」里
+   人工核对发现的同种错误一一对应。
+2. **自创等级**：0.05mm 微量降水时 LLM 编出 "GB/T 28592 §4.1 规定 <0.1mm
+   为微量降水"——但国标实际**不分**这个等级；100mm 12h 降水编出"大暴雨"
+   ——但国标的 12h 表上限只到"暴雨"。
+3. **跨标准张冠李戴**：windScale=15 越界时，LLM 把蒲福风级与 GB/T 19201
+   热带气旋等级混用，引出错误的"15 级超强台风"。
+4. **grade_id 100% 编造**：36 条非 fallback 用例里，LLM 没有一个 grade_id
+   与 KB 命名约定（`grading_precip_24h_heavy` 等）一致，凭印象编了
+   `heavy_rain` / `beaufort_5` / `6` 等多种风格——证明 KB 内部寻址必须
+   靠硬链接、不能交给 LLM 猜。
+5. **场景过滤失败**：LLM 在所有场景下都倾向输出 citation，无法区分"该说"
+   与"不该说"，使得场景过滤负例通过率仅 50%。
+
+**论文价值**：
+
+- **论证 RAG 必要性**：100% 出现率 vs 42.4% 严格命中率的悖论，独立成为论文
+  Q3 章节"为什么必须做 RAG"的核心论据
+- **论证通路 B（grade_id 硬链接）必要性**：rule_only 100% vs llm_baseline 10%
+  的 grade_id 准确率
+- **论证场景元数据价值**：rule_plus_rag 100% vs llm_baseline 50% 的场景过滤
+  通过率
+- **与人工核对论证闭环**：人工核对发现的错误模式（条款号错、张冠李戴、
+  数值不严格）在 LLM baseline 中**同模式重新出现**——构成"问题→论证→
+  方案"完整自洽
+
+**复现方式**：
+
+```bash
+python -m experiments.eval.run_bridge_eval --with-llm-baseline           # 走缓存约 30 秒
+python -m experiments.eval.run_bridge_eval --with-llm-baseline --force-llm  # 强制重跑约 7 分钟
+```
+
+LLM 调用结果按 (input, scene, prompt_version, model) 摘要为 sha256 16 字符键
+缓存到 `experiments/results/llm_baseline_cache.json`，避免重复消耗 token。
+
+**对应研究问题**：
+- **Q3**：用确定性规则 + 硬链接 RAG 替代 LLM 数值推理，量化幻觉风险
+- **可解释性**：把"LLM 的幻觉是怎么发生的"这个论点从定性陈述变成可机器
+  复现、可统计的指标差距
 
 ---
 
@@ -859,6 +954,9 @@ python -m src.agent.react_agent
 - 语义桥接子模块：`python -m src.analysis.classifiers.precipitation` / `python -m src.analysis.classifiers.wind_scale` / `python -m src.analysis.enrichers.rag_enricher`
 - **语义桥接消融评测**（40 用例 × 三档 = 120 次桥接，约 6 秒）：`python -m experiments.eval.run_bridge_eval`
   - 输出 `experiments/results/semantic_bridge_eval_<时间戳>.json` + `.md`，论文可直接引用
+- **LLM baseline 消融评测**（4 档对比，含 LLM 自由发挥；首次约 7 分钟，缓存后约 30 秒）：
+  `python -m experiments.eval.run_bridge_eval --with-llm-baseline`
+  - 强制重跑：加 `--force-llm`
 
 
 ---

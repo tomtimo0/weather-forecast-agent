@@ -1,0 +1,570 @@
+{
+  "afee84359744a9cf": {
+    "labels": [
+      {
+        "variable": "precip_24h",
+        "raw_value": "35mm",
+        "grade": "大雨",
+        "grade_id": "heavy_rain",
+        "impact": "24小时累积降水量35mm，属大雨级别；出行时路面明显湿滑、低洼处易积水，能见度下降，驾车需减速慢行，步行注意防滑防溅。",
+        "citation": "GB/T 28592-2012 §4.1（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[precip_24h] 35mm → 大雨\n  影响：24小时累积降水量35mm，属大雨级别；出行时路面明显湿滑、低洼处易积水，能见度下降，驾车需减速慢行，步行注意防滑防溅。\n  依据：GB/T 28592-2012 §4.1（中国气象局）",
+    "llm_error": "LLM 未触发结构化输出（function_calling 偶发失败）"
+  },
+  "3437dd888b6a84a2": {
+    "labels": [
+      {
+        "variable": "wind_scale",
+        "raw_value": "7级",
+        "grade": "疾风",
+        "grade_id": "7",
+        "impact": "7级疾风可致树木大幅摇摆、逆风行走困难；高空作业必须立即停止，存在人员坠落、工具物料飞落伤人的严重风险。",
+        "citation": "GB/T 28591-2012 §4（风力等级表）；JGJ 80-2016 §5.1.6（高处作业遇6级及以上强风应停止作业）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[wind_scale] 7级 → 疾风\n  影响：7级疾风可致树木大幅摇摆、逆风行走困难；高空作业必须立即停止，存在人员坠落、工具物料飞落伤人的严重风险。\n  依据：GB/T 28591-2012 §4（风力等级表）；JGJ 80-2016 §5.1.6（高处作业遇6级及以上强风应停止作业）",
+    "llm_error": ""
+  },
+  "ebcf2ec17ae31178": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": ""
+  },
+  "5d21f7322e439522": {
+    "labels": [
+      {
+        "variable": "precip_24h",
+        "raw_value": "0.05mm",
+        "grade": "微量降水（零星降水）",
+        "grade_id": "trace",
+        "impact": "降水量极微，地面几乎无积水，对出行和农业生产无实质影响。",
+        "citation": "GB/T 28592-2012 §4.1（中国气象局）——24小时降水量＜0.1mm为微量降水，不构成小雨等级",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[precip_24h] 0.05mm → 微量降水（零星降水）\n  影响：降水量极微，地面几乎无积水，对出行和农业生产无实质影响。\n  依据：GB/T 28592-2012 §4.1（中国气象局）——24小时降水量＜0.1mm为微量降水，不构成小雨等级",
+    "llm_error": ""
+  },
+  "a29dc3d6bdd9d4f8": {
+    "labels": [
+      {
+        "variable": "precip_24h",
+        "raw_value": "0.1mm",
+        "grade": "小雨",
+        "grade_id": "light_rain",
+        "impact": "路面微湿，出行需注意防滑，但对交通影响较小，可正常出行。",
+        "citation": "GB/T 28592-2012 §4.1（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[precip_24h] 0.1mm → 小雨\n  影响：路面微湿，出行需注意防滑，但对交通影响较小，可正常出行。\n  依据：GB/T 28592-2012 §4.1（中国气象局）",
+    "llm_error": ""
+  },
+  "5022d582cec228e2": {
+    "labels": [
+      {
+        "variable": "precip_24h",
+        "raw_value": "5mm",
+        "grade": "小雨",
+        "grade_id": "light_rain",
+        "impact": "路面微湿，出行需携带雨具，对交通影响较小，但步行和骑行需注意路面湿滑。",
+        "citation": "GB/T 28592-2012 §4.1（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[precip_24h] 5mm → 小雨\n  影响：路面微湿，出行需携带雨具，对交通影响较小，但步行和骑行需注意路面湿滑。\n  依据：GB/T 28592-2012 §4.1（中国气象局）",
+    "llm_error": ""
+  },
+  "6de3c6005670aa94": {
+    "labels": [
+      {
+        "variable": "precip_24h",
+        "raw_value": "9.9mm",
+        "grade": "小雨",
+        "grade_id": null,
+        "impact": "路面微湿，出行基本不受影响，无需携带雨具但可备伞；驾车时注意轻微路滑。",
+        "citation": "GB/T 28592-2012 §4.1（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[precip_24h] 9.9mm → 小雨\n  影响：路面微湿，出行基本不受影响，无需携带雨具但可备伞；驾车时注意轻微路滑。\n  依据：GB/T 28592-2012 §4.1（中国气象局）",
+    "llm_error": ""
+  },
+  "e472995318a7d300": {
+    "labels": [
+      {
+        "variable": "precip_24h",
+        "raw_value": "10mm",
+        "grade": "中雨",
+        "grade_id": null,
+        "impact": "出行时路面湿滑、有积水，能见度下降，建议携带雨具并注意交通安全，驾车需减速慢行。",
+        "citation": "GB/T 28592-2012 §4.1（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[precip_24h] 10mm → 中雨\n  影响：出行时路面湿滑、有积水，能见度下降，建议携带雨具并注意交通安全，驾车需减速慢行。\n  依据：GB/T 28592-2012 §4.1（中国气象局）",
+    "llm_error": "LLM 未触发结构化输出（function_calling 偶发失败）"
+  },
+  "df55202d8014ed71": {
+    "labels": [
+      {
+        "variable": "precip_24h",
+        "raw_value": "24.9mm",
+        "grade": "中雨",
+        "grade_id": "moderate_rain",
+        "impact": "出行时路面湿滑、能见度下降，需携带雨具，驾车应减速慢行、注意防滑。",
+        "citation": "GB/T 28592-2012 §4.1（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[precip_24h] 24.9mm → 中雨\n  影响：出行时路面湿滑、能见度下降，需携带雨具，驾车应减速慢行、注意防滑。\n  依据：GB/T 28592-2012 §4.1（中国气象局）",
+    "llm_error": ""
+  },
+  "0c724963e3926947": {
+    "labels": [
+      {
+        "variable": "precip_24h",
+        "raw_value": "25mm",
+        "grade": "大雨",
+        "grade_id": "heavy_rain",
+        "impact": "24小时累积降水量达25mm，路面明显积水，能见度下降，出行需携带雨具，驾车应减速慢行、注意防滑，低洼路段易出现积水影响通行。",
+        "citation": "GB/T 28592-2012 §4.1（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[precip_24h] 25mm → 大雨\n  影响：24小时累积降水量达25mm，路面明显积水，能见度下降，出行需携带雨具，驾车应减速慢行、注意防滑，低洼路段易出现积水影响通行。\n  依据：GB/T 28592-2012 §4.1（中国气象局）",
+    "llm_error": "LLM 未触发结构化输出（function_calling 偶发失败）"
+  },
+  "a09358ab036d4795": {
+    "labels": [
+      {
+        "variable": "precip_24h",
+        "raw_value": "80mm",
+        "grade": "暴雨",
+        "grade_id": null,
+        "impact": "24小时累积降水量达80mm，属暴雨级别，低洼地区易出现积水，城市内涝和山洪风险显著升高，需加强防汛巡查与排水调度。",
+        "citation": "GB/T 28592-2012 §4.1（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[precip_24h] 80mm → 暴雨\n  影响：24小时累积降水量达80mm，属暴雨级别，低洼地区易出现积水，城市内涝和山洪风险显著升高，需加强防汛巡查与排水调度。\n  依据：GB/T 28592-2012 §4.1（中国气象局）",
+    "llm_error": ""
+  },
+  "4f3e9e9360bf41fa": {
+    "labels": [
+      {
+        "variable": "precip_24h",
+        "raw_value": "200mm",
+        "grade": "大暴雨",
+        "grade_id": "heavy_rainstorm",
+        "impact": "24小时累积降水量达200mm，属大暴雨级别，极易引发城市内涝、山洪、泥石流和滑坡等次生灾害，防汛形势严峻，需启动高级别防汛应急响应。",
+        "citation": "GB/T 28592-2012 §4.1（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[precip_24h] 200mm → 大暴雨\n  影响：24小时累积降水量达200mm，属大暴雨级别，极易引发城市内涝、山洪、泥石流和滑坡等次生灾害，防汛形势严峻，需启动高级别防汛应急响应。\n  依据：GB/T 28592-2012 §4.1（中国气象局）",
+    "llm_error": ""
+  },
+  "169c33014361ab2e": {
+    "labels": [
+      {
+        "variable": "precip_24h",
+        "raw_value": "300mm",
+        "grade": "特大暴雨",
+        "grade_id": "6",
+        "impact": "24小时降水量达300mm属特大暴雨，可造成严重洪涝灾害、城市大面积内涝、山洪暴发及河流水位暴涨，对防汛形势构成极大威胁，需紧急启动防汛应急响应。",
+        "citation": "GB/T 28592-2012 §4.1（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[precip_24h] 300mm → 特大暴雨\n  影响：24小时降水量达300mm属特大暴雨，可造成严重洪涝灾害、城市大面积内涝、山洪暴发及河流水位暴涨，对防汛形势构成极大威胁，需紧急启动防汛应急响应。\n  依据：GB/T 28592-2012 §4.1（中国气象局）",
+    "llm_error": ""
+  },
+  "5455bb3fcf282e51": {
+    "labels": [
+      {
+        "variable": "precip_12h",
+        "raw_value": "4.9mm",
+        "grade": "小雨",
+        "grade_id": null,
+        "impact": "12小时累积降水4.9mm，属小雨量级；路面微湿，对出行有轻微影响，建议携带雨具、注意路面防滑。",
+        "citation": "GB/T 28592-2012 §4.1（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[precip_12h] 4.9mm → 小雨\n  影响：12小时累积降水4.9mm，属小雨量级；路面微湿，对出行有轻微影响，建议携带雨具、注意路面防滑。\n  依据：GB/T 28592-2012 §4.1（中国气象局）",
+    "llm_error": ""
+  },
+  "85acab3c2a0f4e0e": {
+    "labels": [
+      {
+        "variable": "precip_12h",
+        "raw_value": "14.9mm",
+        "grade": "中雨",
+        "grade_id": "moderate_rain_12h",
+        "impact": "12小时累积降水14.9mm，已达中雨量级上限；路面湿滑、能见度下降，出行需携带雨具，驾车应减速慢行、注意防滑。",
+        "citation": "GB/T 28592-2012 §4.1（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[precip_12h] 14.9mm → 中雨\n  影响：12小时累积降水14.9mm，已达中雨量级上限；路面湿滑、能见度下降，出行需携带雨具，驾车应减速慢行、注意防滑。\n  依据：GB/T 28592-2012 §4.1（中国气象局）",
+    "llm_error": ""
+  },
+  "a76ef4aa9979193e": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": "LLM 未触发结构化输出（function_calling 偶发失败）"
+  },
+  "b686b70b0dc74df7": {
+    "labels": [
+      {
+        "variable": "precip_12h",
+        "raw_value": "50mm",
+        "grade": "暴雨",
+        "grade_id": "torrential_rain",
+        "impact": "12小时累积降水量达50mm，属暴雨级别，极易引发城市内涝、山洪及中小河流洪水，防汛形势严峻，需加强巡查与应急响应。",
+        "citation": "GB/T 28592-2012 §4.1 表1（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[precip_12h] 50mm → 暴雨\n  影响：12小时累积降水量达50mm，属暴雨级别，极易引发城市内涝、山洪及中小河流洪水，防汛形势严峻，需加强巡查与应急响应。\n  依据：GB/T 28592-2012 §4.1 表1（中国气象局）",
+    "llm_error": ""
+  },
+  "e48194da031f7600": {
+    "labels": [
+      {
+        "variable": "precip_12h",
+        "raw_value": "100mm",
+        "grade": "大暴雨",
+        "grade_id": "heavy_rainstorm_12h",
+        "impact": "12小时累积降水量达100mm，属大暴雨级别，极易引发城市内涝、山洪、泥石流和中小河流洪水，防汛形势严峻，需立即启动应急响应并加强巡查排险。",
+        "citation": "GB/T 28592-2012 §4.1（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[precip_12h] 100mm → 大暴雨\n  影响：12小时累积降水量达100mm，属大暴雨级别，极易引发城市内涝、山洪、泥石流和中小河流洪水，防汛形势严峻，需立即启动应急响应并加强巡查排险。\n  依据：GB/T 28592-2012 §4.1（中国气象局）",
+    "llm_error": ""
+  },
+  "f1f027db06d6debe": {
+    "labels": [
+      {
+        "variable": "wind_scale",
+        "raw_value": "0级",
+        "grade": "无风",
+        "grade_id": "0",
+        "impact": "海面如镜，烟直上；帆船完全无风力可借，无法靠风推进，需靠机械动力或等待起风。",
+        "citation": "GB/T 28591-2012 §4（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[wind_scale] 0级 → 无风\n  影响：海面如镜，烟直上；帆船完全无风力可借，无法靠风推进，需靠机械动力或等待起风。\n  依据：GB/T 28591-2012 §4（中国气象局）",
+    "llm_error": ""
+  },
+  "1ded7f9e14deee2d": {
+    "labels": [
+      {
+        "variable": "wind_scale",
+        "raw_value": "1级",
+        "grade": "软风",
+        "grade_id": "1",
+        "impact": "风速0.3～1.5 m/s，炊烟可指示风向但风标不动；对航行几乎无影响，帆船难以借力前行，需依靠动力推进。",
+        "citation": "GB/T 28591-2012 §4（风力等级表）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[wind_scale] 1级 → 软风\n  影响：风速0.3～1.5 m/s，炊烟可指示风向但风标不动；对航行几乎无影响，帆船难以借力前行，需依靠动力推进。\n  依据：GB/T 28591-2012 §4（风力等级表）",
+    "llm_error": "LLM 未触发结构化输出（function_calling 偶发失败）"
+  },
+  "03d76dcc28147559": {
+    "labels": [
+      {
+        "variable": "wind_scale",
+        "raw_value": "2级",
+        "grade": "轻风",
+        "grade_id": "2",
+        "impact": "人面感觉有风，树叶微响，风向标能转动；户外活动基本不受影响，体感舒适。",
+        "citation": "GB/T 28591-2012 §3（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[wind_scale] 2级 → 轻风\n  影响：人面感觉有风，树叶微响，风向标能转动；户外活动基本不受影响，体感舒适。\n  依据：GB/T 28591-2012 §3（中国气象局）",
+    "llm_error": ""
+  },
+  "1de0f1af8270815c": {
+    "labels": [
+      {
+        "variable": "wind_scale",
+        "raw_value": "3级",
+        "grade": "微风",
+        "grade_id": "3",
+        "impact": "树叶及细枝摇动不息，旗帜展开；户外活动基本不受影响，风筝等轻物可被吹动。",
+        "citation": "GB/T 28591-2012 §3 表1（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[wind_scale] 3级 → 微风\n  影响：树叶及细枝摇动不息，旗帜展开；户外活动基本不受影响，风筝等轻物可被吹动。\n  依据：GB/T 28591-2012 §3 表1（中国气象局）",
+    "llm_error": ""
+  },
+  "cde24c9e9d543a77": {
+    "labels": [
+      {
+        "variable": "wind_scale",
+        "raw_value": "4级",
+        "grade": "和风",
+        "grade_id": "4",
+        "impact": "能吹起地面灰尘和纸张，树的小枝摇动；户外活动需注意防风，轻便物品可能被吹落。",
+        "citation": "GB/T 28591-2012 §4（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[wind_scale] 4级 → 和风\n  影响：能吹起地面灰尘和纸张，树的小枝摇动；户外活动需注意防风，轻便物品可能被吹落。\n  依据：GB/T 28591-2012 §4（中国气象局）",
+    "llm_error": "LLM 未触发结构化输出（function_calling 偶发失败）"
+  },
+  "004fc939579bff87": {
+    "labels": [
+      {
+        "variable": "wind_scale",
+        "raw_value": "5级",
+        "grade": "清风",
+        "grade_id": "5",
+        "impact": "5级清风可使小树摇摆、水面起波，户外活动受一定影响，高空作业及水上活动需注意防风。",
+        "citation": "GB/T 28591-2012 §4 风力等级表（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[wind_scale] 5级 → 清风\n  影响：5级清风可使小树摇摆、水面起波，户外活动受一定影响，高空作业及水上活动需注意防风。\n  依据：GB/T 28591-2012 §4 风力等级表（中国气象局）",
+    "llm_error": "LLM 未触发结构化输出（function_calling 偶发失败）"
+  },
+  "db071489d58650ef": {
+    "labels": [
+      {
+        "variable": "wind_scale",
+        "raw_value": "6级",
+        "grade": "强风",
+        "grade_id": "6",
+        "impact": "6级强风时大树枝摇动、电线有呼呼声，对高空作业构成显著安全威胁；根据建筑施工安全规范，6级及以上风力应停止露天高处作业。",
+        "citation": "GB/T 28591-2012 §3（蒲福风级表）；JGJ 80-2016 §5.1.3（建筑施工高处作业安全技术规范：6级及以上大风应停止露天高处作业）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[wind_scale] 6级 → 强风\n  影响：6级强风时大树枝摇动、电线有呼呼声，对高空作业构成显著安全威胁；根据建筑施工安全规范，6级及以上风力应停止露天高处作业。\n  依据：GB/T 28591-2012 §3（蒲福风级表）；JGJ 80-2016 §5.1.3（建筑施工高处作业安全技术规范：6级及以上大风应停止露天高处作业）",
+    "llm_error": ""
+  },
+  "17bab60af518053b": {
+    "labels": [
+      {
+        "variable": "wind_scale",
+        "raw_value": "8级",
+        "grade": "大风",
+        "grade_id": "8",
+        "impact": "8级大风风速达17.2~20.7 m/s，对高空作业极为危险，易导致人员失稳坠落、设施倾覆，必须立即停止一切高空作业。",
+        "citation": "GB/T 28591-2012 §4（风力等级表）；JGJ 80-2016 §3.0.3（高处作业遇6级及以上强风必须停止）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[wind_scale] 8级 → 大风\n  影响：8级大风风速达17.2~20.7 m/s，对高空作业极为危险，易导致人员失稳坠落、设施倾覆，必须立即停止一切高空作业。\n  依据：GB/T 28591-2012 §4（风力等级表）；JGJ 80-2016 §3.0.3（高处作业遇6级及以上强风必须停止）",
+    "llm_error": ""
+  },
+  "79be53eda36fcf79": {
+    "labels": [
+      {
+        "variable": "wind_scale",
+        "raw_value": "9级",
+        "grade": "烈风",
+        "grade_id": "9",
+        "impact": "9级烈风可导致建筑物轻微受损，屋顶瓦片被掀起，树枝折断，对户外作业、水上交通及高空作业构成严重威胁，应急场景下需立即停止户外危险作业并加固临时设施。",
+        "citation": "GB/T 28591-2012 §4（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[wind_scale] 9级 → 烈风\n  影响：9级烈风可导致建筑物轻微受损，屋顶瓦片被掀起，树枝折断，对户外作业、水上交通及高空作业构成严重威胁，应急场景下需立即停止户外危险作业并加固临时设施。\n  依据：GB/T 28591-2012 §4（中国气象局）",
+    "llm_error": ""
+  },
+  "2d7b6902440f1ba4": {
+    "labels": [
+      {
+        "variable": "wind_scale",
+        "raw_value": "10级",
+        "grade": "狂风",
+        "grade_id": "10",
+        "impact": "陆上极少见，可拔起树木、摧毁建筑物，对人员安全和基础设施构成严重威胁，应急场景下需立即启动防风避险响应。",
+        "citation": "GB/T 28591-2012 §3（风力等级表）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[wind_scale] 10级 → 狂风\n  影响：陆上极少见，可拔起树木、摧毁建筑物，对人员安全和基础设施构成严重威胁，应急场景下需立即启动防风避险响应。\n  依据：GB/T 28591-2012 §3（风力等级表）",
+    "llm_error": ""
+  },
+  "0bbce8bf98e156ca": {
+    "labels": [
+      {
+        "variable": "wind_scale",
+        "raw_value": "11级",
+        "grade": "暴风",
+        "grade_id": "11",
+        "impact": "陆上极少见，可造成大范围严重破坏，建筑物严重受损，树木被连根拔起，交通中断，属极端灾害性天气，应急场景下需立即启动防风抢险响应。",
+        "citation": "GB/T 28591-2012 §4（风力等级表）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[wind_scale] 11级 → 暴风\n  影响：陆上极少见，可造成大范围严重破坏，建筑物严重受损，树木被连根拔起，交通中断，属极端灾害性天气，应急场景下需立即启动防风抢险响应。\n  依据：GB/T 28591-2012 §4（风力等级表）",
+    "llm_error": "LLM 未触发结构化输出（function_calling 偶发失败）"
+  },
+  "1ee013208cc93514": {
+    "labels": [
+      {
+        "variable": "wind_scale",
+        "raw_value": "12级",
+        "grade": "飓风",
+        "grade_id": "12",
+        "impact": "摧毁力极大，陆上极少见，建筑物可遭严重损毁，树木连根拔起，车辆被掀翻，对应急响应构成极端威胁，需启动最高级别防风应急响应。",
+        "citation": "GB/T 28591-2012 §4（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[wind_scale] 12级 → 飓风\n  影响：摧毁力极大，陆上极少见，建筑物可遭严重损毁，树木连根拔起，车辆被掀翻，对应急响应构成极端威胁，需启动最高级别防风应急响应。\n  依据：GB/T 28591-2012 §4（中国气象局）",
+    "llm_error": "LLM 未触发结构化输出（function_calling 偶发失败）"
+  },
+  "3bd6477a82c605cd": {
+    "labels": [
+      {
+        "variable": "wind_scale",
+        "raw_value": "1-3级",
+        "grade": "微风",
+        "grade_id": "3",
+        "impact": "旗帜开始飘动，树叶和细枝摇动不息；户外活动基本不受影响，体感舒适。",
+        "citation": "GB/T 28591-2012 §4（风力等级表）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[wind_scale] 1-3级 → 微风\n  影响：旗帜开始飘动，树叶和细枝摇动不息；户外活动基本不受影响，体感舒适。\n  依据：GB/T 28591-2012 §4（风力等级表）",
+    "llm_error": "LLM 未触发结构化输出（function_calling 偶发失败）"
+  },
+  "8a9f209396877925": {
+    "labels": [
+      {
+        "variable": "wind_scale",
+        "raw_value": "8级",
+        "grade": "大风",
+        "grade_id": "8",
+        "impact": "8级大风对高空作业极为危险，可导致人员失稳坠落、结构物摇晃，应立即停止一切露天高空作业。",
+        "citation": "GB/T 28591-2012 §3（风力等级）；JGJ 80-2016 §3.0.5（高处作业遇6级及以上强风必须停止作业）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[wind_scale] 8级 → 大风\n  影响：8级大风对高空作业极为危险，可导致人员失稳坠落、结构物摇晃，应立即停止一切露天高空作业。\n  依据：GB/T 28591-2012 §3（风力等级）；JGJ 80-2016 §3.0.5（高处作业遇6级及以上强风必须停止作业）",
+    "llm_error": ""
+  },
+  "9fd4c4e3e1e94d00": {
+    "labels": [
+      {
+        "variable": "wind_scale",
+        "raw_value": "15级",
+        "grade": "15级（超强台风级风力）",
+        "grade_id": "15",
+        "impact": "极端破坏性风力，可摧毁房屋建筑、掀翻车辆、连根拔起大树，对人员生命安全构成极严重威胁；应急场景下需立即启动最高级别防风响应，停止一切户外活动。",
+        "citation": "GB/T 28591-2012 §4（中国气象局）；GB/T 19201-2006 §3（热带气旋等级）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[wind_scale] 15级 → 15级（超强台风级风力）\n  影响：极端破坏性风力，可摧毁房屋建筑、掀翻车辆、连根拔起大树，对人员生命安全构成极严重威胁；应急场景下需立即启动最高级别防风响应，停止一切户外活动。\n  依据：GB/T 28591-2012 §4（中国气象局）；GB/T 19201-2006 §3（热带气旋等级）",
+    "llm_error": ""
+  },
+  "00544557f6bb038d": {
+    "labels": [
+      {
+        "variable": "precip_24h",
+        "raw_value": "35mm",
+        "grade": "大雨",
+        "grade_id": "heavy_rain",
+        "impact": "24小时累积降水量达35mm，属大雨级别；高空作业时能见度下降、平台湿滑、风力叠加降雨影响显著，极易发生坠落和滑倒事故，应停止露天高空作业。",
+        "citation": "GB/T 28592-2012 §4.1（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[precip_24h] 35mm → 大雨\n  影响：24小时累积降水量达35mm，属大雨级别；高空作业时能见度下降、平台湿滑、风力叠加降雨影响显著，极易发生坠落和滑倒事故，应停止露天高空作业。\n  依据：GB/T 28592-2012 §4.1（中国气象局）",
+    "llm_error": ""
+  },
+  "568b160bd04fde5a": {
+    "labels": [
+      {
+        "variable": "wind_scale",
+        "raw_value": "7级",
+        "grade": "疾风",
+        "grade_id": "7",
+        "impact": "全树摇动，迎风步行感到困难；出行时骑行、步行均受明显影响，高空作业及水上交通需暂停。",
+        "citation": "GB/T 28591-2012 §4（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[wind_scale] 7级 → 疾风\n  影响：全树摇动，迎风步行感到困难；出行时骑行、步行均受明显影响，高空作业及水上交通需暂停。\n  依据：GB/T 28591-2012 §4（中国气象局）",
+    "llm_error": ""
+  },
+  "4cfe4e2be4dca3eb": {
+    "labels": [
+      {
+        "variable": "precip_24h",
+        "raw_value": "35mm",
+        "grade": "大雨",
+        "grade_id": "heavy_rain",
+        "impact": "露天施工受严重影响，土方开挖及混凝土浇筑应暂停，需加强基坑排水和边坡防护，防止积水与滑坡。",
+        "citation": "GB/T 28592-2012 §4.1（中国气象局）",
+        "source": "llm_baseline"
+      },
+      {
+        "variable": "wind_scale",
+        "raw_value": "7级",
+        "grade": "疾风",
+        "grade_id": "7",
+        "impact": "禁止塔吊等起重机械作业及高空施工作业，脚手架和临时围挡需加固，现场人员应撤离至安全区域。",
+        "citation": "GB/T 28591-2012 §4（中国气象局）；JGJ 80-2016 §6.1（住建部）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[precip_24h] 35mm → 大雨\n  影响：露天施工受严重影响，土方开挖及混凝土浇筑应暂停，需加强基坑排水和边坡防护，防止积水与滑坡。\n  依据：GB/T 28592-2012 §4.1（中国气象局）\n\n[wind_scale] 7级 → 疾风\n  影响：禁止塔吊等起重机械作业及高空施工作业，脚手架和临时围挡需加固，现场人员应撤离至安全区域。\n  依据：GB/T 28591-2012 §4（中国气象局）；JGJ 80-2016 §6.1（住建部）",
+    "llm_error": ""
+  },
+  "4ddac1562c548d85": {
+    "labels": [
+      {
+        "variable": "precip_12h",
+        "raw_value": "25mm",
+        "grade": "大雨",
+        "grade_id": "heavy_rain_12h",
+        "impact": "露天施工应暂停，土方开挖及混凝土浇筑等作业受严重影响，需加强基坑排水和边坡防涝措施。",
+        "citation": "GB/T 28592-2012 §4 表1（中国气象局）",
+        "source": "llm_baseline"
+      },
+      {
+        "variable": "wind_scale",
+        "raw_value": "5级",
+        "grade": "清风（劲风）",
+        "grade_id": "beaufort_5",
+        "impact": "高空作业及塔吊吊装应停止，脚手架及临时围挡需加固，露天材料需防风绑扎。",
+        "citation": "GB/T 28591-2012 §4 表1（中国气象局）",
+        "source": "llm_baseline"
+      }
+    ],
+    "semantic_text": "[precip_12h] 25mm → 大雨\n  影响：露天施工应暂停，土方开挖及混凝土浇筑等作业受严重影响，需加强基坑排水和边坡防涝措施。\n  依据：GB/T 28592-2012 §4 表1（中国气象局）\n\n[wind_scale] 5级 → 清风（劲风）\n  影响：高空作业及塔吊吊装应停止，脚手架及临时围挡需加固，露天材料需防风绑扎。\n  依据：GB/T 28591-2012 §4 表1（中国气象局）",
+    "llm_error": ""
+  },
+  "5394ddbb82666b22": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": "LLM 未触发结构化输出（function_calling 偶发失败）"
+  },
+  "3510fd4d4468dba0": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": ""
+  },
+  "26a4725e08d81077": {
+    "labels": [],
+    "semantic_text": "",
+    "llm_error": ""
+  }
+}

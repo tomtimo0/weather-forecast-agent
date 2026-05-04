@@ -9,24 +9,48 @@
 
 设计原则：
 - **被测对象解耦**：metrics 不直接调用桥接，而是接收已计算好的 ``result`` 字典，
-  方便将来同一套指标复用到其他被测对象（如纯 LLM baseline）
-- **三档可比**：所有指标的 expected 来自数据集本身，对 mode=off / rule_only /
-  rule_plus_rag 三档都用同一组期望去比对，分母一致
+  方便同一套指标复用到 LLM baseline、未来的端到端评测等
+- **多档可比**：mode=off / llm_baseline / rule_only / rule_plus_rag 共用同一组
+  expected 与同一套指标，使消融对比的分母一致
 
 关键术语：
-- ``coverage``：是否成功生成 SemanticLabel（≥1 条）
+- ``coverage``：是否成功生成 SemanticLabel（≥1 条；仅对期望 n_labels>0 的用例计入）
 - ``n_labels_match``：标签条数与期望一致
 - ``grade_accuracy``：所有期望 variable 的 grade 字段都正确
 - ``grade_id_accuracy``：所有期望 variable 的 grade_id 都正确（更严格，区分 24h/12h）
 - ``citation_rate``：所有 ``must_cite_rag`` 关键字都出现在 semantic_text 中
 - ``citation_negative_pass``：所有 ``must_not_cite_rag`` 关键字都不在 semantic_text 中
-  （用于场景过滤负例：当 scene 不匹配时，不应吐出 citation）
 - ``source_match``：标签的 source 字段与 ``expected_source_rag`` 一致
+- ``citation_present_rate``：（LLM baseline 专属）至少有一条 label 给了非空 citation
+- ``citation_authenticity``：（LLM baseline 专属）citation 中至少包含一个**真实存在**
+  的国标 / 行业标准号（粗粒度幻觉检测：编完全不存在的标准号则失败）
 """
 
 from __future__ import annotations
 
 from typing import Any, Dict, List, Optional
+
+
+# 真实存在的标准编号白名单（用于 LLM baseline 的 citation 幻觉粗粒度检测）
+# 仅判定"标准号是否真实"，不判定"条款号是否正确"——后者属于细粒度幻觉，
+# 已在 docs/写作文档/知识库标准核对表-论文素材.md 中作过人工核对。
+KNOWN_REAL_STANDARDS: List[str] = [
+    "GB/T 28592-2012",   # 降水量等级
+    "GB/T 28591-2012",   # 风力等级（中国国标版蒲福风级）
+    "GB/T 27964-2011",   # 雾的预报等级
+    "GB/T 19201-2006",   # 热带气旋等级
+    "GB/T 21987-2017",   # 寒潮等级
+    "GB/T 20484",        # 冷空气等级（含 -2006 / -2017 两版本）
+    "GB/T 3608",         # 高处作业分级
+    "GB 3608",           # 同上（去掉 /T 的写法也接受）
+    "GB 50057",          # 建筑物防雷设计规范
+    "JGJ 80-2016",       # 建筑施工高处作业安全技术规范
+    "HJ 633-2012",       # 环境空气质量指数（AQI）
+    "QX/T 113-2010",     # 霾的观测和预报等级
+    "Beaufort",          # WMO 蒲福风级
+    "WMO",
+    "ICAO",
+]
 
 
 def evaluate_case(expected: Dict[str, Any], result: Dict[str, Any], mode: str) -> Dict[str, Any]:
@@ -60,9 +84,13 @@ def evaluate_case(expected: Dict[str, Any], result: Dict[str, Any], mode: str) -
     grade_correct = _all_match(expected_labels, by_var, "grade")
     grade_id_correct = _all_match(expected_labels, by_var, "grade_id")
 
-    if mode == "rule_plus_rag":
-        citation_rate = 1 if all(kw in text for kw in must_cite) else 0
-        citation_negative_pass = 1 if all(kw not in text for kw in must_not_cite) else 0
+    if mode in ("rule_plus_rag", "llm_baseline"):
+        citation_rate = 1 if must_cite and all(kw in text for kw in must_cite) else (
+            None if not must_cite else 0
+        )
+        citation_negative_pass = (
+            1 if all(kw not in text for kw in must_not_cite) else 0
+        ) if must_not_cite else None
         source_match = _check_source(by_var, expected_labels, expected_source_rag)
     else:
         citation_rate = None
@@ -74,6 +102,16 @@ def evaluate_case(expected: Dict[str, Any], result: Dict[str, Any], mode: str) -
     else:
         text_empty = None
 
+    if mode == "llm_baseline" and labels:
+        any_citation = any(getattr(l, "citation", None) for l in labels)
+        citation_present_rate = 1 if any_citation else 0
+        citation_authenticity = (
+            1 if any(std in text for std in KNOWN_REAL_STANDARDS) else 0
+        ) if any_citation else 0
+    else:
+        citation_present_rate = None
+        citation_authenticity = None
+
     return {
         "mode": mode,
         "coverage": coverage,
@@ -84,6 +122,8 @@ def evaluate_case(expected: Dict[str, Any], result: Dict[str, Any], mode: str) -
         "citation_negative_pass": citation_negative_pass,
         "source_match": source_match,
         "text_empty": text_empty,
+        "citation_present_rate": citation_present_rate,
+        "citation_authenticity": citation_authenticity,
         "actual_n_labels": len(labels),
         "actual_text_len": len(text),
     }
@@ -137,6 +177,7 @@ def aggregate(case_results: List[Dict[str, Any]]) -> Dict[str, Any]:
     keys = [
         "coverage", "n_labels_match", "grade_accuracy", "grade_id_accuracy",
         "citation_rate", "citation_negative_pass", "source_match", "text_empty",
+        "citation_present_rate", "citation_authenticity",
     ]
     out: Dict[str, Any] = {"n_cases": len(case_results)}
     for k in keys:
