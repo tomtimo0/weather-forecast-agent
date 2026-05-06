@@ -121,7 +121,7 @@ d:\毕设\
 │   │   ├── weather_api.py             # ✅ 气象 API 封装（9个工具）
 │   │   ├── knowledge_tool.py          # ✅ RAG 知识检索工具（search_knowledge，向量召回）
 │   │   ├── bridge_tool.py             # ✅ 语义桥接工具（bridge_weather_data，数值→等级+出处）
-│   │   ├── code_executor.py           # 代码执行沙箱（待开发）
+│   │   ├── code_executor.py           # ✅ 受限代码执行沙箱（白名单 builtins + 墙钟超时 + 结构化错误）
 │   │   └── tool_registry.py           # 工具注册与描述管理（待开发）
 │   ├── rag/                           # ✅ RAG 模块（对应第3.4节）
 │   │   ├── schema.py                  # ✅ KnowledgeEntry / RetrievalHit 数据模型
@@ -132,12 +132,16 @@ d:\毕设\
 │   │   ├── schema.py                  # ✅ SemanticLabel / LabelSource 数据模型
 │   │   ├── semantic_bridge.py         # ✅ 桥接入口（off / rule_only / rule_plus_rag 三档）
 │   │   ├── compose.py                 # ✅ 多标签 → LLM 友好文本合成
+│   │   ├── code_generator.py          # ✅ LLM 代码生成器（compute(data) 函数，function_calling 结构化输出）
 │   │   ├── classifiers/               # ✅ 确定性分级器（按 grade_id 链接 KB）
 │   │   │   ├── precipitation.py       # ✅ 降水量分级（24h / 12h，依据 GB/T 28592-2012）
-│   │   │   └── wind_scale.py          # ✅ 蒲福风级 0–12 级（依据 GB/T 28591-2012 / WMO Beaufort）
+│   │   │   ├── wind_scale.py          # ✅ 蒲福风级 0–12 级（依据 GB/T 28591-2012 / WMO Beaufort）
+│   │   │   ├── temperature.py         # ✅ 温度分级（严寒/寒冷/凉/舒适/炎热/酷热）
+│   │   │   ├── visibility.py          # ✅ 能见度分级（雾级别，依据 GB/T 27964-2011）
+│   │   │   └── humidity.py            # ✅ 相对湿度分级（干/适宜/潮湿）
 │   │   └── enrichers/                 # ✅ RAG 富化器
 │   │       └── rag_enricher.py        # ✅ 通过 grade_id 精确查 KB，填充影响 + 出处
-│   │   # 待开发：temperature/visibility/humidity 分类器、code_generator、report_generator
+│   │   # 待开发：report_generator
 │   ├── config/                        # ✅ 配置文件
 │   │   └── settings.py                # ✅ 全局配置（LLM 参数、API 密钥、SYSTEM_PROMPT）——已 .gitignore
 │   └── utils/                         # 公共工具函数（待开发）
@@ -150,21 +154,41 @@ d:\毕设\
 │   │   └── operation_guideline.jsonl  # ✅ 作业与出行规范（高空作业/户外/驾驶等，10 条）
 │   ├── chroma_db/                     # ✅ ChromaDB 持久化向量索引（自动生成，已 .gitignore）
 │   └── test_cases/                    # ✅ 测试用例与数据集
-│       ├── semantic_bridge_bench.jsonl # ✅ 语义桥接（通路 B）评测集（40 条，覆盖 6 类场景）
-│       └── rag_retrieval_bench.jsonl  # ✅ RAG 检索（通路 A）评测集（43 条，覆盖 8 类查询）
+│       ├── semantic_bridge_bench.jsonl # ✅ 语义桥接（通路 B）评测集（71 条，9 类要素）
+│       ├── rag_retrieval_bench.jsonl  # ✅ RAG 检索（通路 A）评测集（60 条，覆盖 8 类查询）
+│       ├── intent_bench.jsonl         # ✅ 意图识别 + 参数补全评测集（35 条，10 类场景）
+│       ├── code_exec_bench.jsonl      # ✅ 代码生成 + 执行评测集（18 条，6 类统计任务）
+│       └── e2e_bench.jsonl            # ✅ 端到端任务完成率评测集（30 条，6 类真实场景）
 ├── experiments/                       # ✅ 实验相关（对应第5章）
 │   ├── eval/                          # ✅ 评测脚本
 │   │   ├── metrics.py                 # ✅ 通路 B 评测指标（解耦纯函数 + 真实标准号白名单）
 │   │   ├── retrieval_metrics.py       # ✅ 通路 A 检索指标（Recall@K / MRR / Category@K）
-│   │   ├── llm_baseline.py            # ✅ LLM baseline（让 LLM 自由发挥处理裸数据，含缓存）
+│   │   ├── intent_metrics.py          # ✅ 意图识别 9 项指标（recognizer + completer + 端到端）
+│   │   ├── code_metrics.py            # ✅ 代码执行评测指标（数值准确率 + 代码生成/可执行率 + 类别拆分）
+│   │   ├── e2e_metrics.py             # ✅ 端到端评测指标（key_facts + 引用/分级/建议 + LLM-as-judge 4 维度）
+│   │   ├── llm_baseline.py            # ✅ LLM baseline（语义桥接对照，让 LLM 自由发挥处理裸数据）
+│   │   ├── code_baseline.py           # ✅ LLM 直算 baseline（数值任务对照，禁止生成代码直接给数）
+│   │   ├── e2e_agent_runner.py        # ✅ 端到端 Agent runner（full vs ablated 双档：去 RAG 对照）
 │   │   ├── run_bridge_eval.py         # ✅ 通路 B 三档/四档消融评测（--with-llm-baseline）
 │   │   ├── run_rag_eval.py            # ✅ 通路 A 三档检索器消融（vector / bm25 / hybrid）
-│   │   └── run_rag_weight_sweep.py    # ✅ 通路 A 权重扫描实验（确定 0.8/0.2 最优）
+│   │   ├── run_rag_weight_sweep.py    # ✅ 通路 A 权重扫描实验（确定 0.9/0.1 最优）
+│   │   ├── run_intent_eval.py         # ✅ 意图识别 + 参数补全端到端评测（带缓存与增量落盘）
+│   │   ├── run_code_eval.py           # ✅ 代码生成 + 执行 3 档消融评测（oracle/llm_direct/llm_with_code）
+│   │   └── run_e2e_eval.py            # ✅ 端到端任务完成率评测（30 用例 × 2 档 × 真实 API + LLM-as-judge）
 │   └── results/                       # ✅ 实验结果（JSON + Markdown 双输出）
 │       ├── semantic_bridge_eval_latest.md # ✅ 通路 B 最新评测报告（论文可直接引用）
 │       ├── rag_retrieval_eval_latest.md   # ✅ 通路 A 最新评测报告
 │       ├── rag_weight_sweep_latest.md     # ✅ 通路 A 权重扫描报告
-│       └── llm_baseline_cache.json    # ✅ LLM 调用结果缓存（按输入摘要）
+│       ├── intent_eval_latest.md          # ✅ 意图识别评测最新报告
+│       ├── code_eval_latest.md            # ✅ 代码执行评测最新报告
+│       ├── e2e_eval_latest.md             # ✅ 端到端任务完成率最新报告
+│       ├── llm_baseline_cache.json    # ✅ 语义桥接 LLM baseline 缓存（按输入摘要）
+│       ├── intent_eval_cache.json     # ✅ 意图识别 LLM 缓存（按 query+context+prompt 指纹）
+│       ├── code_baseline_cache.json   # ✅ 代码执行 LLM 直算缓存
+│       ├── code_gen_cache.json        # ✅ 代码生成 LLM 输出缓存
+│       ├── e2e_intent_cache.json      # ✅ 端到端意图前置缓存（两档共享）
+│       ├── e2e_agent_cache.json       # ✅ 端到端 Agent 输出缓存（按 query × mode）
+│       └── e2e_judge_cache.json       # ✅ 端到端 LLM-as-judge 4 维度打分缓存
 └── tests/                             # ✅ 单元测试
     ├── test_intent.py                 # ✅ 意图识别 8 类典型场景测试
     ├── test_rag.py                    # ✅ RAG 知识库与混合检索测试
@@ -202,8 +226,8 @@ d:\毕设\
 
 ### 阶段三：统计分析与语义桥接（预计 3-4 周，对应第4章）
 
-- [ ] 实现代码生成模块：根据分析需求自动生成 Python 统计分析代码
-- [ ] 实现代码执行沙箱，确保安全执行并捕获结果
+- [x] 实现代码生成模块：根据分析需求自动生成 Python 统计分析代码（详见 7.17 节）
+- [x] 实现代码执行沙箱（轻量原型版：受限 builtins + 白名单模块 + 墙钟超时）
 - [ ] 构建"数值-语义"特征映射表（温度区间、风力等级、降水量级等）
 - [ ] 实现语义桥接算法：将数值分析结果映射为自然语言描述
 - [ ] 实现自适应报告生成模块（多场景模板 + 动态内容填充）
@@ -215,12 +239,12 @@ d:\毕设\
 
 - [x] 构建评测数据集（已完成：semantic_bridge_bench.jsonl 40 条用例）
 - [x] 定义评测指标（覆盖率 / grade 准确 / grade_id 准确 / 引用率 / 场景过滤 / source 匹配，详见 `experiments/eval/metrics.py`）
-- [ ] 意图识别准确率评估（Q1 评估，待补 intent_bench）
-- [ ] 端到端任务完成率（待补 e2e_bench）
+- [x] 意图识别准确率评估（intent_bench 35 条 / 10 类，端到端 91.4%、地点角色 100%）
+- [x] 端到端任务完成率（**e2e_bench 30 条 / 6 类，full 86.7% vs ablated 73.3%，决策类 +50 pp，详见 7.18 节**）
 - [x] 执行语义桥接消融实验（off / rule_only / rule_plus_rag 三档，详见 7.12 节）
 - [x] 执行 LLM baseline 对照实验（GLM-5.1 自由发挥 vs 双通路 RAG，详见 7.13 节）
-- [ ] 执行 RAG 检索消融（待补 rag_retrieval_bench）
-- [ ] 执行代码生成消融（直接 LLM 计算 vs 代码执行）
+- [x] 执行 RAG 检索消融（rag_retrieval_bench 60 条 / 三档检索器，详见 7.14 节）
+- [x] 执行代码生成消融（18 用例 / 3 档：oracle / llm_direct / llm_with_code，详见 7.17 节）
 - [ ] 整理实验结果，绘制图表
 - [ ] 撰写论文各章节
 
@@ -1154,6 +1178,362 @@ python -m experiments.eval.run_bridge_eval --with-llm-baseline
 
 ---
 
+### 7.16 意图识别 + 参数补全评测：分层架构与多轮长程依赖局限（论文 Q1 核心实证）
+
+**目标**：在 7.12–7.15 完成对双通路 RAG（Q2/Q3）的评测后，补足论文 Q1
+（气象任务指令解析能力）的核心实证——对意图识别（`recognize_intent`）+
+参数补全（`complete_intent`）双阶段意图理解模块进行系统化评测。
+
+**评测集设计**（`data/test_cases/intent_bench.jsonl`，35 条 / 10 类场景）：
+单轮（current/hourly/daily/warning/index/historical 共 19 条）+ 多地点
+travel_advice（5 条，含 departure/arrival/waypoint）+ 多轮 context_inference
+（3 条，附 `context` 字段）+ 对抗 adversarial（2 条，验证 unknown + 友好追问）。
+
+**指标体系**（`experiments/eval/intent_metrics.py`）—— 双阶段 9 项 + 端到端：
+
+| 阶段 | 指标 |
+|---|---|
+| Recognizer | `intent_accuracy` / `location_set_recall` / `location_set_precision` / `location_role_accuracy` / `time_field_present_rate` |
+| Completer | `completion_decision_accuracy` / `follow_up_trigger_accuracy` / `completion_field_coverage` |
+| 综合 | `end_to_end_pass_rate`（以上全部断言通过） |
+
+**核心结果**（35 用例，GLM-5.1）：
+
+| 指标 | 数值 |
+|---|---:|
+| **端到端通过率** | **91.4%**（32/35） |
+| 意图准确率 | 97.1% |
+| **地点角色准确率** | **100.0%** |
+| 地点召回率 | 96.6% |
+| 补全判定准确率 | 100.0% |
+| 追问触发准确率 | 100.0% |
+
+**按场景拆分**：8 类场景全部 100% 通过（含 travel_advice 5/5、adversarial 2/2），
+仅 `context_inference` 33.3%（1/3），构成论文"局限性"小节的天然实证。
+
+**核心发现一：地点角色识别 100%——验证了 System Prompt 改造的有效性**
+
+travel_advice 类 5 条全部通过，包括"从北京自驾到张家口"、"从西安到敦煌途经
+张掖"等多地点场景，departure/arrival/waypoint 角色识别全部正确——这直接
+验证了 README 7.1 节"出行场景时空推理 System Prompt 改造"的设计价值。
+
+**核心发现二：分层架构吸收单点 LLM 抖动**
+
+`index_004_no_loc`（"今天去爬山合适吗？"）失败用例：
+
+```
+recognizer：locations=[{"name": "当前位置"}]   ← 礼貌性补白幻觉
+   ↓
+completer：识别"当前位置"非真实城市 → 触发追问"您想查询哪个城市？"
+   ↓
+最终用户体验：正确（被反问，而非走错误流程）
+```
+
+这一案例反向证明双阶段（recognizer + completer）容错设计的工程价值：即使
+recognizer 在地点字段上幻觉，下游 completer 仍能识别异常并兜底。**单点 LLM
+错误并不必然导致系统失败，分层架构能够吸收单点抖动**。
+
+**核心发现三：LLM 在「多轮对话长程依赖」上的局限性**
+
+```
+单轮场景（7 类）：    端到端通过率 100%（28/28）
+多轮 context 场景：  端到端通过率 33.3%（1/3）
+```
+
+差距 **66.7 pp** 是论文 Q1 章节"局限性 / 未来工作"小节的关键论据：
+
+- `ctx_002_switch_loc`：上下文切换城市时，**时间字段没有被继承**
+  （context "北京明天天气" + query "那成都呢？" → 实际丢失"明天"）
+- `ctx_003_switch_intent`：意图切换（forecast → life_index）时，**地点
+  和时间同时丢失继承**
+
+> LLM 在单轮意图理解上已接近人类水平，但**结构化字段的跨轮继承能力
+> 是另一个独立的能力维度**——单纯把上下文摘要拼到 prompt 里无法稳定
+> 实现"地点继承 + 时间继承 + 意图切换"的复合任务。这指向了未来工作的
+> 方向：显式的对话状态跟踪（DST）与字段级槽位继承策略。
+
+**完整论文素材**：`docs/写作文档/意图识别评测-论文素材.md`（含 35 条用例
+分布表、9 项指标定义、3 条失败用例的完整根因分析与改进建议）。
+
+**复现命令**：
+
+```bash
+# 首次运行（35 用例 × 2 次 LLM 调用，约 11 分钟）
+python -m experiments.eval.run_intent_eval
+
+# 二次运行（命中缓存，约 7 秒）
+python -m experiments.eval.run_intent_eval
+
+# 强制重跑（不读缓存）
+python -m experiments.eval.run_intent_eval --force
+```
+
+输出：
+
+- `experiments/results/intent_eval_<timestamp>.{json,md}`
+- `intent_eval_latest.md` 自动镜像最新版
+- `intent_eval_cache.json`：按 (query, context, model, prompt 指纹) 缓存，
+  prompt 字面修改自动失效
+
+**对应研究问题**：
+- **Q1**：意图理解端到端 91.4%、地点角色 100%、对抗鲁棒性 100%
+- **Q1（局限性）**：多轮上下文继承通过率仅 33.3%，明确指向未来工作方向
+
+---
+
+### 7.17 代码生成 + 沙箱执行评测：LLM 数值计算幻觉对照（论文 Q3 升级版实证）
+
+**目标**：在 7.13/7.15 完成「LLM 引用幻觉」对照后，补足"LLM 不可信"论证
+体系中的第三个维度——**LLM 在数值计算上的幻觉**。设计与"LLM 自由发挥
+写代码 vs 直接出数"的对照实验，量化代码执行不可替代的价值。
+
+**两个实现模块**：
+
+- `src/tools/code_executor.py`：受限沙箱（白名单 builtins + 仅 math/statistics
+  模块 + 墙钟超时 5s + 结构化错误捕获）。约定执行 `compute(data) -> Any` 函数。
+- `src/analysis/code_generator.py`：LLM 用 function_calling 输出 `CodeGenResult`
+  (`code` + `reasoning`)，prompt 强制禁止 import 与 I/O。
+
+**评测集设计**（`data/test_cases/code_exec_bench.jsonl`，18 条 / 6 类）：
+
+| 类别 | 用例数 | 任务设计要点 |
+|---|---:|---|
+| `average` | 5 | 含整除 / 近似 / 银行家舍入边界（24.95） |
+| `extreme` | 3 | 找最高温/最大降水/最低温对应的日期或时刻 + 数值（复合答案） |
+| `sum` | 2 | 7 天累计 + 条件求和（仅高温日累计降水） |
+| `diff` | 4 | 日较差最大、温度极差跨日、同比降水差、平均日较差 |
+| `count` | 2 | 下雨天数（precip>0）、高温阈值天数（含 `35.0` 边界） |
+| `sort` | 2 | 降水前 3 名、第二高温日期 |
+
+**3 档消融**：
+
+| 档位 | 处理流程 | 角色 |
+|---|---|---|
+| `oracle` | 直接读 `expected.value` | 评测器自校验天花板 |
+| `llm_direct` | LLM 看 query+data，**禁止生成代码**，直接给 value | LLM 自由发挥对照 |
+| `llm_with_code` | LLM 生成 `compute(data)` → 沙箱执行 → 取返回值 | 工具学习 + 代码执行核心方案 |
+
+**核心结果**（18 用例，GLM-5.1）：
+
+| 指标 | oracle | llm_direct | llm_with_code |
+|---|:---:|:---:|:---:|
+| **数值准确率** | 100.0% | **66.7%** | **88.9%** |
+| 代码生成率 | — | — | 94.4% |
+| 代码可执行率 | — | — | 94.4% |
+
+**核心差距：22.2 pp**（66.7 → 88.9），代码执行档明显优于 LLM 自由直算。
+
+**按类别拆分（最关键的发现）**：
+
+| 类别 | 用例数 | llm_direct | llm_with_code | 差距 |
+|---|---:|:---:|:---:|:---:|
+| `extreme` | 3 | **0.0%** | 66.7% | **+66.7 pp** |
+| `count` | 2 | **50.0%** | 100.0% | **+50.0 pp** |
+| `average` | 5 | 80.0% | 100.0% | +20.0 pp |
+| `sum` / `sort` | 4 | 100.0% | 100.0% | 持平 |
+| `diff` | 4 | 75.0% | 75.0% | 持平（命名约定问题） |
+
+规律：**LLM 在简单累加 / 排序上能力接近代码；但只要任务需要"伴随状态维护"
+（找极值同时记录对应日期）或"离散计数"（条件累加），LLM 就会犯错**。这与
+认知科学中"工作记忆容量限制"的发现一致——代码执行就是给 LLM 配一支笔
+与一张草稿纸，把"心算"换成"笔算"。
+
+**4 类典型 LLM 幻觉模式**（论文 Q3 章节核心论点）：
+
+1. **数数错误（`count_001`）**：reasoning 列出 7 个日期，断言句却写"为 6 天"
+   ——最危险的"自相矛盾"幻觉，用户读 reasoning 大概率被说服
+2. **舍入不一致（`avg_005`）**：24.95 → LLM 答 25.0（教科书四舍五入），Python
+   `round` → 24.9（银行家舍入）。LLM 不知道工程语境的默认舍入规则
+3. **Schema 不稳定（4 条 `*_with_value`）**：即使 prompt 显式要求"日期 +
+   numeric_extra 数值"双字段输出，LLM 在 function_calling 下仍只填日期字段，
+   把数值留作自由文本——**结构化输出可靠性随 schema 复杂度急剧下降**
+4. **字段命名漂移（代码档 `diff_001`）**：算法完全正确，但用 `range` 不是
+   `tempDiff`——LLM 命名约定不严格
+
+**论文价值：升级版"三维 LLM 不可信谱系"**
+
+把现有"双指标对比"扩展为三维论证：
+
+| 维度 | 评测对象 | LLM 自由发挥 | 工具/规则/代码兜底 |
+|---|---|---:|---:|
+| 结构化分级 ID | 通路 B 67 条 | 0.0% | 100% |
+| 权威标准引用 | 通路 B 71 条 | 25.4% | 100% |
+| **数值统计计算** | **18 条** | **66.7%** | **88.9%** |
+
+三个维度独立证据共同支撑"LLM 必须配工具学习 + 代码执行才能产生工程可用
+输出"——构成论文方法论完整三角架构（双通路 RAG + 代码执行）。
+
+**完整论文素材**：`docs/写作文档/代码执行评测-论文素材.md`（含沙箱设计取舍、
+4 类失败模式根因分析、与"知识库标准核对表"的论证闭环）。
+
+**复现命令**：
+
+```bash
+# 单元自检：受限沙箱（6 类边界条件，无网络）
+python -m src.tools.code_executor
+
+# 单元自检：代码生成 + 执行端到端（3 条样例，约 30 秒）
+python -m src.analysis.code_generator
+
+# 完整 3 档消融评测（首次约 4 分钟，缓存后约 5 秒）
+python -m experiments.eval.run_code_eval
+
+# 强制重跑（不读两层缓存）
+python -m experiments.eval.run_code_eval --force-llm
+```
+
+输出：
+
+- `experiments/results/code_eval_<timestamp>.{json,md}`
+- `code_eval_latest.md` 自动镜像最新版
+- `code_baseline_cache.json` / `code_gen_cache.json` 两层独立缓存
+
+**沙箱设计取舍说明**：本沙箱是**轻量原型**，主动放弃完整安全隔离——屏蔽
+常见破坏性内置 + 限制模块 + 墙钟超时，但不抵御主动恶意（CPU 攻击、内存
+炸弹、`__class__` 链逃逸）。生产级方案（RestrictedPython / Pyodide / Docker
+隔离）属于论文"未来工作"小节。
+
+**对应研究问题**：
+- **Q3**：把"LLM 不可信"论证从「引用 + 分级」扩展到「数值计算」第三维度
+- **Q3 升级**：与通路 A/B 共同构成完整的"工具学习 + 知识增强 + 计算辅助"
+  Agent 工程方法论闭环
+
+---
+
+### 7.18 端到端任务完成率评测：完整 Agent vs 去 RAG 对照（A1 实证 / 论文 Q1+Q2+Q3 总实证）
+
+前 4 个评测（通路 A / 通路 B / 意图识别 / 代码执行）全部是**单模块"中间产物"
+准确率**视角的实证。本节首次以**最终用户视角**对完整 Agent 进行端到端任务
+完成率评测，对应开题报告 §3.4 第 ④ + ⑤ 项指标"Task_completion + 报告生成
+质量"，是论文 Q1+Q2+Q3 总宣称的最终系统级实证。
+
+**对照设计**：
+
+| 档位 | 工具集 | System Prompt 段 |
+|---|---|---|
+| `full` | 9 气象 API + ``search_knowledge`` + ``bridge_weather_data`` | 完整（含 RAG 规则 + 桥接约束） |
+| `ablated` | 仅 9 气象 API | 删除 RAG 规则 + 桥接约束两段 |
+
+两档**共享同一个 LLM、同一份意图识别 + 参数补全前置、同一份气象 API
+工具**——保证差异**只在「拿到 API 数据后如何解读」**这一个变量上。
+
+**评测集**：30 条用例 / 6 类真实场景
+
+| 类别 | 数 | 设计要点 |
+|---|---:|---|
+| `simple_query` | 5 | 单城市单要素的实时/明天天气 |
+| `multi_compare` | 5 | 多城市对比 |
+| `trend_analysis` | 5 | 一周温度/降水趋势 |
+| `extreme_search` | 5 | 找最热/最冷/最大降水的具体哪一天 |
+| `decision_support` | 6 | 户外/洗车/带伞/跑步/防晒/驾驶决策 |
+| `warning_extreme` | 4 | 暴雨/强对流/严寒/台风预警 |
+
+所有用例**调用真实和风天气 + Open-Meteo API 跑实时数据**，断言聚焦「**结构性
+证据**」（必须含温度数值、必须给具体日期等），保证可重复性。
+
+**5 类断言指标**：
+
+```
+1. key_facts        从用例自带词表/正则匹配 → recall
+2. citation         是否含 GB/T xxx-yyyy 等标准号
+3. grading          是否使用规范气象分级词
+4. advice           是否给出明确决策建议
+5. judge_score      LLM-as-judge 4 维度（事实/完整/专业/流畅）打分
+
+case_pass = key_fact_recall ≥ 0.8
+            AND（按用例条件断言 citation/grading/advice）
+            AND judge_overall ≥ 3.0
+```
+
+**双档总表（30 用例）**：
+
+| 指标 | ablated | full | 差距 |
+|---|:---:|:---:|:---:|
+| **端到端通过率（核心）** | 73.3% | **86.7%** | **+13.4 pp** |
+| 关键事实点 recall | 99.2% | 99.2% | 持平 |
+| **权威标准引用率** | **0.0%** | **26.7%** | **+26.7 pp** |
+| 规范分级出现率 | 100.0% | 96.7% | -3.3 pp |
+| 决策建议出现率 | 90.0% | 83.3% | -6.7 pp |
+| Judge 事实性 / 完整性 / 流畅性 | 4.07 / 4.93 / 4.97 | 3.90 / 4.87 / 5.00 | 接近持平 |
+| **Judge 专业性（0-5）** | 3.10 | **3.47** | **+0.37** |
+| Judge 综合（0-5） | 4.27 | 4.31 | +0.04 |
+| 平均工具调用次数 | 3.67 | 4.57 | +0.90 |
+
+**按场景类别拆分（端到端通过率）**：
+
+| 类别 | 用例数 | ablated | full | 差距 |
+|---|---:|:---:|:---:|:---:|
+| **decision_support** | 6 | 50.0% | **100.0%** | **+50.0 pp** |
+| `warning_extreme` | 4 | 50.0% | 75.0% | +25.0 pp |
+| `simple_query` / `extreme_search` / `trend_analysis` | 各 5 | 80% | 80% | 0 |
+| `multi_compare` | 5 | 100% | 100% | 0 |
+
+**典型对照案例**：
+
+> **用户**："未来三天上海会有暴雨吗？"
+>
+> **ablated**："5 月 7 日虽然有小雨，但降雨量很小，远未达到暴雨级别（暴雨标准为
+> 24 小时降水量 ≥ 50mm）。" → 数值正确，但**没说出处**，纯 LLM 表述。
+>
+> **full**："依据 **中国气象局·降水量等级（GB/T 28592-2012）§4.1**：24 小时降水
+> 量 50.0~99.9mm 为暴雨；12 小时降水量 30.0~69.9mm 为暴雨。" → **直接引用 GB/T
+> 标准 + 具体条款 + 双时段双区间**，可溯源。
+
+**核心论文卖点**：
+
+1. **决策类场景全部通过**（full 6/6 vs ablated 3/6，**+50 pp**）—— 双通路 RAG
+   在"是否适合 X"这类决策场景下价值最高
+2. **预警类场景显著提升**（**+25 pp**）—— 暴雨/严寒等阈值判断需 GB/T 支撑
+3. **ablated 全 30 条 0% 引用** —— LLM 即使"知道"阈值也不会主动告诉用户出处，
+   这是其经典行为
+4. **端到端通过率比 Judge 综合分更严格** —— Judge 综合分被流畅性"稀释"成
+   接近持平，但 case_pass 把"该引用时必须引用"作为硬条件，给出 +13.4 pp 真实
+   差距
+5. **首次以系统视角验证集成衰减效应** —— 单模块通路 B citation 真实性 100%，
+   但端到端引用率仅 26.7%，差距来自 LLM 在最终报告生成时的省略
+
+**与开题报告 §3.4 五项指标对应关系**：
+
+| 开题指标 | 评测出口 | 完成度 |
+|---|---|---|
+| Acc_intent 意图识别准确率 | 7.16 节 35 条 | ✅ E2E 91.4% |
+| F1_param 参数提取 F1 | 7.16 节 location_role | ✅ 100% |
+| Acc_analysis 统计分析准确率 | 7.17 节 18 条 | ✅ 88.9% |
+| **Task_completion 端到端任务完成率** | **本节 30 条** | ✅ **86.7%（full）** |
+| 报告生成质量（BLEU/ROUGE/judge） | **本节 LLM-as-judge 4 维度** | ✅ |
+
+**开题报告承诺的 5 项评测指标至此全部完成**。
+
+**完整论文素材**：`docs/写作文档/端到端评测-论文素材.md`（含失败用例分析、
+"看似平局"的 Judge 综合分解读、与前 5 个单模块评测的关系）。
+
+**复现命令**：
+
+```bash
+# 完整 30 用例 × 2 档评测（首次约 60-90 分钟，缓存后约 5 秒）
+python -m experiments.eval.run_e2e_eval
+
+# Smoke test：仅前 N 条 + 仅一档（调试用）
+python -m experiments.eval.run_e2e_eval --limit 3 --only-mode ablated
+
+# 强制重跑（清空三层缓存）
+python -m experiments.eval.run_e2e_eval --force-llm
+```
+
+输出：
+
+- `experiments/results/e2e_eval_<timestamp>.{json,md}`
+- `e2e_eval_latest.md` 自动镜像最新版
+- `e2e_intent_cache.json` / `e2e_agent_cache.json` / `e2e_judge_cache.json` 三层独立缓存
+
+**对应研究问题**：
+- **Q1+Q2+Q3 集成实证**：首次以系统视角验证整套方案的端到端价值
+- **集成衰减效应**：揭示单模块成绩好不一定端到端就好，是单模块评测无法
+  捕捉、端到端评测专门补足的盲区
+- **决策类增益最高**：印证"双通路 RAG 主要价值在权威性支撑而非检索本身"
+
+---
+
 ## 八、核心参考文献速查
 
 | 主题 | 关键文献 | 用途 |
@@ -1249,6 +1629,21 @@ python -m src.agent.react_agent
   - 输出 `experiments/results/rag_retrieval_eval_<时间戳>.{json,md}`，含 Top-1 / MRR / Recall@K / Category@K
 - **通路 A 权重扫描实验**（60 用例 × 8 个权重点，约 12 秒，启用 query embedding 缓存）：`python -m experiments.eval.run_rag_weight_sweep`
   - 输出 `experiments/results/rag_weight_sweep_<时间戳>.{json,md}`，证明 vector_weight=0.9 为扩展后最优权重（KB 62 条评测集 60 条）
+- **意图识别 + 参数补全评测**（35 用例 × 2 阶段 = 70 次 LLM 调用；首次约 11 分钟，缓存后约 7 秒）：
+  `python -m experiments.eval.run_intent_eval`
+  - 强制重跑：加 `--force`
+  - 输出 `experiments/results/intent_eval_<时间戳>.{json,md}`，含 9 项指标 + 端到端通过率
+- **代码执行沙箱自检**（受限沙箱 6 类边界条件，零网络）：`python -m src.tools.code_executor`
+- **代码生成 + 执行端到端自检**（3 条样例，调 LLM 约 30 秒）：`python -m src.analysis.code_generator`
+- **代码生成 + 沙箱执行 3 档消融评测**（18 用例 × 2 档 LLM = 36 次调用；首次约 4 分钟，缓存后约 5 秒）：
+  `python -m experiments.eval.run_code_eval`
+  - 强制重跑：加 `--force-llm`
+  - 输出 `experiments/results/code_eval_<时间戳>.{json,md}`，含 oracle / llm_direct / llm_with_code 数值准确率对照
+- **端到端任务完成率评测**（30 用例 × 2 档 + LLM-as-judge；首次约 60-90 分钟，缓存后约 5 秒）：
+  `python -m experiments.eval.run_e2e_eval`
+  - Smoke test：`python -m experiments.eval.run_e2e_eval --limit 3 --only-mode ablated`
+  - 强制重跑：加 `--force-llm`（清空 intent / agent / judge 三层缓存）
+  - 输出 `experiments/results/e2e_eval_<时间戳>.{json,md}`，含 full vs ablated 双档总表 + 6 类场景拆分 + 失败用例摘要
 
 
 ---

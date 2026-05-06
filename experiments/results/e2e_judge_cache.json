@@ -1,0 +1,482 @@
+{
+  "be9677aaeb59d507": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、要素齐全，使用了规范气象术语（多云、南风3级等），但未引用任何GB/T标准号，专业性可进一步提升；数据自洽合理但无法验证真实性。"
+  },
+  "81844c18e33ea0b7": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答直接回应了用户问题，信息完整且结构清晰，使用了规范气象分级词（晴/多云/1-3级风），但未引用GB/T等权威标准号，专业性仍有提升空间；具体数值自洽合理但无法实时验证。"
+  },
+  "f470f36a91d47cae": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答直接给出了温度并补充了体感温度、风力、湿度等丰富信息，结构清晰流畅；使用了"
+  },
+  "3b9e445355603757": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、覆盖全面，天气数据自洽合理，但周六预报有小雨却给出紫外线指数8-11偏高略有矛盾；气象分级词使用尚可（东风1-3级），但未引用任何GB/T标准或穿衣指数规范，专业性有待提升。"
+  },
+  "1d902dce6276931c": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、对比完整，温差计算自洽，温度数值对5月合理；但未引用气象分级标准（如GB/T 28542高温等级），仅用口语化描述（"
+  },
+  "234957b6ba9f6d44": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 2,
+    "fluency": 5,
+    "overall": 4.0,
+    "comment": "回答结构清晰、信息完整，温度对比与出行建议覆盖充分；但缺乏规范气象分级词（如'高温'等级）及GB/T标准引用，专业性不足。"
+  },
+  "cc60efaa0c58cf73": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 2,
+    "fluency": 5,
+    "overall": 4.0,
+    "comment": "回答结构清晰、对比完整，还补充了未来趋势，但缺乏气象规范分级词（如按GB/T 28592界定小雨/中雨等量级）和权威标准引用，专业性不足。"
+  },
+  "25ad38f3f3e7660e": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答直接给出了温差5°C并补充体感温差9°C，结构清晰、计算自洽；但未使用规范气象分级词，也未引用任何GB/T标准，专业性一般。"
+  },
+  "112785ec9f13e843": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "三城市天气信息完整、结构清晰、数据自洽合理，出行建议实用；使用了规范气象用语（阴天/多云/1-3级风），但未引用任何GB/T标准或权威分级依据，专业性有待提升。"
+  },
+  "239cb4c79b01e776": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、数据自洽且趋势解读到位，覆盖温度趋势与穿衣建议，但未引用任何气象国标（GB/T），专业性有待提升；具体数值无法交叉验证，但无明显事实矛盾。"
+  },
+  "18363d3da5e4b239": {
+    "factuality": 5,
+    "completeness": 5,
+    "expertise": 4,
+    "fluency": 5,
+    "overall": 4.75,
+    "comment": "回答结构清晰、数据自洽，准确引用气象学高温标准（≥35°C）并据此给出明确结论，覆盖温度趋势、天气状况与出行建议；仅缺少GB/T标准编号引用，专业性略欠一档。"
+  },
+  "c1fd92b18be81f42": {
+    "factuality": 3,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.0,
+    "comment": "结构清晰、覆盖全面，但5月8日标注"
+  },
+  "494a81a56bf24bdd": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、数据自洽，完整覆盖了气温变化幅度的核心问题并给出穿衣建议；但缺少气象分级标准引用（如GB/T），降水仅用'阵雨'而未按规范分级，专业性有待提升。"
+  },
+  "8346a203133f105b": {
+    "factuality": 2,
+    "completeness": 4,
+    "expertise": 2,
+    "fluency": 4,
+    "overall": 3.0,
+    "comment": "回答结构清晰、覆盖较全，但存在明显事实矛盾：5月5日同时标注为'周一'和'周二'，且5月7日天气标为'小雨'却降水量0.0mm，数据不自洽；未引用任何气象分级标准，专业性不足。"
+  },
+  "20b622f8d683a5ce": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、表格直观，明确指出最热日期并补充了天气转折提醒，完整性很好；使用了规范气象用语（小雨/大雨/多云等）但未引用任何GB/T标准，专业性有提升空间；数据内部自洽无明显矛盾，但无法验证预报准确性故事实性给4分。"
+  },
+  "4e576a297ed285e2": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、数据自洽，完整覆盖了10天逐日最低温并精准定位极值日期，但未引用气象标准分级（如GB/T 28542等），专业性有待提升。"
+  },
+  "4be9f7797cefa581": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 4,
+    "fluency": 5,
+    "overall": 4.5,
+    "comment": "回答结构清晰，用表格逐日列出降水量并明确指出5月3日降水最多，正确使用'小雨量级'等规范分级词，但未引用GB/T标准号；数据内部自洽、无明显事实矛盾。"
+  },
+  "3077a664eb847669": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、表格直观，完整覆盖7天风力并给出明确结论；使用了规范的风力等级术语（1-3级、风向），但未引用GB/T标准，且所有天风力相同导致专业性展示有限，无法体现更深层气象解读。"
+  },
+  "b6f0b22bd38872c6": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、计算自洽、完整覆盖5天数据并明确指出最大日较差日期，但未引用气象规范标准，专业性有待提升；温度数值无法实时验证但合理自洽。"
+  },
+  "2ed3e0cf66aa7fb9": {
+    "factuality": 5,
+    "completeness": 5,
+    "expertise": 4,
+    "fluency": 5,
+    "overall": 4.75,
+    "comment": "回答结构清晰、数据自洽，白天/夜间分段分析贴合户外活动需求，使用了规范气象分级词（大雨、1-3级风等），但未引用GB/T标准号，专业性略欠一档。"
+  },
+  "87009b031881b0bd": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 4,
+    "fluency": 5,
+    "overall": 4.5,
+    "comment": "回答结构清晰、信息完整，直接给出洗车指数等级并辅以降水、湿度、未来三天趋势等关键依据，使用了规范的气象分级词（洗车指数1级、南风3级等），但未引用具体国标编号，事实性因无法交叉验证具体数值暂给4分。"
+  },
+  "b8679a2c619f40e0": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、信息详尽，给出了明确的带伞建议及额外穿衣提醒；使用了规范气象用语（晴转多云、南风4-5级等），但未引用GB/T等权威标准号，专业性仍有提升空间；数据内部自洽，无明显事实矛盾。"
+  },
+  "d4a6fb8e234c184b": {
+    "factuality": 5,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.5,
+    "comment": "回答结构清晰、数据详实，覆盖了温度/湿度/风力/紫外线/降水等跑步相关要素并给出分时段建议，完整度很高；使用了规范气象分级词（1-3级风、多云/阴等），但未引用任何GB/T标准号，专业性有提升空间。"
+  },
+  "87c022cc489249d0": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、覆盖完整，使用了规范气象分级词（辐射雾、1-3级风等）并解释了起雾条件，但未引用GB/T等国标标准号，专业性可进一步提升；事实性方面数据自洽无明显矛盾，但具体逐小时数值无法验证故未给满分。"
+  },
+  "9339aff290568ac9": {
+    "factuality": 5,
+    "completeness": 5,
+    "expertise": 4,
+    "fluency": 5,
+    "overall": 4.75,
+    "comment": "回答直接回应了用户关于暴雨的关切，逐日给出天气与降水量，并引用暴雨阈值（24h≥50mm）进行专业解释，结构清晰流畅；未引用具体国标编号（如GB/T 28592），专业性扣1分。"
+  },
+  "659497daef30c4d2": {
+    "factuality": 4,
+    "completeness": 4,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.0,
+    "comment": "直接回答了无强对流预警，并补充天气概况与出行建议，结构清晰流畅；但专业性一般，未引用强对流预警分级标准（如GB/T），对'不稳定条件'的判断也缺乏更具体的气象指标支撑。"
+  },
+  "893987a62af81cd2": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、信息完整，正确判断14-17°C远未达到严寒，并给出出行建议；但'严寒'阈值（-20°C/0°C）未引用GB/T标准，专业性有待提升。"
+  },
+  "e8d813da79a90182": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、信息完整，正确判断无台风预警并给出合理解释；使用了规范气象分级词（1-3级、微风、雷阵雨等），但未引用GB/T标准号，专业性可进一步提升。"
+  },
+  "6dfac7df53e62f4a": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答直接回应了降水问题，数据自洽、结构清晰，使用了规范气象分级词（晴/多云/小雨/1-3级风），但未引用任何权威标准号（如GB/T），专业性仍有提升空间。"
+  },
+  "a3692339e291df8b": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答完整且流畅，温度及附加气象信息合理自洽，使用了规范气象分级词（2级风等），但未引用任何GB/T标准号，专业性可进一步提升。"
+  },
+  "04ef1089994f19fc": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、覆盖全面，气象术语规范（风力等级、天气描述），但GB 50736-2012为建筑暖通标准，用于穿衣建议属于引用不当；'中国气象局气温分级'未给出具体标准号，温度-穿衣阈值来源可信度不足。"
+  },
+  "547eddd265fbefd5": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、数据自洽，直接回答了\"有无大风\"并给出风力等级与体感解读；使用了规范分级词（软风/1级），但未引用GB/T标准号，专业性可进一步提升。"
+  },
+  "7e58203271b36bde": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "表格对比清晰、趋势分析到位，完整性很好；温度数值自洽合理但无法验证真实性扣1分；缺乏规范气象分级词与标准引用，专业性一般；表达流畅、结构优秀。"
+  },
+  "2e760706ba55a64f": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、直接对比了两城降水量并给出明确结论，完整性很好；数据内部自洽无矛盾，但无法验证实时数据的准确性；专业性方面使用了基本气象术语和mm单位，但缺少规范分级词（如按GB/T降水等级划分）及标准引用，停留在数值罗列层面。"
+  },
+  "4fbe77f6af05ab23": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答直接给出了温差5°C并补充体感温差分析，数据自洽、结构清晰；但未引用气象规范标准，专业性一般。"
+  },
+  "78159dd7110a11fe": {
+    "factuality": 3,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.0,
+    "comment": "三城数据详尽、结构清晰、总结实用，但阴天紫外线指数达11（极强）存在明显逻辑矛盾——阴天条件下UV应大幅衰减，此数值不合理；未引用GB/T等权威标准号，专业性有待提升。"
+  },
+  "90e22cd159e967d5": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、数据自洽、趋势解读完整，但未引用气象分级标准（GB/T），温度描述偏口语化（如"
+  },
+  "c2319cf11472fae3": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 4,
+    "fluency": 5,
+    "overall": 4.5,
+    "comment": "回答结构清晰，直接给出结论并附逐日数据表，引用了≥35°C高温标准及《气象灾害预警信号发布与传递办法》，专业性与完整性均佳；未引用具体GB/T标准号故专业分未满分，预报数值无法实时核验但内部自洽无矛盾。"
+  },
+  "2636ccd228d84959": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 5,
+    "fluency": 5,
+    "overall": 4.75,
+    "comment": "回答结构清晰、数据详实，直接回答了'不会持续下雨'并给出逐日分析；引用GB/T 28592-2012标准对降水量分级，9.4mm判为小雨正确；因无法验证实时预报数据的绝对准确性，事实性给4分，其余维度均优秀。"
+  },
+  "0b0af185459b67b2": {
+    "factuality": 3,
+    "completeness": 5,
+    "expertise": 2,
+    "fluency": 5,
+    "overall": 3.75,
+    "comment": "结构清晰、数据自洽且覆盖全面，但气温数据无来源引用无法验证真伪；专业性不足，未使用气象规范分级词（如寒潮/强降温等级）也未引用GB/T标准，仅停留在数值罗列与通俗解读层面。"
+  },
+  "b848705250d9c4a7": {
+    "factuality": 3,
+    "completeness": 4,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 3.75,
+    "comment": "结构清晰、表达流畅，但存在明显事实矛盾：5月7日标注"
+  },
+  "c552bcd1de2bec21": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、数据自洽，完整覆盖了7天逐日对比并明确指出最热日期，还补充了降温预警与实用建议；但未引用气象分级标准（GB/T），专业性有待提升。"
+  },
+  "c8d0f429bb320eb7": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、数据自洽且完整覆盖了用户问题，但未引用气象分级标准或GB/T规范，专业性有待提升。"
+  },
+  "cdb9183e74f675de": {
+    "factuality": 5,
+    "completeness": 5,
+    "expertise": 5,
+    "fluency": 5,
+    "overall": 5.0,
+    "comment": "回答完整给出了逐日降水数据表，明确指出5月3日降水最多（8.2mm），并正确引用GB/T 28592-2012 §4.1将8.2mm归类为小雨，数据自洽、结构清晰、专业规范。"
+  },
+  "c2191b44b9b9781c": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、逐日列表完整并给出明确结论；使用了规范风力等级词（1-3级），但未引用权威标准号，且7天风力完全一致略显可疑，缺乏更精细的风速数值佐证。"
+  },
+  "cc0168bf0671a118": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、计算自洽，完整覆盖了5天日较差并给出明确结论；但未引用气象分级标准，专业性停留在基础计算层面，无法验证预报数据是否为真实来源。"
+  },
+  "5927040fd51cd909": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 4,
+    "fluency": 5,
+    "overall": 4.5,
+    "comment": "回答结构清晰、信息丰富，洗车指数1级结论明确，引用了中国气象局分级标准但未给出具体GB/T编号；当前天气描述'阴转多云'与当日预报'晴'存在轻微不一致，扣1分事实性。"
+  },
+  "46abb836e687c6e7": {
+    "factuality": 4,
+    "completeness": 4,
+    "expertise": 4,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、数据自洽，引用了GB 50736-2012热舒适标准并给出分级判定与跑步建议，专业度较好；但该标准为建筑暖通规范而非气象分级标准，且缺少空气质量（AQI）这一户外跑步关键要素，事实性因无法验证实时数据但内部无矛盾给4分。"
+  },
+  "5a696826e8b7e4c7": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、信息完整，紫外线等级与防晒建议匹配合理，傍晚时段补充说明也体现了时效性；但未引用GB/T等权威标准号，专业性可进一步提升。"
+  },
+  "cecc910c6c271893": {
+    "factuality": 3,
+    "completeness": 5,
+    "expertise": 4,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构完整、引用了GB/T 28592-2012标准，但5月7日标注\"小雨\"却降水量为0.0mm，与所引标准中小雨阈值（0.1-9.9mm/24h）自相矛盾，属于明显的事实不自洽。"
+  },
+  "0e60cf7ab7f1a017": {
+    "factuality": 4,
+    "completeness": 4,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.0,
+    "comment": "回答诚实说明了当前无预警且工具无法预测未来预警，逻辑自洽、建议实用；但缺少对强对流天气形成条件的专业解读及气象标准引用，专业性有待提升。"
+  },
+  "dbe3441c46ebc9c3": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 4,
+    "fluency": 5,
+    "overall": 4.5,
+    "comment": "回答结构清晰，逐小时数据+气温分级对照完整解答了'冷不冷'和'是否严寒'两个问题，并附出行建议；引用了中央气象台气温分级但未给出GB/T标准号，且将'严寒/寒冷'合并为<0°C略显粗略（严寒与寒冷在国标中通常为不同等级），扣少量专业分。"
+  },
+  "96ac014a7de88615": {
+    "factuality": 4,
+    "completeness": 4,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.0,
+    "comment": "回答结构清晰、数据自洽，明确告知无台风预警并补充了明日天气概况，完整性较好；但缺乏GB/T等权威标准引用，风力与降水分级仅停留在常识层面，专业性有待提升。"
+  },
+  "56b9421f1e554957": {
+    "factuality": 5,
+    "completeness": 5,
+    "expertise": 4,
+    "fluency": 5,
+    "overall": 4.75,
+    "comment": "回答完整覆盖了用户关于大风的问题，提供了风向、风力等级、风速等具体数据，内部自洽无矛盾，使用了规范的气象分级词（软风、1级），并补充了预警信息和天气概况，但未引用权威标准号（如GB/T 28591-2012风力等级），专业性略欠。"
+  },
+  "dfa60f1d59daa225": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、覆盖全面，使用了规范的紫外线等级分级词和SPF/PA等专业术语，但未引用GB/T标准号（如GB/T 36744-2018），且紫外线'弱（等级2）'与太阳镜'必要（等级3）'之间存在轻微逻辑不一致——若紫外线确实偏弱，太阳镜建议应为'可选'而非'必要'。"
+  },
+  "3aada999df863b2a": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 4,
+    "fluency": 5,
+    "overall": 4.5,
+    "comment": "回答结构清晰、要素齐全，涵盖实况与预警，引用了GB 50736-2012标准，使用了规范的气象分级词（南风3级、阵风6-7级、蓝色预警）；事实性扣1分因具体数值无法交叉验证但整体自洽合理，专业性扣1分因仅引用1项国标，未涉及风力/降水等级的GB/T标准号。"
+  },
+  "55044d6e18613c81": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 3,
+    "fluency": 5,
+    "overall": 4.25,
+    "comment": "回答结构清晰、对比全面，给出了温差、湿度、天气状况等多维度信息并给出明确结论和出行建议；温度数值对五月武汉/成都合理且自洽，但未引用任何气象分级标准（如GB/T），专业术语仅停留在'大雨''阴'等日常用语层面，专业性有待提升。"
+  },
+  "40c6a0c8150751e7": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 5,
+    "fluency": 5,
+    "overall": 4.75,
+    "comment": "回答结构清晰、分段详尽，引用了GB/T 28592-2012降水量等级标准并给出大雨阈值，专业性强；完整性极佳，覆盖了分时段适宜性、穿衣/防暑建议；事实性因无法实时验证具体数值暂给4分，但数据内部自洽、季节合理，无明显矛盾。"
+  },
+  "42b1fb6169c06b64": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 4,
+    "fluency": 5,
+    "overall": 4.5,
+    "comment": "回答结构清晰、信息完整，使用了规范气象分级词（小雨、3-4级风等），给出了明确的带伞建议及理由；紫外线指数10与多云/夜间小雨的描述略有张力但白天晴段可解释，未引用GB/T标准故专业性未满分。"
+  },
+  "c8d18be2091a5df4": {
+    "factuality": 4,
+    "completeness": 5,
+    "expertise": 5,
+    "fluency": 5,
+    "overall": 4.75,
+    "comment": "回答结构清晰、专业度高，引用了GB/T 27964-2011标准并给出完整雾等级表，驾车安全评估与出行建议覆盖充分；具体逐小时气象数据无法交叉验证但内部自洽合理，事实性略保守给4分。"
+  }
+}

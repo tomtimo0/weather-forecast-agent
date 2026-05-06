@@ -1,0 +1,134 @@
+{
+  "timestamp": "20260505_173644",
+  "n_cases": 1,
+  "model": "Pro/zai-org/GLM-5.1",
+  "modes": [
+    "ablated"
+  ],
+  "overall": {
+    "ablated": {
+      "n_cases": 1,
+      "e2e_pass_rate": 1.0,
+      "key_fact_recall_avg": 1.0,
+      "citation_rate": 0.0,
+      "grading_rate": 1.0,
+      "advice_rate": 1.0,
+      "judge_factuality_avg": 4.0,
+      "judge_completeness_avg": 5.0,
+      "judge_expertise_avg": 3.0,
+      "judge_fluency_avg": 5.0,
+      "judge_overall_avg": 4.25,
+      "tool_calls_avg": 3.0
+    }
+  },
+  "by_category": {
+    "ablated": {
+      "simple_query": {
+        "n_cases": 1,
+        "e2e_pass_rate": 1.0,
+        "key_fact_recall_avg": 1.0,
+        "citation_rate": 0.0,
+        "grading_rate": 1.0,
+        "advice_rate": 1.0,
+        "judge_factuality_avg": 4.0,
+        "judge_completeness_avg": 5.0,
+        "judge_expertise_avg": 3.0,
+        "judge_fluency_avg": 5.0,
+        "judge_overall_avg": 4.25,
+        "tool_calls_avg": 3.0
+      }
+    }
+  },
+  "case_metrics": {
+    "ablated": [
+      {
+        "id": "simple_001_now_weather",
+        "category": "simple_query",
+        "mode": "ablated",
+        "answer_len": 293,
+        "tool_calls_count": 3,
+        "key_fact_recall": 1.0,
+        "key_fact_n_hit": 3,
+        "key_fact_n_total": 3,
+        "key_fact_hits": [
+          {
+            "name": "必须提到城市",
+            "type": "keyword_all",
+            "hit": true
+          },
+          {
+            "name": "必须提到温度数值",
+            "type": "regex",
+            "hit": true
+          },
+          {
+            "name": "必须覆盖≥3 个气象要素",
+            "type": "topic_coverage",
+            "hit": true
+          }
+        ],
+        "citation_present": false,
+        "grading_present": true,
+        "advice_present": true,
+        "expected_should_cite": false,
+        "expected_should_grade": false,
+        "expected_should_advise": false,
+        "judge": {
+          "factuality": 4,
+          "completeness": 5,
+          "expertise": 3,
+          "fluency": 5,
+          "overall": 4.25,
+          "comment": "回答结构清晰、要素齐全，使用了规范气象术语（多云、南风3级等），但未引用任何GB/T标准号，专业性可进一步提升；数据自洽合理但无法验证真实性。",
+          "cache_hit": false
+        },
+        "pass_facts": true,
+        "pass_citation": true,
+        "pass_grading": true,
+        "pass_advice": true,
+        "pass_judge": true,
+        "case_pass": true
+      }
+    ]
+  },
+  "raw_outputs": {
+    "ablated": [
+      {
+        "id": "simple_001_now_weather",
+        "mode": "ablated",
+        "query": "北京今天天气怎么样？",
+        "answer": "北京今天（2026年5月5日）的实时天气情况如下：\n\n- 🌤 **天气状况**：多云\n- 🌡 **气温**：28°C（体感温度 28°C）\n- 💨 **风力风向**：南风 3级，风速 15km/h\n- 💧 **相对湿度**：38%\n- 🌧 **降水量**：0.0mm（无降水）\n- 👁 **能见度**：19km\n- 📊 **气压**：997hPa\n\n**出行建议**：今天北京多云，气温28°C，体感舒适，湿度适中，能见度良好，适合外出活动。不过南风3级，户外活动时注意防风。当前无降水，出门无需带伞。\n\n---\nℹ️ 您未指定具体日期，已默认查询\"今天\"（2026年5月5日）的天气。",
+        "tool_calls": [
+          {
+            "name": "get_current_time",
+            "args": {}
+          },
+          {
+            "name": "search_city",
+            "args": {
+              "location": "北京"
+            }
+          },
+          {
+            "name": "get_current_weather",
+            "args": {
+              "location": "101010100"
+            }
+          }
+        ],
+        "elapsed_ms": 9097.715599999901,
+        "iter_count": 6,
+        "error": null,
+        "judge": {
+          "factuality": 4,
+          "completeness": 5,
+          "expertise": 3,
+          "fluency": 5,
+          "overall": 4.25,
+          "comment": "回答结构清晰、要素齐全，使用了规范气象术语（多云、南风3级等），但未引用任何GB/T标准号，专业性可进一步提升；数据自洽合理但无法验证真实性。",
+          "cache_hit": false
+        }
+      }
+    ]
+  }
+}

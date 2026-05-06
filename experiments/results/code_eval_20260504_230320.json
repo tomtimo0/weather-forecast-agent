@@ -1,0 +1,1460 @@
+{
+  "timestamp": "20260504_230320",
+  "n_cases": 18,
+  "model": "Pro/zai-org/GLM-5.1",
+  "modes": [
+    "oracle",
+    "llm_direct",
+    "llm_with_code"
+  ],
+  "overall": {
+    "oracle": {
+      "n_cases": 18,
+      "numeric_accuracy": 1.0
+    },
+    "llm_direct": {
+      "n_cases": 18,
+      "numeric_accuracy": 0.6666666666666666
+    },
+    "llm_with_code": {
+      "n_cases": 18,
+      "numeric_accuracy": 0.8888888888888888,
+      "code_generated_rate": 1.0,
+      "code_executable_rate": 0.9444444444444444
+    }
+  },
+  "by_category": {
+    "oracle": {
+      "average": {
+        "n_cases": 5,
+        "numeric_accuracy": 1.0
+      },
+      "extreme": {
+        "n_cases": 3,
+        "numeric_accuracy": 1.0
+      },
+      "sum": {
+        "n_cases": 2,
+        "numeric_accuracy": 1.0
+      },
+      "diff": {
+        "n_cases": 4,
+        "numeric_accuracy": 1.0
+      },
+      "count": {
+        "n_cases": 2,
+        "numeric_accuracy": 1.0
+      },
+      "sort": {
+        "n_cases": 2,
+        "numeric_accuracy": 1.0
+      }
+    },
+    "llm_direct": {
+      "average": {
+        "n_cases": 5,
+        "numeric_accuracy": 0.8
+      },
+      "extreme": {
+        "n_cases": 3,
+        "numeric_accuracy": 0.0
+      },
+      "sum": {
+        "n_cases": 2,
+        "numeric_accuracy": 1.0
+      },
+      "diff": {
+        "n_cases": 4,
+        "numeric_accuracy": 0.75
+      },
+      "count": {
+        "n_cases": 2,
+        "numeric_accuracy": 0.5
+      },
+      "sort": {
+        "n_cases": 2,
+        "numeric_accuracy": 1.0
+      }
+    },
+    "llm_with_code": {
+      "average": {
+        "n_cases": 5,
+        "numeric_accuracy": 1.0,
+        "code_generated_rate": 1.0,
+        "code_executable_rate": 1.0
+      },
+      "extreme": {
+        "n_cases": 3,
+        "numeric_accuracy": 1.0,
+        "code_generated_rate": 1.0,
+        "code_executable_rate": 1.0
+      },
+      "sum": {
+        "n_cases": 2,
+        "numeric_accuracy": 1.0,
+        "code_generated_rate": 1.0,
+        "code_executable_rate": 1.0
+      },
+      "diff": {
+        "n_cases": 4,
+        "numeric_accuracy": 0.5,
+        "code_generated_rate": 1.0,
+        "code_executable_rate": 0.75
+      },
+      "count": {
+        "n_cases": 2,
+        "numeric_accuracy": 1.0,
+        "code_generated_rate": 1.0,
+        "code_executable_rate": 1.0
+      },
+      "sort": {
+        "n_cases": 2,
+        "numeric_accuracy": 1.0,
+        "code_generated_rate": 1.0,
+        "code_executable_rate": 1.0
+      }
+    }
+  },
+  "case_metrics": {
+    "oracle": [
+      {
+        "id": "avg_001_max_temp_week",
+        "category": "average",
+        "mode": "oracle",
+        "expected_type": "scalar",
+        "expected_value": 20.4,
+        "pred_value": 20.4,
+        "numeric_correct": true,
+        "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+      },
+      {
+        "id": "avg_002_min_temp",
+        "category": "average",
+        "mode": "oracle",
+        "expected_type": "scalar",
+        "expected_value": 12.5,
+        "pred_value": 12.5,
+        "numeric_correct": true,
+        "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+      },
+      {
+        "id": "avg_003_humidity",
+        "category": "average",
+        "mode": "oracle",
+        "expected_type": "scalar",
+        "expected_value": 69.8,
+        "pred_value": 69.8,
+        "numeric_correct": true,
+        "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+      },
+      {
+        "id": "avg_004_wind_speed",
+        "category": "average",
+        "mode": "oracle",
+        "expected_type": "scalar",
+        "expected_value": 4.04,
+        "pred_value": 4.04,
+        "numeric_correct": true,
+        "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+      },
+      {
+        "id": "avg_005_feels_like",
+        "category": "average",
+        "mode": "oracle",
+        "expected_type": "scalar",
+        "expected_value": 24.9,
+        "pred_value": 24.9,
+        "numeric_correct": true,
+        "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+      },
+      {
+        "id": "extreme_001_hottest_day",
+        "category": "extreme",
+        "mode": "oracle",
+        "expected_type": "date_with_value",
+        "expected_value": {
+          "date": "2025-07-03",
+          "tempMax": 36.8
+        },
+        "pred_value": {
+          "date": "2025-07-03",
+          "tempMax": 36.8
+        },
+        "numeric_correct": true,
+        "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+      },
+      {
+        "id": "extreme_002_max_precip_day",
+        "category": "extreme",
+        "mode": "oracle",
+        "expected_type": "date_with_value",
+        "expected_value": {
+          "date": "2025-06-19",
+          "precip": 61.3
+        },
+        "pred_value": {
+          "date": "2025-06-19",
+          "precip": 61.3
+        },
+        "numeric_correct": true,
+        "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+      },
+      {
+        "id": "extreme_003_coldest_hour",
+        "category": "extreme",
+        "mode": "oracle",
+        "expected_type": "time_with_value",
+        "expected_value": {
+          "time": "03:00",
+          "temp": -19.3
+        },
+        "pred_value": {
+          "time": "03:00",
+          "temp": -19.3
+        },
+        "numeric_correct": true,
+        "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+      },
+      {
+        "id": "sum_001_total_precip",
+        "category": "sum",
+        "mode": "oracle",
+        "expected_type": "scalar",
+        "expected_value": 327.4,
+        "pred_value": 327.4,
+        "numeric_correct": true,
+        "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+      },
+      {
+        "id": "sum_002_high_temp_only_precip",
+        "category": "sum",
+        "mode": "oracle",
+        "expected_type": "scalar",
+        "expected_value": 25.6,
+        "pred_value": 25.6,
+        "numeric_correct": true,
+        "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+      },
+      {
+        "id": "diff_001_max_diurnal",
+        "category": "diff",
+        "mode": "oracle",
+        "expected_type": "date_with_value",
+        "expected_value": {
+          "date": "2025-09-18",
+          "tempDiff": 22.7
+        },
+        "pred_value": {
+          "date": "2025-09-18",
+          "tempDiff": 22.7
+        },
+        "numeric_correct": true,
+        "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+      },
+      {
+        "id": "diff_002_temp_range_extreme",
+        "category": "diff",
+        "mode": "oracle",
+        "expected_type": "scalar",
+        "expected_value": 17.2,
+        "pred_value": 17.2,
+        "numeric_correct": true,
+        "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+      },
+      {
+        "id": "diff_003_yoy_precip",
+        "category": "diff",
+        "mode": "oracle",
+        "expected_type": "scalar",
+        "expected_value": 92.4,
+        "pred_value": 92.4,
+        "numeric_correct": true,
+        "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+      },
+      {
+        "id": "diff_004_avg_diurnal",
+        "category": "diff",
+        "mode": "oracle",
+        "expected_type": "scalar",
+        "expected_value": 14.5,
+        "pred_value": 14.5,
+        "numeric_correct": true,
+        "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+      },
+      {
+        "id": "count_001_rainy_days",
+        "category": "count",
+        "mode": "oracle",
+        "expected_type": "scalar",
+        "expected_value": 7,
+        "pred_value": 7,
+        "numeric_correct": true,
+        "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+      },
+      {
+        "id": "count_002_hot_days_threshold",
+        "category": "count",
+        "mode": "oracle",
+        "expected_type": "scalar",
+        "expected_value": 7,
+        "pred_value": 7,
+        "numeric_correct": true,
+        "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+      },
+      {
+        "id": "sort_001_top3_precip_dates",
+        "category": "sort",
+        "mode": "oracle",
+        "expected_type": "ordered_list",
+        "expected_value": [
+          "2025-07-10",
+          "2025-07-12",
+          "2025-07-09"
+        ],
+        "pred_value": [
+          "2025-07-10",
+          "2025-07-12",
+          "2025-07-09"
+        ],
+        "numeric_correct": true,
+        "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+      },
+      {
+        "id": "sort_002_second_hottest",
+        "category": "sort",
+        "mode": "oracle",
+        "expected_type": "date",
+        "expected_value": "2025-08-24",
+        "pred_value": "2025-08-24",
+        "numeric_correct": true,
+        "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+      }
+    ],
+    "llm_direct": [
+      {
+        "id": "avg_001_max_temp_week",
+        "category": "average",
+        "mode": "llm_direct",
+        "expected_type": "scalar",
+        "expected_value": 20.4,
+        "pred_value": 20.4,
+        "numeric_correct": true,
+        "error": null,
+        "reasoning": "7天最高温分别为18.5、20.3、22.7、19.0、16.5、21.4、24.1，总和142.5，平均142.5/7≈20.357，保留1位小数为20.4"
+      },
+      {
+        "id": "avg_002_min_temp",
+        "category": "average",
+        "mode": "llm_direct",
+        "expected_type": "scalar",
+        "expected_value": 12.5,
+        "pred_value": 12.5,
+        "numeric_correct": true,
+        "error": null,
+        "reasoning": "5天最低温分别为11.3、13.8、12.1、10.4、14.9，总和62.5，平均62.5/5=12.5"
+      },
+      {
+        "id": "avg_003_humidity",
+        "category": "average",
+        "mode": "llm_direct",
+        "expected_type": "scalar",
+        "expected_value": 69.8,
+        "pred_value": 69.8,
+        "numeric_correct": true,
+        "error": null,
+        "reasoning": "6小时湿度分别为78、75、71、68、65、62，求和419，除以6得69.83，保留1位小数为69.8"
+      },
+      {
+        "id": "avg_004_wind_speed",
+        "category": "average",
+        "mode": "llm_direct",
+        "expected_type": "scalar",
+        "expected_value": 4.04,
+        "pred_value": 4.04,
+        "numeric_correct": true,
+        "error": null,
+        "reasoning": "5个小时的风速分别为3.2、4.7、5.1、4.3、2.9，求和为20.2，除以5得平均风速4.04 m/s。"
+      },
+      {
+        "id": "avg_005_feels_like",
+        "category": "average",
+        "mode": "llm_direct",
+        "expected_type": "scalar",
+        "expected_value": 24.9,
+        "pred_value": 25.0,
+        "numeric_correct": false,
+        "error": null,
+        "reasoning": "8个小时的体感温度之和为21.5+24.2+27.8+29.6+28.3+25.1+22.7+20.4=199.6，平均为199.6/8=24.95，保留1位小数为25.0"
+      },
+      {
+        "id": "extreme_001_hottest_day",
+        "category": "extreme",
+        "mode": "llm_direct",
+        "expected_type": "date_with_value",
+        "expected_value": {
+          "date": "2025-07-03",
+          "tempMax": 36.8
+        },
+        "pred_value": "2025-07-03",
+        "numeric_correct": false,
+        "error": null,
+        "reasoning": "7天中2025-07-03的最高温36.8°C为最大值"
+      },
+      {
+        "id": "extreme_002_max_precip_day",
+        "category": "extreme",
+        "mode": "llm_direct",
+        "expected_type": "date_with_value",
+        "expected_value": {
+          "date": "2025-06-19",
+          "precip": 61.3
+        },
+        "pred_value": "2025-06-19",
+        "numeric_correct": false,
+        "error": null,
+        "reasoning": "7天中2025-06-19的降水量61.3mm为最大值"
+      },
+      {
+        "id": "extreme_003_coldest_hour",
+        "category": "extreme",
+        "mode": "llm_direct",
+        "expected_type": "time_with_value",
+        "expected_value": {
+          "time": "03:00",
+          "temp": -19.3
+        },
+        "pred_value": "03:00",
+        "numeric_correct": false,
+        "error": null,
+        "reasoning": "在昨晚到今晨的逐小时气温中，03:00的气温最低，为-19.3°C。"
+      },
+      {
+        "id": "sum_001_total_precip",
+        "category": "sum",
+        "mode": "llm_direct",
+        "expected_type": "scalar",
+        "expected_value": 327.4,
+        "pred_value": 327.4,
+        "numeric_correct": true,
+        "error": null,
+        "reasoning": "将7天的降水量相加：0.0 + 2.3 + 15.8 + 85.4 + 172.6 + 48.2 + 3.1 = 327.4 mm"
+      },
+      {
+        "id": "sum_002_high_temp_only_precip",
+        "category": "sum",
+        "mode": "llm_direct",
+        "expected_type": "scalar",
+        "expected_value": 25.6,
+        "pred_value": 25.6,
+        "numeric_correct": true,
+        "error": null,
+        "reasoning": "筛选最高温≥35℃的7天（8/02、8/03、8/04、8/06、8/07、8/09、8/10），对应降水量分别为4.3、0.5、12.8、0.0、2.7、1.4、3.9，累计25.6毫米"
+      },
+      {
+        "id": "diff_001_max_diurnal",
+        "category": "diff",
+        "mode": "llm_direct",
+        "expected_type": "date_with_value",
+        "expected_value": {
+          "date": "2025-09-18",
+          "tempDiff": 22.7
+        },
+        "pred_value": "2025-09-18",
+        "numeric_correct": false,
+        "error": null,
+        "reasoning": "计算每日日较差：15.6, 18.9, 10.4, 22.7, 13.3, 14.3, 8.4，最大值为22.7°C，出现在9月18日"
+      },
+      {
+        "id": "diff_002_temp_range_extreme",
+        "category": "diff",
+        "mode": "llm_direct",
+        "expected_type": "scalar",
+        "expected_value": 17.2,
+        "pred_value": 17.2,
+        "numeric_correct": true,
+        "error": null,
+        "reasoning": "过去5天最高温最大值为21.5（12-14），最低温最小值为4.3（12-12），极差=21.5-4.3=17.2"
+      },
+      {
+        "id": "diff_003_yoy_precip",
+        "category": "diff",
+        "mode": "llm_direct",
+        "expected_type": "scalar",
+        "expected_value": 92.4,
+        "pred_value": 92.4,
+        "numeric_correct": true,
+        "error": null,
+        "reasoning": "2025年6月降水307.8mm减去2024年6月降水215.4mm，差值为92.4mm"
+      },
+      {
+        "id": "diff_004_avg_diurnal",
+        "category": "diff",
+        "mode": "llm_direct",
+        "expected_type": "scalar",
+        "expected_value": 14.5,
+        "pred_value": 14.5,
+        "numeric_correct": true,
+        "error": null,
+        "reasoning": "6天日较差分别为14.5、14.7、13.8、15.6、14.7、13.9，总和87.2，平均87.2/6≈14.53，保留1位小数为14.5"
+      },
+      {
+        "id": "count_001_rainy_days",
+        "category": "count",
+        "mode": "llm_direct",
+        "expected_type": "scalar",
+        "expected_value": 7,
+        "pred_value": 6,
+        "numeric_correct": false,
+        "error": null,
+        "reasoning": "在14天数据中，降水量>0的天数为6天：4月2日(2.3)、3日(0.5)、5日(15.8)、8日(4.7)、9日(12.4)、12日(1.8)、14日(3.2)"
+      },
+      {
+        "id": "count_002_hot_days_threshold",
+        "category": "count",
+        "mode": "llm_direct",
+        "expected_type": "scalar",
+        "expected_value": 7,
+        "pred_value": 7,
+        "numeric_correct": true,
+        "error": null,
+        "reasoning": "过去10天中，8-11(35.2)、8-12(36.7)、8-14(35.0)、8-15(37.1)、8-16(38.4)、8-18(35.8)、8-19(36.2)共7天最高温≥35℃"
+      },
+      {
+        "id": "sort_001_top3_precip_dates",
+        "category": "sort",
+        "mode": "llm_direct",
+        "expected_type": "ordered_list",
+        "expected_value": [
+          "2025-07-10",
+          "2025-07-12",
+          "2025-07-09"
+        ],
+        "pred_value": [
+          "2025-07-10",
+          "2025-07-12",
+          "2025-07-09"
+        ],
+        "numeric_correct": true,
+        "error": null,
+        "reasoning": "按降水量从多到少排序：7月10日(42.5mm) > 7月12日(31.8mm) > 7月9日(18.7mm)，取前3名日期"
+      },
+      {
+        "id": "sort_002_second_hottest",
+        "category": "sort",
+        "mode": "llm_direct",
+        "expected_type": "date",
+        "expected_value": "2025-08-24",
+        "pred_value": "2025-08-24",
+        "numeric_correct": true,
+        "error": null,
+        "reasoning": "将7天最高温排序：37.2(08-22) > 36.9(08-24) > 35.8(08-21) > ...，第二高为08-24的36.9°C"
+      }
+    ],
+    "llm_with_code": [
+      {
+        "id": "avg_001_max_temp_week",
+        "category": "average",
+        "mode": "llm_with_code",
+        "expected_type": "scalar",
+        "expected_value": 20.4,
+        "pred_value": 20.4,
+        "numeric_correct": true,
+        "code_generated": true,
+        "code_executable": true,
+        "error": null,
+        "code": "def compute(data):\n    daily = data[\"daily\"]\n    max_temps = [day[\"tempMax\"] for day in daily]\n    avg_max_temp = statistics.mean(max_temps)\n    return round(avg_max_temp, 1)",
+        "reasoning": "从 daily 列表中提取每天的最高温 tempMax，用 statistics.mean 计算平均值，再 round 保留 1 位小数。"
+      },
+      {
+        "id": "avg_002_min_temp",
+        "category": "average",
+        "mode": "llm_with_code",
+        "expected_type": "scalar",
+        "expected_value": 12.5,
+        "pred_value": 12.5,
+        "numeric_correct": true,
+        "code_generated": true,
+        "code_executable": true,
+        "error": null,
+        "code": "def compute(data):\n    temps = [day[\"tempMin\"] for day in data[\"daily\"]]\n    avg = statistics.mean(temps)\n    return round(avg, 1)",
+        "reasoning": "提取每日 tempMin 组成列表，用 statistics.mean 求均值，再 round 保留 1 位小数。"
+      },
+      {
+        "id": "avg_003_humidity",
+        "category": "average",
+        "mode": "llm_with_code",
+        "expected_type": "scalar",
+        "expected_value": 69.8,
+        "pred_value": 69.8,
+        "numeric_correct": true,
+        "code_generated": true,
+        "code_executable": true,
+        "error": null,
+        "code": "def compute(data):\n    hourly = data[\"hourly\"]\n    humidities = [entry[\"humidity\"] for entry in hourly]\n    avg_humidity = statistics.mean(humidities)\n    return round(avg_humidity, 1)",
+        "reasoning": "从 hourly 列表中提取所有湿度值，用 statistics.mean 计算平均值，再 round 保留 1 位小数。"
+      },
+      {
+        "id": "avg_004_wind_speed",
+        "category": "average",
+        "mode": "llm_with_code",
+        "expected_type": "scalar",
+        "expected_value": 4.04,
+        "pred_value": 4.04,
+        "numeric_correct": true,
+        "code_generated": true,
+        "code_executable": true,
+        "error": null,
+        "code": "def compute(data):\n    hourly = data[\"hourly\"]\n    wind_speeds = [h[\"windSpeed\"] for h in hourly]\n    avg_wind = statistics.mean(wind_speeds)\n    return round(avg_wind, 2)",
+        "reasoning": "从 hourly 列表中提取所有 windSpeed 值，用 statistics.mean 计算平均风速，再 round 保留 2 位小数。"
+      },
+      {
+        "id": "avg_005_feels_like",
+        "category": "average",
+        "mode": "llm_with_code",
+        "expected_type": "scalar",
+        "expected_value": 24.9,
+        "pred_value": 24.9,
+        "numeric_correct": true,
+        "code_generated": true,
+        "code_executable": true,
+        "error": null,
+        "code": "def compute(data):\n    feels_like_values = [hour[\"feelsLike\"] for hour in data[\"hourly\"]]\n    avg = statistics.mean(feels_like_values)\n    return round(avg, 1)",
+        "reasoning": "从 data[\"hourly\"] 中提取所有 8 个时段的 feelsLike 值，用 statistics.mean 求平均，再 round 保留 1 位小数。"
+      },
+      {
+        "id": "extreme_001_hottest_day",
+        "category": "extreme",
+        "mode": "llm_with_code",
+        "expected_type": "date_with_value",
+        "expected_value": {
+          "date": "2025-07-03",
+          "tempMax": 36.8
+        },
+        "pred_value": {
+          "date": "2025-07-03",
+          "tempMax": 36.8
+        },
+        "numeric_correct": true,
+        "code_generated": true,
+        "code_executable": true,
+        "error": null,
+        "code": "def compute(data):\n    daily = data[\"daily\"]\n    hottest = max(daily, key=lambda d: d[\"tempMax\"])\n    return {\"date\": hottest[\"date\"], \"tempMax\": hottest[\"tempMax\"]}\n",
+        "reasoning": "遍历 daily 列表，以 tempMax 为键找出最高温对应的那一天，返回日期和最高温。"
+      },
+      {
+        "id": "extreme_002_max_precip_day",
+        "category": "extreme",
+        "mode": "llm_with_code",
+        "expected_type": "date_with_value",
+        "expected_value": {
+          "date": "2025-06-19",
+          "precip": 61.3
+        },
+        "pred_value": {
+          "date": "2025-06-19",
+          "precip": 61.3
+        },
+        "numeric_correct": true,
+        "code_generated": true,
+        "code_executable": true,
+        "error": null,
+        "code": "def compute(data):\n    daily = data[\"daily\"]\n    max_day = max(daily, key=lambda d: d[\"precip\"])\n    return {\"date\": max_day[\"date\"], \"precip\": max_day[\"precip\"]}",
+        "reasoning": "遍历 daily 列表，以 precip 为键找出最大值对应的那一天，返回日期和降水量。"
+      },
+      {
+        "id": "extreme_003_coldest_hour",
+        "category": "extreme",
+        "mode": "llm_with_code",
+        "expected_type": "time_with_value",
+        "expected_value": {
+          "time": "03:00",
+          "temp": -19.3
+        },
+        "pred_value": {
+          "time": "03:00",
+          "temp": -19.3
+        },
+        "numeric_correct": true,
+        "code_generated": true,
+        "code_executable": true,
+        "error": null,
+        "code": "def compute(data):\n    hourly = data[\"hourly\"]\n    coldest = min(hourly, key=lambda h: h[\"temp\"])\n    return {\"time\": coldest[\"time\"], \"temp\": coldest[\"temp\"]}\n",
+        "reasoning": "遍历 hourly 列表，以 temp 为键找到气温最低的小时记录，返回对应的时间和气温值。"
+      },
+      {
+        "id": "sum_001_total_precip",
+        "category": "sum",
+        "mode": "llm_with_code",
+        "expected_type": "scalar",
+        "expected_value": 327.4,
+        "pred_value": 327.4,
+        "numeric_correct": true,
+        "code_generated": true,
+        "code_executable": true,
+        "error": null,
+        "code": "def compute(data):\n    total = sum(day[\"precip\"] for day in data[\"daily\"])\n    return round(total, 1)",
+        "reasoning": "遍历 daily 列表，累加每天的 precip 值得到过去7天累计降水量，最后用 round 保留1位小数。"
+      },
+      {
+        "id": "sum_002_high_temp_only_precip",
+        "category": "sum",
+        "mode": "llm_with_code",
+        "expected_type": "scalar",
+        "expected_value": 25.6,
+        "pred_value": 25.6,
+        "numeric_correct": true,
+        "code_generated": true,
+        "code_executable": true,
+        "error": null,
+        "code": "def compute(data):\n    total_precip = sum(\n        day[\"precip\"] for day in data[\"daily\"] if day[\"tempMax\"] >= 35\n    )\n    return round(total_precip, 1)",
+        "reasoning": "筛选 daily 中 tempMax≥35 的天数，累加这些天的 precip 字段，最后保留 1 位小数。"
+      },
+      {
+        "id": "diff_001_max_diurnal",
+        "category": "diff",
+        "mode": "llm_with_code",
+        "expected_type": "date_with_value",
+        "expected_value": {
+          "date": "2025-09-18",
+          "tempDiff": 22.7
+        },
+        "pred_value": {
+          "date": "2025-09-18",
+          "range": 22.7
+        },
+        "numeric_correct": false,
+        "code_generated": true,
+        "code_executable": true,
+        "error": null,
+        "code": "def compute(data):\n    daily = data[\"daily\"]\n    max_range = -1\n    max_date = None\n    for day in daily:\n        diff = day[\"tempMax\"] - day[\"tempMin\"]\n        if diff > max_range:\n            max_range = diff\n            max_date = day[\"date\"]\n    return {\"date\": max_date, \"range\": round(max_range, 1)}\n",
+        "reasoning": "遍历每日数据，计算日较差（tempMax - tempMin），记录最大日较差对应的日期和差值，返回日期与日较差。"
+      },
+      {
+        "id": "diff_002_temp_range_extreme",
+        "category": "diff",
+        "mode": "llm_with_code",
+        "expected_type": "scalar",
+        "expected_value": 17.2,
+        "pred_value": 17.2,
+        "numeric_correct": true,
+        "code_generated": true,
+        "code_executable": true,
+        "error": null,
+        "code": "def compute(data):\n    daily = data[\"daily\"]\n    max_temp_max = max(day[\"tempMax\"] for day in daily)\n    min_temp_min = min(day[\"tempMin\"] for day in daily)\n    result = round(max_temp_max - min_temp_min, 1)\n    return result",
+        "reasoning": "遍历过去5天的数据，分别取最高温的最大值和最低温的最小值，两者相减得到极差，保留1位小数。"
+      },
+      {
+        "id": "diff_003_yoy_precip",
+        "category": "diff",
+        "mode": "llm_with_code",
+        "expected_type": "scalar",
+        "expected_value": 92.4,
+        "pred_value": null,
+        "numeric_correct": false,
+        "code_generated": true,
+        "code_executable": false,
+        "error": "运行时异常：NameError: name 'next' is not defined",
+        "code": "def compute(data):\n    monthly = data[\"monthly\"]\n    # 找到今年6月和去年6月的降水数据\n    this_year = max(entry[\"year\"] for entry in monthly)\n    last_year = this_year - 1\n    precip_this = next(e[\"totalPrecip\"] for e in monthly if e[\"year\"] == this_year and e[\"month\"] == 6)\n    precip_last = next(e[\"totalPrecip\"] for e in monthly if e[\"year\"] == last_year and e[\"month\"] == 6)\n    diff = precip_this - precip_last\n    return round(diff, 1)",
+        "reasoning": "从 monthly 列表中分别取出今年(2025)6月和去年(2024)6月的总降水量，计算差值并保留1位小数。"
+      },
+      {
+        "id": "diff_004_avg_diurnal",
+        "category": "diff",
+        "mode": "llm_with_code",
+        "expected_type": "scalar",
+        "expected_value": 14.5,
+        "pred_value": 14.5,
+        "numeric_correct": true,
+        "code_generated": true,
+        "code_executable": true,
+        "error": null,
+        "code": "def compute(data):\n    daily = data[\"daily\"]\n    ranges = [day[\"tempMax\"] - day[\"tempMin\"] for day in daily]\n    avg_range = statistics.mean(ranges)\n    return round(avg_range, 1)",
+        "reasoning": "计算每天的最高温与最低温之差（日较差），再对过去6天的日较差求均值，最后保留1位小数。"
+      },
+      {
+        "id": "count_001_rainy_days",
+        "category": "count",
+        "mode": "llm_with_code",
+        "expected_type": "scalar",
+        "expected_value": 7,
+        "pred_value": 7,
+        "numeric_correct": true,
+        "code_generated": true,
+        "code_executable": true,
+        "error": null,
+        "code": "def compute(data):\n    count = 0\n    for day in data[\"daily\"]:\n        if day[\"precip\"] > 0:\n            count += 1\n    return count",
+        "reasoning": "遍历 daily 列表，统计 precip > 0 的天数即为下雨天数。"
+      },
+      {
+        "id": "count_002_hot_days_threshold",
+        "category": "count",
+        "mode": "llm_with_code",
+        "expected_type": "scalar",
+        "expected_value": 7,
+        "pred_value": 7,
+        "numeric_correct": true,
+        "code_generated": true,
+        "code_executable": true,
+        "error": null,
+        "code": "def compute(data):\n    count = 0\n    for day in data[\"daily\"]:\n        if day[\"tempMax\"] >= 35:\n            count += 1\n    return count",
+        "reasoning": "遍历 daily 列表，统计 tempMax ≥ 35 的天数。符合条件的日期有 08-11、08-12、08-14、08-15、08-16、08-18、08-19，共 7 天。"
+      },
+      {
+        "id": "sort_001_top3_precip_dates",
+        "category": "sort",
+        "mode": "llm_with_code",
+        "expected_type": "ordered_list",
+        "expected_value": [
+          "2025-07-10",
+          "2025-07-12",
+          "2025-07-09"
+        ],
+        "pred_value": [
+          "2025-07-10",
+          "2025-07-12",
+          "2025-07-09"
+        ],
+        "numeric_correct": true,
+        "code_generated": true,
+        "code_executable": true,
+        "error": null,
+        "code": "def compute(data):\n    daily = data[\"daily\"]\n    sorted_daily = sorted(daily, key=lambda x: x[\"precip\"], reverse=True)\n    top3 = sorted_daily[:3]\n    return [entry[\"date\"] for entry in top3]",
+        "reasoning": "将 daily 列表按 precip 降序排序，取前 3 条记录的 date 字段返回。"
+      },
+      {
+        "id": "sort_002_second_hottest",
+        "category": "sort",
+        "mode": "llm_with_code",
+        "expected_type": "date",
+        "expected_value": "2025-08-24",
+        "pred_value": "2025-08-24",
+        "numeric_correct": true,
+        "code_generated": true,
+        "code_executable": true,
+        "error": null,
+        "code": "def compute(data):\n    daily = data[\"daily\"]\n    sorted_daily = sorted(daily, key=lambda x: x[\"tempMax\"], reverse=True)\n    return sorted_daily[1][\"date\"]",
+        "reasoning": "将每日数据按最高温降序排列，取第二项的日期即为最高温第二高的一天。"
+      }
+    ]
+  },
+  "raw_outputs": {
+    "oracle": [
+      {
+        "id": "avg_001_max_temp_week",
+        "mode": "oracle",
+        "value": 20.4,
+        "meta": {
+          "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+        }
+      },
+      {
+        "id": "avg_002_min_temp",
+        "mode": "oracle",
+        "value": 12.5,
+        "meta": {
+          "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+        }
+      },
+      {
+        "id": "avg_003_humidity",
+        "mode": "oracle",
+        "value": 69.8,
+        "meta": {
+          "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+        }
+      },
+      {
+        "id": "avg_004_wind_speed",
+        "mode": "oracle",
+        "value": 4.04,
+        "meta": {
+          "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+        }
+      },
+      {
+        "id": "avg_005_feels_like",
+        "mode": "oracle",
+        "value": 24.9,
+        "meta": {
+          "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+        }
+      },
+      {
+        "id": "extreme_001_hottest_day",
+        "mode": "oracle",
+        "value": {
+          "date": "2025-07-03",
+          "tempMax": 36.8
+        },
+        "meta": {
+          "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+        }
+      },
+      {
+        "id": "extreme_002_max_precip_day",
+        "mode": "oracle",
+        "value": {
+          "date": "2025-06-19",
+          "precip": 61.3
+        },
+        "meta": {
+          "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+        }
+      },
+      {
+        "id": "extreme_003_coldest_hour",
+        "mode": "oracle",
+        "value": {
+          "time": "03:00",
+          "temp": -19.3
+        },
+        "meta": {
+          "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+        }
+      },
+      {
+        "id": "sum_001_total_precip",
+        "mode": "oracle",
+        "value": 327.4,
+        "meta": {
+          "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+        }
+      },
+      {
+        "id": "sum_002_high_temp_only_precip",
+        "mode": "oracle",
+        "value": 25.6,
+        "meta": {
+          "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+        }
+      },
+      {
+        "id": "diff_001_max_diurnal",
+        "mode": "oracle",
+        "value": {
+          "date": "2025-09-18",
+          "tempDiff": 22.7
+        },
+        "meta": {
+          "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+        }
+      },
+      {
+        "id": "diff_002_temp_range_extreme",
+        "mode": "oracle",
+        "value": 17.2,
+        "meta": {
+          "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+        }
+      },
+      {
+        "id": "diff_003_yoy_precip",
+        "mode": "oracle",
+        "value": 92.4,
+        "meta": {
+          "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+        }
+      },
+      {
+        "id": "diff_004_avg_diurnal",
+        "mode": "oracle",
+        "value": 14.5,
+        "meta": {
+          "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+        }
+      },
+      {
+        "id": "count_001_rainy_days",
+        "mode": "oracle",
+        "value": 7,
+        "meta": {
+          "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+        }
+      },
+      {
+        "id": "count_002_hot_days_threshold",
+        "mode": "oracle",
+        "value": 7,
+        "meta": {
+          "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+        }
+      },
+      {
+        "id": "sort_001_top3_precip_dates",
+        "mode": "oracle",
+        "value": [
+          "2025-07-10",
+          "2025-07-12",
+          "2025-07-09"
+        ],
+        "meta": {
+          "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+        }
+      },
+      {
+        "id": "sort_002_second_hottest",
+        "mode": "oracle",
+        "value": "2025-08-24",
+        "meta": {
+          "reasoning": "oracle 直接读取 expected.value（评测器自校验）"
+        }
+      }
+    ],
+    "llm_direct": [
+      {
+        "id": "avg_001_max_temp_week",
+        "mode": "llm_direct",
+        "value": 20.4,
+        "meta": {
+          "reasoning": "7天最高温分别为18.5、20.3、22.7、19.0、16.5、21.4、24.1，总和142.5，平均142.5/7≈20.357，保留1位小数为20.4",
+          "error": null,
+          "numeric_extra": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "avg_002_min_temp",
+        "mode": "llm_direct",
+        "value": 12.5,
+        "meta": {
+          "reasoning": "5天最低温分别为11.3、13.8、12.1、10.4、14.9，总和62.5，平均62.5/5=12.5",
+          "error": null,
+          "numeric_extra": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "avg_003_humidity",
+        "mode": "llm_direct",
+        "value": 69.8,
+        "meta": {
+          "reasoning": "6小时湿度分别为78、75、71、68、65、62，求和419，除以6得69.83，保留1位小数为69.8",
+          "error": null,
+          "numeric_extra": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "avg_004_wind_speed",
+        "mode": "llm_direct",
+        "value": 4.04,
+        "meta": {
+          "reasoning": "5个小时的风速分别为3.2、4.7、5.1、4.3、2.9，求和为20.2，除以5得平均风速4.04 m/s。",
+          "error": null,
+          "numeric_extra": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "avg_005_feels_like",
+        "mode": "llm_direct",
+        "value": 25.0,
+        "meta": {
+          "reasoning": "8个小时的体感温度之和为21.5+24.2+27.8+29.6+28.3+25.1+22.7+20.4=199.6，平均为199.6/8=24.95，保留1位小数为25.0",
+          "error": null,
+          "numeric_extra": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "extreme_001_hottest_day",
+        "mode": "llm_direct",
+        "value": "2025-07-03",
+        "meta": {
+          "reasoning": "7天中2025-07-03的最高温36.8°C为最大值",
+          "error": null,
+          "numeric_extra": 36.8,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "extreme_002_max_precip_day",
+        "mode": "llm_direct",
+        "value": "2025-06-19",
+        "meta": {
+          "reasoning": "7天中2025-06-19的降水量61.3mm为最大值",
+          "error": null,
+          "numeric_extra": 61.3,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "extreme_003_coldest_hour",
+        "mode": "llm_direct",
+        "value": "03:00",
+        "meta": {
+          "reasoning": "在昨晚到今晨的逐小时气温中，03:00的气温最低，为-19.3°C。",
+          "error": null,
+          "numeric_extra": -19.3,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "sum_001_total_precip",
+        "mode": "llm_direct",
+        "value": 327.4,
+        "meta": {
+          "reasoning": "将7天的降水量相加：0.0 + 2.3 + 15.8 + 85.4 + 172.6 + 48.2 + 3.1 = 327.4 mm",
+          "error": null,
+          "numeric_extra": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "sum_002_high_temp_only_precip",
+        "mode": "llm_direct",
+        "value": 25.6,
+        "meta": {
+          "reasoning": "筛选最高温≥35℃的7天（8/02、8/03、8/04、8/06、8/07、8/09、8/10），对应降水量分别为4.3、0.5、12.8、0.0、2.7、1.4、3.9，累计25.6毫米",
+          "error": null,
+          "numeric_extra": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "diff_001_max_diurnal",
+        "mode": "llm_direct",
+        "value": "2025-09-18",
+        "meta": {
+          "reasoning": "计算每日日较差：15.6, 18.9, 10.4, 22.7, 13.3, 14.3, 8.4，最大值为22.7°C，出现在9月18日",
+          "error": null,
+          "numeric_extra": 22.7,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "diff_002_temp_range_extreme",
+        "mode": "llm_direct",
+        "value": 17.2,
+        "meta": {
+          "reasoning": "过去5天最高温最大值为21.5（12-14），最低温最小值为4.3（12-12），极差=21.5-4.3=17.2",
+          "error": null,
+          "numeric_extra": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "diff_003_yoy_precip",
+        "mode": "llm_direct",
+        "value": 92.4,
+        "meta": {
+          "reasoning": "2025年6月降水307.8mm减去2024年6月降水215.4mm，差值为92.4mm",
+          "error": null,
+          "numeric_extra": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "diff_004_avg_diurnal",
+        "mode": "llm_direct",
+        "value": 14.5,
+        "meta": {
+          "reasoning": "6天日较差分别为14.5、14.7、13.8、15.6、14.7、13.9，总和87.2，平均87.2/6≈14.53，保留1位小数为14.5",
+          "error": null,
+          "numeric_extra": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "count_001_rainy_days",
+        "mode": "llm_direct",
+        "value": 6,
+        "meta": {
+          "reasoning": "在14天数据中，降水量>0的天数为6天：4月2日(2.3)、3日(0.5)、5日(15.8)、8日(4.7)、9日(12.4)、12日(1.8)、14日(3.2)",
+          "error": null,
+          "numeric_extra": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "count_002_hot_days_threshold",
+        "mode": "llm_direct",
+        "value": 7,
+        "meta": {
+          "reasoning": "过去10天中，8-11(35.2)、8-12(36.7)、8-14(35.0)、8-15(37.1)、8-16(38.4)、8-18(35.8)、8-19(36.2)共7天最高温≥35℃",
+          "error": null,
+          "numeric_extra": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "sort_001_top3_precip_dates",
+        "mode": "llm_direct",
+        "value": [
+          "2025-07-10",
+          "2025-07-12",
+          "2025-07-09"
+        ],
+        "meta": {
+          "reasoning": "按降水量从多到少排序：7月10日(42.5mm) > 7月12日(31.8mm) > 7月9日(18.7mm)，取前3名日期",
+          "error": null,
+          "numeric_extra": 42.5,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "sort_002_second_hottest",
+        "mode": "llm_direct",
+        "value": "2025-08-24",
+        "meta": {
+          "reasoning": "将7天最高温排序：37.2(08-22) > 36.9(08-24) > 35.8(08-21) > ...，第二高为08-24的36.9°C",
+          "error": null,
+          "numeric_extra": 36.9,
+          "cache_hit": false
+        }
+      }
+    ],
+    "llm_with_code": [
+      {
+        "id": "avg_001_max_temp_week",
+        "mode": "llm_with_code",
+        "value": 20.4,
+        "meta": {
+          "code_generated": true,
+          "code_executable": true,
+          "code": "def compute(data):\n    daily = data[\"daily\"]\n    max_temps = [day[\"tempMax\"] for day in daily]\n    avg_max_temp = statistics.mean(max_temps)\n    return round(avg_max_temp, 1)",
+          "reasoning": "从 daily 列表中提取每天的最高温 tempMax，用 statistics.mean 计算平均值，再 round 保留 1 位小数。",
+          "error": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "avg_002_min_temp",
+        "mode": "llm_with_code",
+        "value": 12.5,
+        "meta": {
+          "code_generated": true,
+          "code_executable": true,
+          "code": "def compute(data):\n    temps = [day[\"tempMin\"] for day in data[\"daily\"]]\n    avg = statistics.mean(temps)\n    return round(avg, 1)",
+          "reasoning": "提取每日 tempMin 组成列表，用 statistics.mean 求均值，再 round 保留 1 位小数。",
+          "error": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "avg_003_humidity",
+        "mode": "llm_with_code",
+        "value": 69.8,
+        "meta": {
+          "code_generated": true,
+          "code_executable": true,
+          "code": "def compute(data):\n    hourly = data[\"hourly\"]\n    humidities = [entry[\"humidity\"] for entry in hourly]\n    avg_humidity = statistics.mean(humidities)\n    return round(avg_humidity, 1)",
+          "reasoning": "从 hourly 列表中提取所有湿度值，用 statistics.mean 计算平均值，再 round 保留 1 位小数。",
+          "error": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "avg_004_wind_speed",
+        "mode": "llm_with_code",
+        "value": 4.04,
+        "meta": {
+          "code_generated": true,
+          "code_executable": true,
+          "code": "def compute(data):\n    hourly = data[\"hourly\"]\n    wind_speeds = [h[\"windSpeed\"] for h in hourly]\n    avg_wind = statistics.mean(wind_speeds)\n    return round(avg_wind, 2)",
+          "reasoning": "从 hourly 列表中提取所有 windSpeed 值，用 statistics.mean 计算平均风速，再 round 保留 2 位小数。",
+          "error": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "avg_005_feels_like",
+        "mode": "llm_with_code",
+        "value": 24.9,
+        "meta": {
+          "code_generated": true,
+          "code_executable": true,
+          "code": "def compute(data):\n    feels_like_values = [hour[\"feelsLike\"] for hour in data[\"hourly\"]]\n    avg = statistics.mean(feels_like_values)\n    return round(avg, 1)",
+          "reasoning": "从 data[\"hourly\"] 中提取所有 8 个时段的 feelsLike 值，用 statistics.mean 求平均，再 round 保留 1 位小数。",
+          "error": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "extreme_001_hottest_day",
+        "mode": "llm_with_code",
+        "value": {
+          "date": "2025-07-03",
+          "tempMax": 36.8
+        },
+        "meta": {
+          "code_generated": true,
+          "code_executable": true,
+          "code": "def compute(data):\n    daily = data[\"daily\"]\n    hottest = max(daily, key=lambda d: d[\"tempMax\"])\n    return {\"date\": hottest[\"date\"], \"tempMax\": hottest[\"tempMax\"]}\n",
+          "reasoning": "遍历 daily 列表，以 tempMax 为键找出最高温对应的那一天，返回日期和最高温。",
+          "error": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "extreme_002_max_precip_day",
+        "mode": "llm_with_code",
+        "value": {
+          "date": "2025-06-19",
+          "precip": 61.3
+        },
+        "meta": {
+          "code_generated": true,
+          "code_executable": true,
+          "code": "def compute(data):\n    daily = data[\"daily\"]\n    max_day = max(daily, key=lambda d: d[\"precip\"])\n    return {\"date\": max_day[\"date\"], \"precip\": max_day[\"precip\"]}",
+          "reasoning": "遍历 daily 列表，以 precip 为键找出最大值对应的那一天，返回日期和降水量。",
+          "error": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "extreme_003_coldest_hour",
+        "mode": "llm_with_code",
+        "value": {
+          "time": "03:00",
+          "temp": -19.3
+        },
+        "meta": {
+          "code_generated": true,
+          "code_executable": true,
+          "code": "def compute(data):\n    hourly = data[\"hourly\"]\n    coldest = min(hourly, key=lambda h: h[\"temp\"])\n    return {\"time\": coldest[\"time\"], \"temp\": coldest[\"temp\"]}\n",
+          "reasoning": "遍历 hourly 列表，以 temp 为键找到气温最低的小时记录，返回对应的时间和气温值。",
+          "error": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "sum_001_total_precip",
+        "mode": "llm_with_code",
+        "value": 327.4,
+        "meta": {
+          "code_generated": true,
+          "code_executable": true,
+          "code": "def compute(data):\n    total = sum(day[\"precip\"] for day in data[\"daily\"])\n    return round(total, 1)",
+          "reasoning": "遍历 daily 列表，累加每天的 precip 值得到过去7天累计降水量，最后用 round 保留1位小数。",
+          "error": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "sum_002_high_temp_only_precip",
+        "mode": "llm_with_code",
+        "value": 25.6,
+        "meta": {
+          "code_generated": true,
+          "code_executable": true,
+          "code": "def compute(data):\n    total_precip = sum(\n        day[\"precip\"] for day in data[\"daily\"] if day[\"tempMax\"] >= 35\n    )\n    return round(total_precip, 1)",
+          "reasoning": "筛选 daily 中 tempMax≥35 的天数，累加这些天的 precip 字段，最后保留 1 位小数。",
+          "error": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "diff_001_max_diurnal",
+        "mode": "llm_with_code",
+        "value": {
+          "date": "2025-09-18",
+          "range": 22.7
+        },
+        "meta": {
+          "code_generated": true,
+          "code_executable": true,
+          "code": "def compute(data):\n    daily = data[\"daily\"]\n    max_range = -1\n    max_date = None\n    for day in daily:\n        diff = day[\"tempMax\"] - day[\"tempMin\"]\n        if diff > max_range:\n            max_range = diff\n            max_date = day[\"date\"]\n    return {\"date\": max_date, \"range\": round(max_range, 1)}\n",
+          "reasoning": "遍历每日数据，计算日较差（tempMax - tempMin），记录最大日较差对应的日期和差值，返回日期与日较差。",
+          "error": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "diff_002_temp_range_extreme",
+        "mode": "llm_with_code",
+        "value": 17.2,
+        "meta": {
+          "code_generated": true,
+          "code_executable": true,
+          "code": "def compute(data):\n    daily = data[\"daily\"]\n    max_temp_max = max(day[\"tempMax\"] for day in daily)\n    min_temp_min = min(day[\"tempMin\"] for day in daily)\n    result = round(max_temp_max - min_temp_min, 1)\n    return result",
+          "reasoning": "遍历过去5天的数据，分别取最高温的最大值和最低温的最小值，两者相减得到极差，保留1位小数。",
+          "error": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "diff_003_yoy_precip",
+        "mode": "llm_with_code",
+        "value": null,
+        "meta": {
+          "code_generated": true,
+          "code_executable": false,
+          "code": "def compute(data):\n    monthly = data[\"monthly\"]\n    # 找到今年6月和去年6月的降水数据\n    this_year = max(entry[\"year\"] for entry in monthly)\n    last_year = this_year - 1\n    precip_this = next(e[\"totalPrecip\"] for e in monthly if e[\"year\"] == this_year and e[\"month\"] == 6)\n    precip_last = next(e[\"totalPrecip\"] for e in monthly if e[\"year\"] == last_year and e[\"month\"] == 6)\n    diff = precip_this - precip_last\n    return round(diff, 1)",
+          "reasoning": "从 monthly 列表中分别取出今年(2025)6月和去年(2024)6月的总降水量，计算差值并保留1位小数。",
+          "error": "运行时异常：NameError: name 'next' is not defined",
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "diff_004_avg_diurnal",
+        "mode": "llm_with_code",
+        "value": 14.5,
+        "meta": {
+          "code_generated": true,
+          "code_executable": true,
+          "code": "def compute(data):\n    daily = data[\"daily\"]\n    ranges = [day[\"tempMax\"] - day[\"tempMin\"] for day in daily]\n    avg_range = statistics.mean(ranges)\n    return round(avg_range, 1)",
+          "reasoning": "计算每天的最高温与最低温之差（日较差），再对过去6天的日较差求均值，最后保留1位小数。",
+          "error": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "count_001_rainy_days",
+        "mode": "llm_with_code",
+        "value": 7,
+        "meta": {
+          "code_generated": true,
+          "code_executable": true,
+          "code": "def compute(data):\n    count = 0\n    for day in data[\"daily\"]:\n        if day[\"precip\"] > 0:\n            count += 1\n    return count",
+          "reasoning": "遍历 daily 列表，统计 precip > 0 的天数即为下雨天数。",
+          "error": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "count_002_hot_days_threshold",
+        "mode": "llm_with_code",
+        "value": 7,
+        "meta": {
+          "code_generated": true,
+          "code_executable": true,
+          "code": "def compute(data):\n    count = 0\n    for day in data[\"daily\"]:\n        if day[\"tempMax\"] >= 35:\n            count += 1\n    return count",
+          "reasoning": "遍历 daily 列表，统计 tempMax ≥ 35 的天数。符合条件的日期有 08-11、08-12、08-14、08-15、08-16、08-18、08-19，共 7 天。",
+          "error": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "sort_001_top3_precip_dates",
+        "mode": "llm_with_code",
+        "value": [
+          "2025-07-10",
+          "2025-07-12",
+          "2025-07-09"
+        ],
+        "meta": {
+          "code_generated": true,
+          "code_executable": true,
+          "code": "def compute(data):\n    daily = data[\"daily\"]\n    sorted_daily = sorted(daily, key=lambda x: x[\"precip\"], reverse=True)\n    top3 = sorted_daily[:3]\n    return [entry[\"date\"] for entry in top3]",
+          "reasoning": "将 daily 列表按 precip 降序排序，取前 3 条记录的 date 字段返回。",
+          "error": null,
+          "cache_hit": false
+        }
+      },
+      {
+        "id": "sort_002_second_hottest",
+        "mode": "llm_with_code",
+        "value": "2025-08-24",
+        "meta": {
+          "code_generated": true,
+          "code_executable": true,
+          "code": "def compute(data):\n    daily = data[\"daily\"]\n    sorted_daily = sorted(daily, key=lambda x: x[\"tempMax\"], reverse=True)\n    return sorted_daily[1][\"date\"]",
+          "reasoning": "将每日数据按最高温降序排列，取第二项的日期即为最高温第二高的一天。",
+          "error": null,
+          "cache_hit": false
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "141b3d9deb36eedd": {
+    "code": "def compute(data):\n    daily = data[\"daily\"]\n    max_temps = [day[\"tempMax\"] for day in daily]\n    avg_max_temp = statistics.mean(max_temps)\n    return round(avg_max_temp, 1)",
+    "reasoning": "从 daily 列表中提取每天的最高温 tempMax，用 statistics.mean 计算平均值，再 round 保留 1 位小数。"
+  },
+  "86dc61e48f90153e": {
+    "code": "def compute(data):\n    temps = [day[\"tempMin\"] for day in data[\"daily\"]]\n    avg = statistics.mean(temps)\n    return round(avg, 1)",
+    "reasoning": "提取每日 tempMin 组成列表，用 statistics.mean 求均值，再 round 保留 1 位小数。"
+  },
+  "6117674100cc8279": {
+    "code": "def compute(data):\n    hourly = data[\"hourly\"]\n    humidities = [entry[\"humidity\"] for entry in hourly]\n    avg_humidity = statistics.mean(humidities)\n    return round(avg_humidity, 1)",
+    "reasoning": "从 hourly 列表中提取所有湿度值，用 statistics.mean 计算平均值，再 round 保留 1 位小数。"
+  },
+  "4f4a2f44b21af617": {
+    "code": "def compute(data):\n    wind_speeds = [hour[\"windSpeed\"] for hour in data[\"hourly\"]]\n    avg_wind = statistics.mean(wind_speeds)\n    return round(avg_wind, 2)",
+    "reasoning": "从 hourly 列表中提取所有 windSpeed 值，用 statistics.mean 计算平均风速，再 round 保留 2 位小数。"
+  },
+  "1c5d319389b49a39": {
+    "code": "def compute(data):\n    feels_like_values = [hour[\"feelsLike\"] for hour in data[\"hourly\"]]\n    avg = statistics.mean(feels_like_values)\n    return round(avg, 1)",
+    "reasoning": "提取所有小时记录的 feelsLike 值，使用 statistics.mean 计算平均值，再 round 保留 1 位小数。"
+  },
+  "e1f3f946ab82df9d": {
+    "code": "",
+    "reasoning": "代码生成失败：LLM 未触发结构化输出"
+  },
+  "184e0ec47841b813": {
+    "code": "def compute(data):\n    daily = data[\"daily\"]\n    max_day = max(daily, key=lambda d: d[\"precip\"])\n    return {\"date\": max_day[\"date\"], \"precip\": max_day[\"precip\"]}",
+    "reasoning": "遍历 daily 列表，使用 max 函数以 precip 为 key 找到降水最多的那天，返回该日期和降水量。"
+  },
+  "721189ea497b8750": {
+    "code": "def compute(data):\n    hourly = data[\"hourly\"]\n    coldest = min(hourly, key=lambda h: h[\"temp\"])\n    return {\"time\": coldest[\"time\"], \"temp\": coldest[\"temp\"]}\n",
+    "reasoning": "遍历 hourly 列表，以 temp 为键找到气温最低的小时记录，返回对应的时间和气温值。"
+  },
+  "77a8a8d4b5c98e67": {
+    "code": "def compute(data):\n    total = sum(day[\"precip\"] for day in data[\"daily\"])\n    return round(total, 1)",
+    "reasoning": "遍历 daily 列表，累加每天的 precip 值得到过去7天累计降水量，最后用 round 保留1位小数。"
+  },
+  "c85ac83cf10ce0e4": {
+    "code": "def compute(data):\n    total_precip = sum(\n        day[\"precip\"] for day in data[\"daily\"] if day[\"tempMax\"] >= 35\n    )\n    return round(total_precip, 1)",
+    "reasoning": "筛选每日最高温≥35℃的天数，将这些天的降水累加后保留1位小数。"
+  },
+  "53d59bd96f46d3c1": {
+    "code": "def compute(data):\n    daily = data[\"daily\"]\n    max_range = -1\n    max_date = None\n    for day in daily:\n        diff = day[\"tempMax\"] - day[\"tempMin\"]\n        if diff > max_range:\n            max_range = diff\n            max_date = day[\"date\"]\n    return {\"date\": max_date, \"range\": round(max_range, 1)}\n",
+    "reasoning": "遍历每日数据，计算日较差（tempMax - tempMin），记录最大值及其对应日期，返回日期和日较差。"
+  },
+  "54f4ddbf56cc7fe1": {
+    "code": "def compute(data):\n    daily = data[\"daily\"]\n    max_temp_max = max(day[\"tempMax\"] for day in daily)\n    min_temp_min = min(day[\"tempMin\"] for day in daily)\n    result = round(max_temp_max - min_temp_min, 1)\n    return result",
+    "reasoning": "遍历过去5天的数据，取所有最高温的最大值与所有最低温的最小值，两者相减即为极差，保留1位小数。"
+  },
+  "b368f1683a3ff677": {
+    "code": "def compute(data):\n    monthly = data[\"monthly\"]\n    # 找到今年6月和去年6月的降水数据\n    precip_by_year = {}\n    for record in monthly:\n        if record[\"month\"] == 6:\n            precip_by_year[record[\"year\"]] = record[\"totalPrecip\"]\n    years = sorted(precip_by_year.keys())\n    this_year = years[-1]\n    last_year = years[-2]\n    diff = precip_by_year[this_year] - precip_by_year[last_year]\n    return round(diff, 1)",
+    "reasoning": "从 monthly 列表中筛选6月记录，按年份排序后取最新年份为今年、次新为去年，计算降水差值并保留1位小数。"
+  },
+  "76cd9274c88e1d52": {
+    "code": "def compute(data):\n    daily = data[\"daily\"]\n    ranges = [day[\"tempMax\"] - day[\"tempMin\"] for day in daily]\n    avg_range = statistics.mean(ranges)\n    return round(avg_range, 1)",
+    "reasoning": "计算每天的最高温与最低温之差（日较差），再对过去6天的日较差求平均值，最后保留1位小数。"
+  },
+  "fae6786668e23921": {
+    "code": "def compute(data):\n    count = 0\n    for day in data[\"daily\"]:\n        if day[\"precip\"] > 0:\n            count += 1\n    return count",
+    "reasoning": "遍历 daily 列表，统计 precip > 0 的天数即为下雨天数。"
+  },
+  "38d2b0a1bf67bf73": {
+    "code": "def compute(data):\n    count = sum(1 for day in data[\"daily\"] if day[\"tempMax\"] >= 35)\n    return count",
+    "reasoning": "遍历 daily 列表，统计 tempMax ≥ 35 的天数并返回计数。"
+  },
+  "cdebff5086af028c": {
+    "code": "def compute(data):\n    daily = data[\"daily\"]\n    sorted_daily = sorted(daily, key=lambda x: x[\"precip\"], reverse=True)\n    top3 = sorted_daily[:3]\n    return [entry[\"date\"] for entry in top3]",
+    "reasoning": "将 daily 列表按 precip 降序排序，取前 3 条记录的 date 字段返回。"
+  },
+  "29699207d3c008a5": {
+    "code": "def compute(data):\n    daily = data[\"daily\"]\n    sorted_daily = sorted(daily, key=lambda x: x[\"tempMax\"], reverse=True)\n    return sorted_daily[1][\"date\"]",
+    "reasoning": "将每日数据按最高温降序排列，取第二项的日期即为最高温第二高的一天。"
+  }
+}

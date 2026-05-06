@@ -1,0 +1,1876 @@
+{
+  "c0f342c7aa8ed364": {
+    "intent": {
+      "intent": "current_weather",
+      "locations": [
+        {
+          "name": "北京",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "今天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [],
+      "needed_tools": [
+        "search_city",
+        "get_current_weather",
+        "get_current_time"
+      ],
+      "reasoning": "用户询问北京今天的天气状况，属于查询当前/今日天气，意图为 current_weather。涉及相对时间'今天'，需调用 get_current_time 确定具体日期。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "current_weather",
+        "locations": [
+          {
+            "name": "北京",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "今天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [],
+        "needed_tools": [
+          "search_city",
+          "get_current_weather",
+          "get_current_time"
+        ],
+        "reasoning": "用户询问北京今天的天气状况，属于查询当前/今日天气，意图为 current_weather。涉及相对时间'今天'，需调用 get_current_time 确定具体日期。"
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "今天",
+          "source": "default",
+          "reason": "用户未指定日期，当前天气查询默认为今天"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "c7d8f7a6dfd1c343": {
+    "intent": {
+      "intent": "daily_forecast",
+      "locations": [
+        {
+          "name": "上海",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "明天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "precipitation"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_daily_forecast",
+        "get_current_time"
+      ],
+      "reasoning": "用户询问明天上海是否下雨，属于未来逐日天气预报查询，关注降水要素，日期为相对时间'明天'，需获取当前时间来确定具体日期。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "daily_forecast",
+        "locations": [
+          {
+            "name": "上海",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "明天",
+          "date": "2026-05-06",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "precipitation"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_daily_forecast"
+        ],
+        "reasoning": "用户询问明天上海是否下雨，属于未来逐日天气预报查询，关注降水要素，日期为相对时间'明天'，需获取当前时间来确定具体日期。"
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "2026-05-06",
+          "source": "context_inference",
+          "reason": "当前日期为2026-05-05，'明天'即2026-05-06"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "624b6fa7bee38376": {
+    "intent": {
+      "intent": "current_weather",
+      "locations": [
+        {
+          "name": "武汉",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "今天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "temperature"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_current_weather",
+        "get_current_time"
+      ],
+      "reasoning": "用户问'现在武汉的温度'，明确是查询当前时刻的天气，地点为武汉，关注要素为温度。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "current_weather",
+        "locations": [
+          {
+            "name": "武汉",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "今天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_current_weather",
+          "get_current_time"
+        ],
+        "reasoning": "用户问'现在武汉的温度'，明确是查询当前时刻的天气，地点为武汉，关注要素为温度。"
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "今天",
+          "source": "default",
+          "reason": "查询当前天气，默认日期为今天"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "ed75bc7ebe8948af": {
+    "intent": {
+      "intent": "life_index",
+      "locations": [
+        {
+          "name": "杭州",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "周末",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "clothing"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_weather_indices",
+        "get_current_time"
+      ],
+      "reasoning": "用户问'适合穿什么衣服'，属于生活指数中的穿衣建议查询，意图为 life_index；地点为杭州；时间为周末，需结合当前时间确定具体日期。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "life_index",
+        "locations": [
+          {
+            "name": "杭州",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "周末",
+          "date": "2026-05-09",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "clothing"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_weather_indices",
+          "get_current_time"
+        ],
+        "reasoning": "用户问'适合穿什么衣服'，属于生活指数中的穿衣建议查询，意图为 life_index；地点为杭州；时间为周末，需结合当前时间确定具体日期。"
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "2026-05-09",
+          "source": "common_sense",
+          "reason": "用户说'周末'，当前为周二(2026-05-05)，即将到来的周末为5月9日(周六)至5月10日(周日)，默认取周六作为查询日期"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "b7e8fdc787d84c22": {
+    "intent": {
+      "intent": "current_weather",
+      "locations": [
+        {
+          "name": "广州",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "今天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "wind"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_current_weather",
+        "get_current_time"
+      ],
+      "reasoning": "用户询问广州今天是否有大风，关注的是当前/今日的天气状况，核心变量为风力，属于查询当前天气的意图。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "current_weather",
+        "locations": [
+          {
+            "name": "广州",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "今天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "wind"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_current_weather",
+          "get_current_time"
+        ],
+        "reasoning": "用户询问广州今天是否有大风，关注的是当前/今日的天气状况，核心变量为风力，属于查询当前天气的意图。"
+      },
+      "notes": [],
+      "follow_up_question": null
+    }
+  },
+  "c0b3442a0c81aece": {
+    "intent": {
+      "intent": "daily_forecast",
+      "locations": [
+        {
+          "name": "北京",
+          "role": "target"
+        },
+        {
+          "name": "上海",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "未来三天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "temperature"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_daily_forecast",
+        "get_current_time"
+      ],
+      "reasoning": "用户要比较北京和上海未来三天的最高温，属于逐日预报查询（daily_forecast），涉及两个目标地点，关注温度要素，时间范围为未来三天（相对时间，需get_current_time辅助确定日期）。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "daily_forecast",
+        "locations": [
+          {
+            "name": "北京",
+            "role": "target"
+          },
+          {
+            "name": "上海",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "未来三天",
+          "date": "2026-05-05~2026-05-07",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_daily_forecast",
+          "get_current_time"
+        ],
+        "reasoning": "用户要比较北京和上海未来三天的最高温，属于逐日预报查询（daily_forecast），涉及两个目标地点，关注温度要素，时间范围为未来三天（相对时间，需get_current_time辅助确定日期）。"
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "2026-05-05~2026-05-07",
+          "source": "context_inference",
+          "reason": "根据当前日期2026-05-05，将"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "64e8056d0cfb86b4": {
+    "intent": {
+      "intent": "travel_advice",
+      "locations": [
+        {
+          "name": "武汉",
+          "role": "departure"
+        },
+        {
+          "name": "成都",
+          "role": "arrival"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "明天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "temperature"
+      ],
+      "needed_tools": [
+        "get_current_time",
+        "search_city",
+        "get_forcast_weather"
+      ],
+      "reasoning": "用户描述了从武汉到成都的出行计划，并比较两地的温度适宜性，属于travel_advice意图。涉及出发地武汉和目的地成都，关注温度要素，时间为明天，需要获取两地的逐时/逐日预报来对比温度。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "travel_advice",
+        "locations": [
+          {
+            "name": "武汉",
+            "role": "departure"
+          },
+          {
+            "name": "成都",
+            "role": "arrival"
+          }
+        ],
+        "time": {
+          "raw_text": "明天",
+          "date": "2026-05-06",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature"
+        ],
+        "needed_tools": [
+          "get_current_time",
+          "search_city",
+          "get_forcast_weather"
+        ],
+        "reasoning": null
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "2026-05-06",
+          "source": "context_inference",
+          "reason": "用户说\"明天\"，根据当前日期2026-05-05推算为2026-05-06"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "e533a491b9233dbb": {
+    "intent": {
+      "intent": "daily_forecast",
+      "locations": [
+        {
+          "name": "成都",
+          "role": "target"
+        },
+        {
+          "name": "重庆",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "今天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "precipitation"
+      ],
+      "needed_tools": [
+        "get_current_time",
+        "search_city",
+        "get_daily_forecast"
+      ],
+      "reasoning": "用户想比较成都和重庆今天的降水量大小，属于多地点的当日天气对比查询。需要获取两个城市今日的逐日预报（含降水量），因此意图为 daily_forecast，关注要素为 precipitation。涉及相对时间'今天'，需调用 get_current_time 确定日期。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "daily_forecast",
+        "locations": [
+          {
+            "name": "成都",
+            "role": "target"
+          },
+          {
+            "name": "重庆",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "今天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "precipitation"
+        ],
+        "needed_tools": [
+          "get_current_time",
+          "search_city",
+          "get_daily_forecast"
+        ],
+        "reasoning": null
+      },
+      "notes": [],
+      "follow_up_question": null
+    }
+  },
+  "3c235bc67ef14754": {
+    "intent": {
+      "intent": "current_weather",
+      "locations": [
+        {
+          "name": "哈尔滨",
+          "role": "target"
+        },
+        {
+          "name": "广州",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "今天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "temperature"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_current_weather",
+        "get_current_time"
+      ],
+      "reasoning": "用户询问哈尔滨和广州此刻的温度差，属于查询当前天气（current_weather），涉及两个地点均为查询目标，关注温度要素。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "current_weather",
+        "locations": [
+          {
+            "name": "哈尔滨",
+            "role": "target"
+          },
+          {
+            "name": "广州",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "今天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_current_weather",
+          "get_current_time"
+        ],
+        "reasoning": "用户询问哈尔滨和广州此刻的温度差，属于查询当前天气（current_weather），涉及两个地点均为查询目标，关注温度要素。"
+      },
+      "notes": [],
+      "follow_up_question": null
+    }
+  },
+  "628ff6fd5e7efce3": {
+    "intent": {
+      "intent": "daily_forecast",
+      "locations": [
+        {
+          "name": "南京",
+          "role": "target"
+        },
+        {
+          "name": "苏州",
+          "role": "target"
+        },
+        {
+          "name": "无锡",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "明天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [],
+      "needed_tools": [
+        "search_city",
+        "get_daily_forecast",
+        "get_current_time"
+      ],
+      "reasoning": "用户询问南京、苏州、无锡三个城市明天的天气，属于未来逐日天气预报查询，意图为daily_forecast。三个城市均为查询目标，角色为target。时间涉及相对日期'明天'，需调用get_current_time确定具体日期。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "daily_forecast",
+        "locations": [
+          {
+            "name": "南京",
+            "role": "target"
+          },
+          {
+            "name": "苏州",
+            "role": "target"
+          },
+          {
+            "name": "无锡",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "明天",
+          "date": "2026-05-06",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [],
+        "needed_tools": [
+          "search_city",
+          "get_daily_forecast"
+        ],
+        "reasoning": null
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "2026-05-06",
+          "source": "context_inference",
+          "reason": "用户说'明天'，根据当前日期2026-05-05推算为2026-05-06"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "5a50d4eb1b93a726": {
+    "intent": {
+      "intent": "daily_forecast",
+      "locations": [
+        {
+          "name": "武汉",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "未来一周",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "temperature"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_daily_forecast",
+        "get_current_time"
+      ],
+      "reasoning": "用户询问'未来一周'武汉的温度趋势，属于多日天气预报查询，意图为daily_forecast；关注变量为temperature；涉及相对时间'未来一周'，需调用get_current_time确定当前日期。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "daily_forecast",
+        "locations": [
+          {
+            "name": "武汉",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "未来一周",
+          "date": "2026-05-05~2026-05-11",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_daily_forecast",
+          "get_current_time"
+        ],
+        "reasoning": "用户询问'未来一周'武汉的温度趋势，属于多日天气预报查询，意图为daily_forecast；关注变量为temperature；涉及相对时间'未来一周'，需调用get_current_time确定当前日期。"
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "2026-05-05~2026-05-11",
+          "source": "context_inference",
+          "reason": "根据当前日期2026-05-05，将'未来一周'解析为2026-05-05至2026-05-11"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "ca4a695cd9dd474e": {
+    "intent": {
+      "intent": "daily_forecast",
+      "locations": [
+        {
+          "name": "北京",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "未来三天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "temperature"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_daily_forecast",
+        "get_current_time"
+      ],
+      "reasoning": "用户询问北京未来三天是否持续高温，属于未来多日天气趋势查询，意图为daily_forecast；关注变量为temperature；时间涉及相对表达'未来三天'，需get_current_time辅助确定日期范围。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "daily_forecast",
+        "locations": [
+          {
+            "name": "北京",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "未来三天",
+          "date": "2026-05-05至2026-05-07",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_daily_forecast",
+          "get_current_time"
+        ],
+        "reasoning": "用户询问北京未来三天是否持续高温，属于未来多日天气趋势查询，意图为daily_forecast；关注变量为temperature；时间涉及相对表达'未来三天'，需get_current_time辅助确定日期范围。"
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "2026-05-05至2026-05-07",
+          "source": "context_inference",
+          "reason": "根据当前日期2026-05-05，将'未来三天'转换为绝对日期范围：今天至后天"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "c410f4cdffa37706": {
+    "intent": {
+      "intent": "daily_forecast",
+      "locations": [
+        {
+          "name": "广州",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "未来一周",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "precipitation"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_daily_forecast",
+        "get_current_time"
+      ],
+      "reasoning": "用户询问广州未来一周是否持续下雨，属于未来多日的天气趋势查询，关注降水要素，应归类为daily_forecast。涉及相对时间'未来一周'，需调用get_current_time确定当前日期。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "daily_forecast",
+        "locations": [
+          {
+            "name": "广州",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "未来一周",
+          "date": "2026-05-05~2026-05-11",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "precipitation"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_daily_forecast"
+        ],
+        "reasoning": null
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "2026-05-05~2026-05-11",
+          "source": "context_inference",
+          "reason": "根据当前日期2026-05-05，将'未来一周'转换为绝对日期范围2026-05-05至2026-05-11"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "dde09e34e0fce833": {
+    "intent": {
+      "intent": "daily_forecast",
+      "locations": [
+        {
+          "name": "哈尔滨",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "未来一周",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "temperature"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_daily_forecast",
+        "get_current_time"
+      ],
+      "reasoning": "用户询问'未来一周'哈尔滨的气温变化幅度，属于多日天气预报查询，意图为daily_forecast；关注变量为temperature；时间涉及相对表达'未来一周'，需get_current_time辅助确定日期范围。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "daily_forecast",
+        "locations": [
+          {
+            "name": "哈尔滨",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "未来一周",
+          "date": "未来一周",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_daily_forecast",
+          "get_current_time"
+        ],
+        "reasoning": "用户询问'未来一周'哈尔滨的气温变化幅度，属于多日天气预报查询，意图为daily_forecast；关注变量为temperature；时间涉及相对表达'未来一周'，需get_current_time辅助确定日期范围。"
+      },
+      "notes": [
+        {
+          "field": "time.raw_text",
+          "value": "未来一周",
+          "source": "context_inference",
+          "reason": "补全用户原始时间表达，便于后续解析日期范围"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "dc714168eeee1054": {
+    "intent": {
+      "intent": "daily_forecast",
+      "locations": [
+        {
+          "name": "上海",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "这周",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "precipitation"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_daily_forecast",
+        "get_current_time"
+      ],
+      "reasoning": "用户问'这周降水量整体情况'，属于未来多日的逐日天气预报查询，关注降水要素，意图为 daily_forecast。时间涉及相对日期'这周'，需调用 get_current_time 确定具体日期范围。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "daily_forecast",
+        "locations": [
+          {
+            "name": "上海",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "这周",
+          "date": "2026-05-04~2026-05-10",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "precipitation"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_daily_forecast",
+          "get_current_time"
+        ],
+        "reasoning": "用户问'这周降水量整体情况'，属于未来多日的逐日天气预报查询，关注降水要素，意图为 daily_forecast。时间涉及相对日期'这周'，需调用 get_current_time 确定具体日期范围。"
+      },
+      "notes": [
+        {
+          "field": "time.raw_text",
+          "value": "这周",
+          "source": "user_input",
+          "reason": "用户原始时间表达为'这周'"
+        },
+        {
+          "field": "time.date",
+          "value": "2026-05-04~2026-05-10",
+          "source": "common_sense",
+          "reason": "今天是2026-05-05（周二），'这周'对应本周一至周日，即5月4日至5月10日"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "82a05139be08a273": {
+    "intent": {
+      "intent": "daily_forecast",
+      "locations": [
+        {
+          "name": "武汉",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "未来7天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "temperature"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_daily_forecast",
+        "get_current_time"
+      ],
+      "reasoning": "用户问未来7天哪天最热，需要逐日最高温度数据来比较，属于daily_forecast意图。关注变量为temperature，涉及相对时间需调用get_current_time。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "daily_forecast",
+        "locations": [
+          {
+            "name": "武汉",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "未来7天",
+          "date": "未来7天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_daily_forecast",
+          "get_current_time"
+        ],
+        "reasoning": "用户问未来7天哪天最热，需要逐日最高温度数据来比较，属于daily_forecast意图。关注变量为temperature，涉及相对时间需调用get_current_time。"
+      },
+      "notes": [],
+      "follow_up_question": null
+    }
+  },
+  "a5f3ac02a3d88836": {
+    "intent": {
+      "intent": "daily_forecast",
+      "locations": [
+        {
+          "name": "南京",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "未来10天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "temperature"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_daily_forecast",
+        "get_current_time"
+      ],
+      "reasoning": "用户询问未来10天南京的最低温，属于逐日预报类查询（daily_forecast），关注温度要素，时间范围为未来10天，涉及相对时间需调用get_current_time。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "daily_forecast",
+        "locations": [
+          {
+            "name": "南京",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "未来10天",
+          "date": "2026-05-05",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_daily_forecast",
+          "get_current_time"
+        ],
+        "reasoning": null
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "2026-05-05",
+          "source": "context_inference",
+          "reason": "用户说\"未来10天\"，以今天(2026-05-05)为起点，查询5月5日至5月14日的逐日预报"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "25a674c4dc675143": {
+    "intent": {
+      "intent": "historical_daily",
+      "locations": [
+        {
+          "name": "成都",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "过去一周",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "precipitation"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_historical_daily",
+        "get_current_time"
+      ],
+      "reasoning": "用户问'过去一周成都哪天降水最多'，属于查询历史逐日天气数据并比较降水量，意图为 historical_daily。关注变量为 precipitation，时间范围为'过去一周'，需用 get_current_time 确定当前日期以计算起止日期。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "historical_daily",
+        "locations": [
+          {
+            "name": "成都",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "过去一周",
+          "date": "2026-04-29至2026-05-05",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "precipitation"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_historical_daily",
+          "get_current_time"
+        ],
+        "reasoning": null
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "2026-04-29至2026-05-05",
+          "source": "common_sense",
+          "reason": "根据当前日期2026-05-05，将'过去一周'转换为具体日期范围：7天前至今天"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "f08537907c7c91a2": {
+    "intent": {
+      "intent": "daily_forecast",
+      "locations": [
+        {
+          "name": "厦门",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "未来一周",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "wind"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_daily_forecast",
+        "get_current_time"
+      ],
+      "reasoning": "用户问未来一周哪天风最大，属于逐日预报查询，关注的风力要素需从每日预报中比较得出。涉及相对时间'未来一周'，需获取当前时间来确定日期范围。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "daily_forecast",
+        "locations": [
+          {
+            "name": "厦门",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "未来一周",
+          "date": "2026-05-05~2026-05-11",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "wind"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_daily_forecast",
+          "get_current_time"
+        ],
+        "reasoning": "用户问未来一周哪天风最大，属于逐日预报查询，关注的风力要素需从每日预报中比较得出。涉及相对时间'未来一周'，需获取当前时间来确定日期范围。"
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "2026-05-05~2026-05-11",
+          "source": "context_inference",
+          "reason": "根据当前日期2026-05-05，将'未来一周'转换为具体日期范围2026-05-05至2026-05-11"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "7e291ac8da959cfe": {
+    "intent": {
+      "intent": "daily_forecast",
+      "locations": [
+        {
+          "name": "昆明",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "未来5天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "temperature"
+      ],
+      "needed_tools": [
+        "get_current_time",
+        "search_city",
+        "get_daily_forecast"
+      ],
+      "reasoning": "用户询问未来5天昆明的日较差（日最高温与日最低温之差）最大的那天，需要逐日预报数据中的最高温和最低温信息，属于daily_forecast意图。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "daily_forecast",
+        "locations": [
+          {
+            "name": "昆明",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "未来5天",
+          "date": "2026-05-05~2026-05-09",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature"
+        ],
+        "needed_tools": [
+          "get_current_time",
+          "search_city",
+          "get_daily_forecast"
+        ],
+        "reasoning": "用户询问未来5天昆明的日较差（日最高温与日最低温之差）最大的那天，需要逐日预报数据中的最高温和最低温信息，属于daily_forecast意图。"
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "2026-05-05~2026-05-09",
+          "source": "context_inference",
+          "reason": "用户说'未来5天'，根据当前日期2026-05-05推算为2026-05-05至2026-05-09"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "8fb9270afd2e5457": {
+    "intent": {
+      "intent": "life_index",
+      "locations": [
+        {
+          "name": "武汉",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "明天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "life_index"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_current_time",
+        "get_weather_indices"
+      ],
+      "reasoning": "用户问'明天武汉适合户外活动吗'，属于生活指数类查询（life_index），判断是否适合做某事（户外活动）。地点为武汉，时间为明天，需先获取当前时间确定具体日期，再查询生活指数。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "life_index",
+        "locations": [
+          {
+            "name": "武汉",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "明天",
+          "date": "2026-05-06",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "life_index"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_current_time",
+          "get_weather_indices"
+        ],
+        "reasoning": "用户问'明天武汉适合户外活动吗'，属于生活指数类查询（life_index），判断是否适合做某事（户外活动）。地点为武汉，时间为明天，需先获取当前时间确定具体日期，再查询生活指数。"
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "2026-05-06",
+          "source": "context_inference",
+          "reason": "用户说'明天'，根据当前日期2026-05-05推算为2026-05-06"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "a9bcdbb201118313": {
+    "intent": {
+      "intent": "unknown",
+      "locations": [],
+      "time": null,
+      "variables": [],
+      "needed_tools": [],
+      "reasoning": "意图识别回退：LLM 未触发结构化输出（返回 None），可能是 function_calling 偶发失败。 原始问题已透传给 Agent。"
+    },
+    "completion": {
+      "is_complete": false,
+      "completed_intent": {
+        "intent": "unknown",
+        "locations": [],
+        "time": null,
+        "variables": [],
+        "needed_tools": [],
+        "reasoning": "意图识别失败，且无历史上下文可推断，所有关键参数均缺失"
+      },
+      "notes": [],
+      "follow_up_question": "抱歉，我没有理解您的问题。请问您想查询哪个城市的什么天气信息呢？例如：北京现在的天气、上海明天的预报等。"
+    }
+  },
+  "572a117313e00c62": {
+    "intent": {
+      "intent": "daily_forecast",
+      "locations": [
+        {
+          "name": "青岛",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "明天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "precipitation",
+        "weather"
+      ],
+      "needed_tools": [
+        "get_current_time",
+        "search_city",
+        "get_daily_forecast"
+      ],
+      "reasoning": "用户问明天去青岛是否需要带伞，核心是查询明天青岛的降水情况，属于未来逐日天气预报查询，重点关注降水要素。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "daily_forecast",
+        "locations": [
+          {
+            "name": "青岛",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "明天",
+          "date": "2026-05-06",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "precipitation",
+          "weather"
+        ],
+        "needed_tools": [
+          "get_current_time",
+          "search_city",
+          "get_daily_forecast"
+        ],
+        "reasoning": "用户问明天去青岛是否需要带伞，核心是查询明天青岛的降水情况，属于未来逐日天气预报查询，重点关注降水要素。"
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "2026-05-06",
+          "source": "context_inference",
+          "reason": "用户说"
+        },
+        {
+          "field": "time.date",
+          "value": "2026-05-06",
+          "source": "context_inference",
+          "reason": "根据当前日期2026-05-05，将"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "00f284b51f197f08": {
+    "intent": {
+      "intent": "life_index",
+      "locations": [
+        {
+          "name": "长沙",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "周末",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "temperature",
+        "precipitation",
+        "wind",
+        "humidity"
+      ],
+      "needed_tools": [
+        "get_current_time",
+        "search_city",
+        "get_daily_forecast",
+        "get_weather_indices"
+      ],
+      "reasoning": "用户问'周末适合跑步吗'，核心是询问某项活动（跑步）的适宜性，属于life_index意图；同时需要周末的天气预报数据来综合判断，因此也需要daily_forecast；'周末'是相对时间，需要get_current_time来解析具体日期。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "life_index",
+        "locations": [
+          {
+            "name": "长沙",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "周末",
+          "date": "2026-05-09",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "temperature",
+          "precipitation",
+          "wind",
+          "humidity"
+        ],
+        "needed_tools": [
+          "get_current_time",
+          "search_city",
+          "get_daily_forecast",
+          "get_weather_indices"
+        ],
+        "reasoning": "用户问'周末适合跑步吗'，核心是询问某项活动（跑步）的适宜性，属于life_index意图；同时需要周末的天气预报数据来综合判断，因此也需要daily_forecast；'周末'是相对时间，需要get_current_time来解析具体日期。"
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "2026-05-09",
+          "source": "context_inference",
+          "reason": "今天是2026-05-05（周二），'周末'指即将到来的周六2026-05-09和周日2026-05-10，取周六作为起始日期"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "7dfa017b6cca3982": {
+    "intent": {
+      "intent": "life_index",
+      "locations": [
+        {
+          "name": "广州",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "今天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "uv_index",
+        "sunscreen"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_weather_indices",
+        "get_current_time"
+      ],
+      "reasoning": "用户询问广州今天紫外线强度及是否需要防晒，属于生活指数类查询（适不适合做某事/防护建议），对应 life_index 意图。关注变量为紫外线指数和防晒建议。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "life_index",
+        "locations": [
+          {
+            "name": "广州",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": null,
+          "date": "今天",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "uv_index",
+          "sunscreen"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_weather_indices",
+          "get_current_time"
+        ],
+        "reasoning": "用户询问广州今天紫外线强度及是否需要防晒，属于生活指数类查询（适不适合做某事/防护建议），对应 life_index 意图。关注变量为紫外线指数和防晒建议。"
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "今天",
+          "source": "default",
+          "reason": "未指定日期，默认查询今天"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "f4e00f2522919165": {
+    "intent": {
+      "intent": "life_index",
+      "locations": [
+        {
+          "name": "南京",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "明天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "visibility",
+        "fog"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_forcast_weather",
+        "get_weather_indices",
+        "get_current_time"
+      ],
+      "reasoning": "用户问明天南京的雾有多大（关注能见度/雾况，属于预报要素），同时问'开车安全吗'（属于生活指数中出行/驾车适宜度判断）。核心意图是判断是否适合开车，归为 life_index；需同时获取明日预报（雾况/能见度）和生活指数（驾车指数）来综合回答。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "life_index",
+        "locations": [
+          {
+            "name": "南京",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "明天",
+          "date": "2026-05-06",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "visibility",
+          "fog"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_forcast_weather",
+          "get_weather_indices",
+          "get_current_time"
+        ],
+        "reasoning": "用户问明天南京的雾有多大（关注能见度/雾况，属于预报要素），同时问'开车安全吗'（属于生活指数中出行/驾车适宜度判断）。核心意图是判断是否适合开车，归为 life_index；需同时获取明日预报（雾况/能见度）和生活指数（驾车指数）来综合回答。"
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "2026-05-06",
+          "source": "context_inference",
+          "reason": "用户说'明天'，根据当前日期2026-05-05推算为2026-05-06"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "f5cf7c8455f995b5": {
+    "intent": {
+      "intent": "weather_warning",
+      "locations": [
+        {
+          "name": "上海",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "未来三天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "precipitation"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_weather_warning",
+        "get_daily_forecast",
+        "get_current_time"
+      ],
+      "reasoning": "用户询问未来三天上海是否会有暴雨，核心关注极端天气（暴雨），属于weather_warning意图；同时需要daily_forecast来查看未来三天的降水预报，以及get_current_time来确定当前日期以计算'未来三天'的具体日期范围。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "weather_warning",
+        "locations": [
+          {
+            "name": "上海",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "未来三天",
+          "date": "2026-05-05~2026-05-07",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "precipitation"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_weather_warning",
+          "get_daily_forecast",
+          "get_current_time"
+        ],
+        "reasoning": null
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "2026-05-05~2026-05-07",
+          "source": "context_inference",
+          "reason": "根据当前日期2026-05-05，将\"未来三天\"解析为今天起连续三天（5月5日至5月7日）"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "db8c4db8eae7a13d": {
+    "intent": {
+      "intent": "weather_warning",
+      "locations": [
+        {
+          "name": "郑州",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "明天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "warning"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_weather_warning",
+        "get_current_time"
+      ],
+      "reasoning": "用户询问明天郑州是否有强对流预警，属于天气预警类查询（weather_warning）。涉及相对时间'明天'，需调用 get_current_time 确定具体日期。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "weather_warning",
+        "locations": [
+          {
+            "name": "郑州",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "明天",
+          "date": "2026-05-06",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "warning"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_weather_warning",
+          "get_current_time"
+        ],
+        "reasoning": "用户询问明天郑州是否有强对流预警，属于天气预警类查询（weather_warning）。涉及相对时间'明天'，需调用 get_current_time 确定具体日期。"
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "2026-05-06",
+          "source": "context_inference",
+          "reason": "根据当前日期2026-05-05，将'明天'解析为2026-05-06"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "991146ea44345084": {
+    "intent": {
+      "intent": "hourly_forecast",
+      "locations": [
+        {
+          "name": "哈尔滨",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "今天",
+        "start_time": "18:00",
+        "end_time": "23:59"
+      },
+      "variables": [
+        "temperature"
+      ],
+      "needed_tools": [
+        "get_current_time",
+        "search_city",
+        "get_forcast_weather"
+      ],
+      "reasoning": "用户问'今晚冷不冷，会不会到严寒'，关注的是今晚（近未来）的气温情况，属于逐小时预报意图；'严寒'属于温度相关要素，因此variables为temperature；时间需用get_current_time确定当前日期后，查询今晚18:00-23:59的逐小时预报。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "hourly_forecast",
+        "locations": [
+          {
+            "name": "哈尔滨",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "今晚",
+          "date": "今天",
+          "start_time": "18:00",
+          "end_time": "23:59"
+        },
+        "variables": [
+          "temperature"
+        ],
+        "needed_tools": [
+          "get_current_time",
+          "search_city",
+          "get_forcast_weather"
+        ],
+        "reasoning": null
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "今天",
+          "source": "default",
+          "reason": "用户说'今晚'，默认查询今天"
+        },
+        {
+          "field": "time.start_time",
+          "value": "18:00",
+          "source": "common_sense",
+          "reason": "'今晚'通常指18:00起"
+        },
+        {
+          "field": "time.end_time",
+          "value": "23:59",
+          "source": "common_sense",
+          "reason": "'今晚'截止到当日23:59"
+        }
+      ],
+      "follow_up_question": null
+    }
+  },
+  "22ca50239b452c73": {
+    "intent": {
+      "intent": "weather_warning",
+      "locations": [
+        {
+          "name": "广州",
+          "role": "target"
+        }
+      ],
+      "time": {
+        "raw_text": null,
+        "date": "明天",
+        "start_time": null,
+        "end_time": null
+      },
+      "variables": [
+        "wind",
+        "precipitation"
+      ],
+      "needed_tools": [
+        "search_city",
+        "get_weather_warning",
+        "get_current_time"
+      ],
+      "reasoning": "用户明确询问广州明天的台风预警情况，属于weather_warning意图。涉及相对时间'明天'，需调用get_current_time确定具体日期。关注要素为台风相关的风力和降水。"
+    },
+    "completion": {
+      "is_complete": true,
+      "completed_intent": {
+        "intent": "weather_warning",
+        "locations": [
+          {
+            "name": "广州",
+            "role": "target"
+          }
+        ],
+        "time": {
+          "raw_text": "明天",
+          "date": "2026-05-06",
+          "start_time": null,
+          "end_time": null
+        },
+        "variables": [
+          "wind",
+          "precipitation"
+        ],
+        "needed_tools": [
+          "search_city",
+          "get_weather_warning",
+          "get_current_time"
+        ],
+        "reasoning": "用户明确询问广州明天的台风预警情况，属于weather_warning意图。涉及相对时间'明天'，需调用get_current_time确定具体日期。关注要素为台风相关的风力和降水。"
+      },
+      "notes": [
+        {
+          "field": "time.date",
+          "value": "2026-05-06",
+          "source": "context_inference",
+          "reason": "用户说'明天'，根据当前日期2026-05-05推算为2026-05-06"
+        }
+      ],
+      "follow_up_question": null
+    }
+  }
+}
