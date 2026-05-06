@@ -1,0 +1,648 @@
+%!TEX program = xelatex
+% HUSTthesis.tex @ https://github.com/zfengg/HUSTtex/tree/master/HUSTthesis
+%
+% 	A simple tex template for the undergraduate thesis at HUST.
+%
+% author: Zhou Feng @ 2019
+%
+% requirements:
+%	TeX environments: TeXlive/MacTeX or MiKTeX
+%	compiler: XeLaTeX
+%
+% ---------------------------------------------------------------------------- %
+%                                   preamble                                   %
+% ---------------------------------------------------------------------------- %
+\documentclass[a4paper]{article}
+% 10.5pt = 5 hao
+
+% ---------------------------------- layout ---------------------------------- %
+\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=3cm,right=3cm,% margins
+			headheight=1.5cm,headsep=1.5em,
+			footskip=2em,
+			]{geometry}
+
+% ------------------------------- math symbols ------------------------------- %
+% 载入常用的数学包, 符号包
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{blindtext}
+% 物理量与单位格式化（4.1 节中 \SI{52.3}{mm} 等命令所需）
+\usepackage{siunitx}
+
+%----------------------------------------------------------------%
+%% linespace 行间距，段间距等等
+\usepackage{setspace}
+% \usepackage{indentfirst} % then the first line of each title should start with a indent.
+% 定义标题和段落样式
+% 定义1.5倍行距
+\renewcommand{\baselinestretch}{1.62}
+\setlength{\baselineskip}{12pt}   % set the fixed value of the lineskip
+\setlength\parskip{\baselineskip} % set the space between the paragraphs, set the variable \parskip \baselineskip
+% parindent
+\setlength{\parindent}{0pt}
+
+%----------------------------------------------------------------%
+% fonts (style, color, size). 字体的大小，颜色，以及定义常用的字号
+\usepackage{ctex}		 	% If you are lazy, the CTEX suit is enough.
+% Chinese font
+\usepackage{xeCJK}		 	% For the Chinese through XeLaTex
+\setCJKmainfont{FandolSong} 	% set the mainfont of Chinese as songti. (serif) for  
+\setCJKsansfont{FandolSong}	% sans serif font for \textsf
+\setCJKmonofont{FandolSong}	% monospace font for \texttt
+% \punctstyle{kaiming}   	% Remove the space used by symbols like comma. Special for the mainland students like us HUSTers.
+\setCJKfamilyfont{song}{FandolSong}                     %宋体 song
+\newcommand{\song}{\CJKfamily{song}}                        
+\setCJKfamilyfont{kai}{FandolKai}                        		 %楷体2312  kai
+\newcommand{\kai}{\CJKfamily{kai}}  
+\setCJKfamilyfont{hwzs}{FandolFang}                        %华文中宋  hwzs
+\newcommand{\hwzs}{\CJKfamily{hwzs}}
+\setCJKfamilyfont{hei}{FandolHei}                     %黑体  hei
+\newcommand{\hei}{\CJKfamily{hei}}
+% English font
+\usepackage{fontspec}% Then you can use the fonts installed at your device.
+\setmainfont{Times New Roman}
+\setsansfont{Times New Roman}
+\setmonofont{Times New Roman}
+%\setsansfont{[foo.ttf]} % for the fonts at this default path.
+% font Color 利用definecolor自己可以定义颜色
+\usepackage{xcolor}
+\definecolor{MSBlue}{rgb}{.204,.353,.541}
+\definecolor{MSLightBlue}{rgb}{.31,.506,.741}
+% font Size (I use pinyin represents the corresponding size in Microsorft Word)
+% \newcommand{\chuhao}{\fontsize{42pt}{\baselineskip}\selectfont}
+\newcommand{\xiaochuhao}{\fontsize{36pt}{\baselineskip}\selectfont}
+% \newcommand{\yihao}{\fontsize{28pt}{\baselineskip}\selectfont}
+\newcommand{\erhao}{\fontsize{21pt}{\baselineskip}\selectfont}
+\newcommand{\xiaoerhao}{\fontsize{18pt}{\baselineskip}\selectfont}
+\newcommand{\sanhao}{\fontsize{15.75pt}{\baselineskip}\selectfont}
+\newcommand{\sihao}{\fontsize{14pt}{18pt}\selectfont}
+\newcommand{\xiaosihao}{\fontsize{12pt}{18pt}\selectfont}
+\newcommand{\wuhao}{\fontsize{10.5pt}{18pt}\selectfont}
+% \newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}
+% \newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}
+% \newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}
+
+% ---------------------------------------------------------------------------- %
+%% header and footer 页眉，页脚
+\usepackage{fancyhdr} % for header and footer
+% 设置页眉样式
+\newcommand{\headstyle}{
+ \fancyhead[C]{ \hwzs\wuhao 华\hspace{0.5em}中\hspace{0.5em}科\hspace{0.5em}技\hspace{0.5em}大\hspace{0.5em}学\hspace{0.5em}毕\hspace{0.5em}业\hspace{0.5em}设\hspace{0.5em}计\hspace{0.5em}(论\hspace{0.5em}文)}
+}
+% 设置页脚样式
+\newcommand{\footstyle}{\fancyfoot[C]{\wuhao\thepage}
+ \fancyfoot[L]{\rule[5pt]{6.7cm}{0.4pt}}
+ \fancyfoot[R]{\rule[5pt]{6.7cm}{0.4pt}}
+}
+\pagestyle{fancy}
+\fancyhf{} % 清空原有样式
+\headstyle
+\footstyle
+% 定义一种新的格式叫做main
+\fancypagestyle{main}{%
+ \fancyhf{} % 清空原有样式
+ \headstyle
+ \footstyle
+}
+\renewcommand{\headrulewidth}{0.4pt}
+% \renewcommand{\footrulewidth}{0.4pt}
+% \renewcommand{\headrule}{\rule{\textwidth}{0.4pt}}
+
+% ---------------------------------------------------------------------------- %
+% set the styles of sections at all levels
+% 设置各个标题样式
+% 不需要使用part和chapter层级
+\usepackage{titlesec}
+\usepackage{titletoc}
+\titleformat{\section}{\centering\hei\bfseries\xiaoerhao}{\thesection}{1em}{} % 在section标题编号后面加个点
+% \titlelabel{\thetitle.\quad} % add a dot after the counter for all levels of sections
+% \titleformat*{\section}{\wuhao\bfseries} % 设置标签的形式，5号加粗
+\titleformat*{\subsection}{\raggedright\hei\bfseries\sihao}
+\titleformat*{\subsubsection}{\raggedright\hei\bfseries\xiaosihao}
+\titleformat{\paragraph}[hang]{\raggedright\hei\bfseries\xiaosihao}{\theparagraph}{1em}{}[]
+
+% manual
+% \titleformat{command}[shape]{format}{label}{sep}{before-code}[after-code]
+% \titlespacing{command}{left}{before-sep}{after-sep}
+% 设置新的层级subsubsubsection
+\setcounter{tocdepth}{4}
+\setcounter{secnumdepth}{4}
+
+\newcommand{\sectionbreak}{\clearpage} % 小节从新的一页开始
+% 根据学校要求设置新的section, subsection, subsection,  paragraph
+
+% set the content of section and so on
+\newcommand\seccontent{
+	\song
+	\xiaosihao % 默认五号字体, 行间距为1.5*\baselineskip
+    \setlength{\parindent}{2em} % 首段缩进两个M字符
+    \setlength{\parskip}{0pt}
+    }
+\newcommand\tabcontent{
+	\song
+	\wuhao % 默认五号字体, 行间距为1.5*\baselineskip
+	\setlength{\parindent}{2em} % 首段缩进两个M字符
+	\setlength{\parskip}{0pt}
+}
+
+
+% ---------------------------------------------------------------------------- %
+% for the style of theorems, definitions, proofs and remarks 定义数学里面一些常用的环境
+\usepackage{amsthm}
+\newtheorem{thm}{\textbf{定理}}[section]
+% The section in [] can be replaced by chapter or subsection
+\theoremstyle{definition} 
+\theoremstyle{plain}
+\theoremstyle{remark}
+
+% ---------------------------------------------------------------------------- %
+% for the caption and reference 图表及公式的编号规范
+\usepackage{float} 		 		  	% table figure positioning
+\usepackage{caption}
+\captionsetup[figure]{labelformat=default, labelsep=quad,name={图}}
+\captionsetup[table]{labelformat=default,labelsep=quad,name={表}}
+% 设置图表标题的计数方式
+\renewcommand{\thefigure}{\ifnum \thesection>0 \thesection-\fi \arabic{figure}} % set caption label style to 2-1
+\renewcommand{\thetable}{\ifnum \thesection>0 \thesection-\fi \arabic{table}} % set caption label style to 2-1
+\DeclareCaptionFont{mylabelfont}{\hei\xiaosihao}
+\captionsetup[figure]{font=mylabelfont}
+\captionsetup[table]{font=mylabelfont}
+
+% 设置图表的autoref的格式
+\newcommand{\reffig}[1]{图 \ref{#1}}
+\newcommand{\reftab}[1]{表 \ref{#1}}
+% 公式的编号格式
+\renewcommand\theequation{\arabic{section}-\arabic{equation}}
+
+\usepackage{graphicx} % To include graphixs 添加图所需的包
+\usepackage{booktabs} % To create three line table including the commands toprule, bottomrule, and midrule
+% \usepackage{colortbl} %
+% 使用tabularx库并定义新的左右中格式
+\usepackage{tabularx}
+\usepackage{makecell}
+\newcolumntype{L}{X}
+\newcolumntype{C}{>{\centering \arraybackslash}X}
+\newcolumntype{R}{>{\raggedright \arraybackslash}X}
+
+% ---------------------------------------------------------------------------- %
+% set the style of counters 设置计数器
+% 设置重新计数的位置
+\makeatletter
+\@addtoreset{footnote}{page}
+\@addtoreset{figure}{section}
+\@addtoreset{table}{section}
+\@addtoreset{equation}{section}
+\makeatother
+
+% ---------------------------------------------------------------------------- %
+% tableofcontents, listoftables and listoffigures 目录
+%\renewcommand\listfigurename{插图列表}
+%\renewcommand\listtablename{表格列表}
+%\titlecontents{标题名}[左间距]{标题格式}{标题标志}{无序号标题}{指引线与页码}[下间距]
+%\dottedcontents{section}[2.55em]{\song \xiaosihao \bfseries}{2.5em}{1em}
+\usepackage{tocloft}
+\renewcommand{\contentsname}{\centerline{ \hei\bfseries\xiaoerhao 目\hspace{2em}录}}
+\titlecontents{section}[3em]{\song\xiaosihao\bfseries}{\contentslabel{3em}}{\hspace*{-3em}}{\normalfont\titlerule*[8pt]{.}\contentspage}
+\titlecontents{subsection}[3em]{\song\xiaosihao}{\contentslabel{3em}}{\hspace*{-3em}}{\titlerule*[8pt]{.}\contentspage}
+\titlecontents{subsubsection}[4em]{\song\xiaosihao}{\contentslabel{4em}}{\hspace*{-4em}}{\titlerule*[8pt]{.}\contentspage}
+\titlecontents{paragraph}[5em]{\song\xiaosihao}{\contentslabel{5em}}{\hspace*{-5em}}{\titlerule*[8pt]{.}\contentspage}
+
+% ---------------------------------------------------------------------------- %
+% reference and citation 参考文献
+% gbt7714 (GB/T 7714-2015) 数字编号、按正文首次引用顺序编号；自带 natbib 兼容层，
+% 因此 \cite{a,b,c} 仍会被自动合并为 [1-3]。
+% gbt7714 在 TeX Live 2025 仍接受 numbers/sort&compress（后续版本将更名为 numerical），
+% 暂保留写法不变，避免触发 natbib 选项冲突。
+\usepackage[numbers,sort&compress]{gbt7714}
+\renewcommand{\refname}{\centering\hei\xiaoerhao 参考文献}
+\bibsep=0pt % 用来设置每个\bibitem之间的间距
+% \newcommand{\upcite}[1]{\textsuperscript{\textsuperscript{\cite{#1}}}} % show citation label in the upperscript
+
+% ---------------------------------------------------------------------------- %
+% 设置声明页
+% 使用特殊符号
+\usepackage{amssymb}
+\usepackage{wasysym}
+% 制作tatement中的符号
+\def\HUSTcheckedbox{$\Square\!\!\!\!\checkmark$}
+\def\HUSTbox{$\Square$}
+% 设置命令
+\newcommand{\statement}[2]{
+	\def\yearofconfidentiality{\hspace{2em}}
+
+    \def\HUSTconfidential{\HUSTbox}
+	\def\HUSTnotconfidential{\HUSTcheckedbox}
+	\ifnum #1<2
+		\def\HUSTconfidential{\HUSTcheckedbox}
+		\def\HUSTnotconfidential{\HUSTbox}
+		\def\yearofconfidentiality{#2}
+	\fi
+	\clearpage
+	\thispagestyle{main}
+	\vspace*{1em}
+	\seccontent
+	\begin{center}
+		\heiti \xiaoerhao \bfseries
+		学位论文原创性声明
+	\end{center}
+
+
+    本人郑重声明：所呈交的论文是本人在导师的指导下独立进行研究所取得的研究成果。除了文中特别加以标注引用的内容外，本论文不包括任何其他个人或集体已经发表或撰写的成果作品。本人完全意识到本声明的法律后果由本人承担。
+
+	\begin{flushright}
+		作者签名：\hspace{6em} 年 \hspace{2em} 月 \hspace{2em} 日
+	\end{flushright}
+	\vspace{4em}
+
+	\begin{center}
+		\heiti \zihao{-2} \bfseries
+		学位论文版权使用授权书
+	\end{center}
+
+
+    本学位论文作者完全了解学校有关保障、使用学位论文的规定，同意学校保留并向有关学位论文管理部门或机构送交论文的复印件和电子版，允许论文被查阅和借阅。本人授权省级优秀学士论文评选机构将本学位论文的全部或部分内容编入有关数据进行检索，可以采用影印、缩印或扫描等复制手段保存和汇编本学位论文。
+
+    本学位论文属于 1、保密 \HUSTconfidential ，在 \yearofconfidentiality 年解密后适用本授权书。
+
+		    \hspace{7em} 2、不保密 \HUSTnotconfidential \hspace{1em}
+			。
+
+			\hspace{7em} (请在以上相应方框内打``$\checkmark$'')
+
+
+
+	\begin{flushright}
+	作者签名：\hspace{6em} 年 \hspace{2em} 月 \hspace{2em} 日
+
+    导师签名：\hspace{6em} 年 \hspace{2em} 月 \hspace{2em} 日
+    \end{flushright}
+	\clearpage
+}
+\newcommand{\makestatement}[2]{\statement{#1}{#2}}
+
+% ---------------------------------------------------------------------------- %
+% 定义中英文摘要和致谢环境
+%
+% 中文摘要环境
+\newenvironment{cnabstract}[1]{
+	\def \cnkeyword {#1}
+	\clearpage
+	\phantomsection
+	\addcontentsline{toc}{section}{摘要}
+	\vspace*{-20pt}
+	\begin{center}
+		\heiti \bfseries \xiaoerhao 摘 \hspace{2em} 要
+	\end{center}
+	\seccontent
+}{
+	\vspace{1em}
+	\par\noindent {\hei\sihao \bfseries 关键词：} {\song\xiaosihao\cnkeyword}
+
+}
+
+% 英文摘要环境（局部压缩行距 + 段间距，避免长摘要把 Key Words 顶到第二页）
+\newenvironment{enabstract}[1]{
+	\def \enkeyword {#1}
+	\clearpage
+	\phantomsection
+	\addcontentsline{toc}{section}{Abstract}
+	\vspace*{-30pt}
+	\begin{center}
+		\bfseries \xiaoerhao Abstract
+	\end{center}
+	\seccontent
+	\linespread{1.2}\selectfont
+	\setlength{\parskip}{0pt}
+}{
+	\par\vspace{0.2em}
+	\par\noindent {\xiaosihao\bfseries Key Words: }\ {\song\xiaosihao\enkeyword}
+	% 末尾不再 \clearpage：\tableofcontents 内部 \section* 会触发 \sectionbreak
+	% 自动 \clearpage，再次显式 \clearpage 会产生空白页。
+}
+
+% 定义致谢环境
+\newenvironment{thankpage}{
+	\clearpage%
+	\phantomsection%
+	\addcontentsline{toc}{section}{致谢}%
+	\section*{致\hspace{2em}谢}%
+}{
+	\clearpage
+}
+
+
+% ---------------------------------------------------------------------------- %
+%	---	定义列表项，列举的样式
+\usepackage{enumitem}
+\setlist{noitemsep}
+
+% ---------------------------------------------------------------------------- %
+% 中英混排断行调优
+%   1. emergencystretch 给段落分行更多余量，避免长英文标识符撑出右边距。
+%   2. XeTeXlinebreaklocale "zh" 允许在 CJK 字符之间任意位置分行。
+%   3. \bk 是 \discretionary 的简写，用于在 \texttt{} 等不可分词内部
+%      手动插入零宽允许断点（例如 \texttt{INTENT\bk\_RECOGNIZER\bk\_PROMPT}）。
+\setlength{\emergencystretch}{3em}
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip=0pt plus 1pt
+\newcommand{\bk}{\discretionary{}{}{}}
+
+% ---------------------------------------------------------------------------- %
+% \usepackage{makeindex} For the index 索引
+\usepackage{listings} % For the code. 代码
+
+% ---------------------------------------------------------------------------- %
+% 设置脚注
+
+% ---------------------------------------------------------------------------- %
+%% For the hyperlink and bookmark 超链接及书签，(这样生成的pdf中的引用直接点击链接即可到达目的地)
+\usepackage[bookmarks=true,colorlinks,linkcolor=black,citecolor=black,urlcolor=purple]{hyperref}% 设置超链接并修改风格
+
+
+% ---------------------------------------------------------------------------- %
+%% For the appendix, 附录
+% 设置附录
+\usepackage{appendix}
+\renewcommand{\appendixname}{附录}
+
+% ---------------------------------------------------------------------------- %
+% for the titlepage 标题页，此处可以省略，建议直接使用官方给出的标题页即可
+\usepackage{titling}
+% 重置命令 maketitle
+\renewcommand{\maketitle}{
+	\def\HUSTtitlelength{12em}
+ 	\begin{titlepage}
+		\begin{center}
+			\vspace*{0em}
+			\includegraphics[height=1.61cm]{HUSTlogo.eps}\\
+%
+			\vspace*{4em}
+%
+			{\xiaochuhao \hwzs \bfseries 本科生毕业设计[论文]}\\
+%
+			\vspace*{6em}
+			{\erhao \hei \bfseries \thetitle}
+
+			\vspace*{6em}
+			{\sanhao \hwzs
+				\renewcommand\arraystretch{2.7}
+				\begin{tabular}{lc}
+					\makebox[4em][s]{院 \hfill 系} &
+					\underline{\makebox[\HUSTtitlelength]{\school}} \\
+					\makebox[4em][s]{专业班级} &
+					\underline{\makebox[\HUSTtitlelength]{\classnum}} \\
+					\makebox[4em][s]{姓 \hfill 名} &
+					\underline{\makebox[\HUSTtitlelength]{\theauthor}} \\
+					\makebox[4em][s]{学 \hfill 号} &
+					\underline{\makebox[\HUSTtitlelength]{\stunum}} \\
+					\makebox[4em][s]{指导教师} &
+					\underline{\makebox[\HUSTtitlelength]{\instructor}} \\
+			  \end{tabular}
+		    }
+
+			\vspace{4em}
+			{\sanhao \hwzs \thedate}
+
+		\end{center}
+	\end{titlepage}
+}
+
+% ------------------------------------ 标题页 ----------------------------------- %
+\title{毕业论文题目} % 论文题目
+\def\school{数学与统计学院} % 院系
+\def\classnum{专业班级} % 专业班级
+\author{学生姓名} % 姓名
+\def\stunum{U201512345}	% 学号
+\def\instructor{导师姓名} % 指导老师
+\date{\today} % 日期
+
+% -------------------------------- quickinput -------------------------------- %
+% 利用\newcommand{cmd}{def} 设置一些常用的代码，提高效率，这里可以自行删除，下面是我敲翻译时候打的一些command。
+\newcommand{\hongzifuzhu}[1]{\textcolor{red}{\kai \wuhao(#1)}}
+
+% ---------------------------------------------------------------------------- %
+%                                   document                                   %
+% ---------------------------------------------------------------------------- %
+\begin{document}
+
+% \maketitle  % TODO: 调用需要 HUSTlogo.eps，从 https://github.com/zfengg/HUSTtex 仓库下载后取消注释。当前为方便草稿编译先暂时注释。
+
+% \thispagestyle{empty}% 标题页不参与编号
+% ------------------------------------ 声明页 ----------------------------------- %
+\setcounter{page}{1}
+\renewcommand{\thepage}{\Roman{page}}
+\makestatement{2}{2019} % 生成声明页, 第一个参数选择1则加上保密的时间，此处为2019，如果选择2则选择不保密。
+
+% ----------------------------------- 中文摘要 ----------------------------------- %
+\setcounter{page}{1}
+\renewcommand{\thepage}{\Roman{page}}
+\begin{cnabstract}{大语言模型智能体；ReAct 范式；检索增强生成；语义桥接；幻觉抑制}
+	\hspace{2em}气象预报数据是支撑国民经济与社会发展的重要基础信息资源，其获取与
+	分析当前面临两类深层次鸿沟：来自不同机构与平台的接口、字段、错误码体系不一致
+	带来的数据异构性，以及数值数据到自然语言决策语义之间的认知差距。本文基于
+	ReAct 范式设计并实现了一个面向气象预报数据检索与分析的单智能体系统，把课题
+	归纳为气象任务指令解析、气象数据异构特征、大语言模型数值与逻辑幻觉三个研究
+	问题，并据此提出与落地了五项创新工作：基于工具学习的异构 API 统一封装、
+	意图识别加参数补全的双阶段自然语言理解管线、以混合检索与确定性分级器构成
+	的双通路 RAG 架构、基于代码生成与受限沙箱的确定性统计分析机制、覆盖模块
+	层与集成层的多层评测体系。
+
+	本文完成了由 5 套独立评测集共 214 条用例构成的系统化实证。意图识别端到端
+	通过率 91.4\%，多地点角色识别准确率 100\%；通路 A 混合检索 Top-1 命中率
+	85.0\%、MRR 0.908；通路 B 桥接的等级编号准确率与权威标准引用真实性同时
+	达到 100\%，与大语言模型自由发挥的基线在严格命中率上形成 74.6 个百分点
+	差距；代码执行档数值准确率比大语言模型自由直算高出 22.2 个百分点；端到端
+	集成评测中 \texttt{full} 档对 \texttt{ablated} 去 RAG 对照档的通过率高出
+	13.4 个百分点，权威引用率高出 26.7 个百分点，\texttt{decision\_support}
+	类用例通过率高出 50 个百分点。实证结果系统验证了所提架构在气象预报数据
+	智能检索与分析任务上的有效性，同时揭示了从模块层到集成层的衰减效应，为
+	后续研究指明了显式对话状态跟踪、知识库扩展、安全沙箱升级等具体方向。
+\end{cnabstract}
+
+% ----------------------------------- 英文摘要 ----------------------------------- %
+\begin{enabstract}{Large Language Model Agent; ReAct Paradigm; Retrieval-Augmented Generation; Semantic Bridging; Hallucination Mitigation}
+
+	\hspace{2em}Weather forecast data is a critical information resource for the
+	national economy and social development, but its acquisition and analysis
+	currently face two fundamental gaps: heterogeneity across data providers in
+	terms of interfaces, field names and error code conventions, and the cognitive
+	gap between numerical data and natural language decision semantics. This thesis
+	designs and implements a single-agent system for weather forecast data retrieval
+	and analysis based on the ReAct paradigm. The research is decomposed into three
+	specific questions, namely instruction parsing of weather tasks, heterogeneity
+	handling of weather data, and numerical and logical hallucination of large
+	language models. Five innovations are proposed accordingly: unified
+	encapsulation of heterogeneous APIs based on tool learning, a two-stage natural
+	language understanding pipeline combining intent recognition and parameter
+	completion, a dual-path RAG architecture composed of hybrid retrieval and
+	deterministic classifiers, a deterministic statistical analysis mechanism based
+	on code generation and a sandboxed executor, and a multi-layer evaluation system
+	covering both module-level and integration-level perspectives.
+
+	A systematic empirical study is conducted on five independent benchmarks with
+	a total of 214 test cases. Intent recognition reaches an end-to-end pass rate
+	of 91.4\% with 100\% accuracy on multi-location role identification. Path A
+	hybrid retrieval achieves a Top-1 hit rate of 85.0\% and MRR of 0.908. Path B
+	bridging attains 100\% accuracy on grade identifiers and 100\% citation
+	authenticity, with a 74.6 percentage-point gap on strict citation hit rate over
+	the free-generation LLM baseline. Code execution improves numerical accuracy by
+	22.2 percentage points compared to direct LLM calculation. In the end-to-end
+	evaluation, the \texttt{full} configuration outperforms the \texttt{ablated}
+	non-RAG baseline by 13.4 percentage points in overall pass rate, 26.7
+	percentage points in authoritative citation rate, and 50 percentage points on
+	the \texttt{decision\_support} category. The results validate the effectiveness
+	of the proposed architecture for intelligent weather forecast data retrieval
+	and analysis, and reveal an integration decay effect from module-level to
+	integration-level evaluation, pointing to future directions including explicit
+	dialogue state tracking, knowledge base expansion, and sandbox security upgrade.
+\end{enabstract}
+
+
+\vspace*{-1em}
+% 用一个独立分组把 TOC 内的 \parskip 重置为 0，避免全局 \parskip=\baselineskip
+% 让 TOC 每一行都被强行加大行距，从而使尾部条目溢出页脚。
+\begingroup
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\thispagestyle{main}
+
+
+\clearpage
+\setcounter{page}{1}
+\renewcommand{\thepage}{\arabic{page}}
+
+% ----------------------------------- 主体内容 ----------------------------------- %
+% ============================================================ %
+% 第 1 章：绪论
+%   - 1.1 研究背景与意义
+%   - 1.2 国内外研究现状（气象 AI / Agent 技术 / RAG 与工具学习 / 课题定位）
+%   - 1.3 主要研究内容（Q1/Q2/Q3 三个研究问题 + 五项创新贡献）
+%   - 1.4 论文组织结构
+% ============================================================ %
+\seccontent
+\section{绪论}
+\label{chap:introduction}
+
+\input{草稿/1_1_研究背景与意义}
+
+\input{草稿/1_2_国内外研究现状}
+
+\input{草稿/1_3_主要研究内容}
+
+\input{草稿/1_4_论文组织结构}
+
+
+\sectionbreak
+% ============================================================ %
+% 第 2 章：气象预报任务技术问题分析与解决方案
+%   - 2.1 三类技术难点建模（Q1 / Q2 / Q3）
+%   - 2.2 ReAct 单智能体思维链模型（含气象 Agent 总体架构图占位）
+%   - 2.3 RAG 领域知识注入 + Prompt 工程优化策略
+%   - 2.4 本章小结
+%   - TODO: figures/agent_architecture.png 待 drawio 出图后接入 2.2 节占位框
+% ============================================================ %
+\seccontent
+\section{气象预报任务技术问题分析与解决方案}
+\label{chap:problem-modeling}
+
+\input{草稿/2_1_技术难点建模}
+
+\input{草稿/2_2_ReAct范式}
+
+\input{草稿/2_3_RAG与Prompt策略}
+
+\input{草稿/2_4_本章小结}
+
+
+\sectionbreak
+% ============================================================ %
+% 第 3 章：Q1 基于工具学习的异构气象数据智能检索技术
+%   - 3.1 气象 API 描述与封装
+%   - 3.2 意图识别与指令化
+%   - 3.3 缺失参数补全
+%   - 3.4 本章小结
+% ============================================================ %
+\seccontent
+\section{基于工具学习的异构气象数据智能检索技术}
+\label{chap:retrieval}
+
+\input{草稿/3_1_API封装}
+
+\input{草稿/3_2_意图识别}
+
+\input{草稿/3_3_参数补全}
+
+\input{草稿/3_4_本章小结}
+
+
+\sectionbreak
+
+\section{融合语义桥接机制的气象数据统计分析方法}
+\label{chap:semantic-bridge}
+
+\input{草稿/4_1_语义桥接}
+
+\input{草稿/4_2_代码生成}
+
+\input{草稿/4_3_报告生成}
+
+
+\sectionbreak
+
+\section{实验验证与总结}
+\label{chap:evaluation}
+
+\input{草稿/5_1_实验环境}
+
+\input{草稿/5_2_1_意图评测}
+
+\input{草稿/5_2_2_通路A评测}
+
+\input{草稿/5_2_3_通路B评测}
+
+\input{草稿/5_2_4_代码执行评测}
+
+\input{草稿/5_2_5_端到端评测}
+
+\input{草稿/5_3_全文总结}
+
+\input{草稿/5_4_研究前景}
+
+
+% ------------------------------------ 致谢 ------------------------------------ %
+\begin{thankpage}
+
+本论文的完成，首先要感谢我的指导老师王剑教授。在课题最初阶段，王老师把我从想做多智能体协作的发散设想上拉回，确定了单智能体+ReAct范式这一更聚焦也更可落地的框架；此后在技术路线的反复修改与讨论中，王老师都给了我细致的指导与及时的反馈。每一次在思路与选型上的犹豫，王老师都能从更高一层指出问题所在，让这份工作没有在分支选项里耗散下去。这样一种既给出方向、又留出探索空间的指导方式，对我之后的研究都会持续产生影响。
+
+这半年来，几位同门以及来自其他学院的朋友以各自的方式参与了这份工作。和他们的讨论让我从工程实现的细节里短暂跳出来，重新审视问题本身。学科背景不同的视角让我意识到,做工程性研究,除了把方案跑通之外,更难的是把它讲明白。
+
+父母在整段毕设期间给予了我坚定的支持。这份毕设里没法写进正文的那部分感谢，留给他们。
+
+最后,感谢华中科技大学人工智能与自动化学院四年的栽培。从踏进校园到交出这份毕设,时间过得比想象的要快。未来还有很多事没有答案,希望自己能保持对一个具体问题的耐心,把每一个需要做一次又一次尝试的问题都认真做完。
+
+\end{thankpage}
+
+% ----------------------------------- 参考文献 ----------------------------------- %
+\clearpage
+\phantomsection
+\addcontentsline{toc}{section}{参考文献}
+
+% gbt7714 已在宏包加载时根据 numbers 选项自动设定为 gbt7714-numerical 样式，
+% 此处不再重复 \bibliographystyle，避免 aux 写入两条 \bibstyle 触发 BibTeX 报错。
+% 编译流程：xelatex → bibtex → xelatex → xelatex
+{\seccontent
+\bibliography{HUSTthesis}\label{bibtexref}
+}
+
+% ------------------------------------ 附录 ------------------------------------ %
+\clearpage
+\appendix
+\phantomsection
+\addcontentsline{toc}{section}{附录}
+\section*{附录}
+
+
+\end{document}

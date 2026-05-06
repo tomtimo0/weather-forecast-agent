@@ -1,0 +1,125 @@
+% =============================================================================
+% 5.2.1 意图识别与参数补全评测
+% 草稿版本：v0.1 (2026-05-05)
+% 字数：约 1300 字
+% 风格规则：v0.2 风格（无 \textbf / \textit / 引例括号 / 双引号 / 破折号）
+% 引用：\cite{ref10, ref18, ref29}
+% 图表：
+%   - 表 \reftab{tab:intent-overall}     35 条总表
+%   - 表 \reftab{tab:intent-by-category} 按场景拆分
+% 依赖宏包：booktabs / tabularx（主稿已加载）
+% =============================================================================
+
+\subsection{典型气象任务场景下的技术验证}
+\label{sec:scenario-eval}
+
+本章在 \ref{sec:exp-env} 节构建的实验环境上，对系统的 4 个核心模块以及
+集成层 ReAct Agent 分别进行系统化评测。本节按数据流向依次报告意图识别
+与参数补全、通路 A 混合检索、通路 B 语义桥接、代码生成与受限沙箱 4 个
+模块层评测，再以 1 个集成层端到端任务完成率评测收口。每节统一围绕评测
+设计、核心数据、按子类拆分的差异化失败模式三个维度展开，避免重复展示
+\ref{chap:semantic-bridge} 章已经给出的总表。
+
+\subsubsection*{5.2.1 \quad 意图识别与参数补全评测}
+\label{sec:intent-eval}
+
+意图识别与参数补全位于 ReAct Agent 链条的最前端，承担把自然语言查询
+转化为结构化 \texttt{WeatherIntent} 对象的责任 \cite{ref18}。本节在
+\texttt{intent\_\bk{}bench.\bk{}jsonl} 共 35 条用例上评测两个模块的联合表现，
+评测脚本为 \texttt{experiments/\bk{}eval/\bk{}run\_\bk{}intent\_\bk{}eval.\bk{}py}。
+
+评测集覆盖 10 类场景，包含 8 类单轮场景共 28 条、多轮上下文继承类
+\texttt{context\_\bk{}inference} 共 3 条与对抗鲁棒类 \texttt{adversarial}
+共 2 条。8 类单轮场景包括当前天气、逐小时预报、逐日预报、预警、生活
+指数、历史日报、历史小时报与出行建议，其中出行建议类共 5 条专门压测
+出发地、经停地与到达地三类地点角色的标注能力。多轮场景每条用例自带
+\texttt{context} 字段，用于把上一轮对话摘要拼接到 prompt 中以构成
+最简形式的对话状态测试。对抗鲁棒类用例包括与气象无关的电影查询，
+用于验证 \texttt{recognizer} 不被诱导触发误识别。
+
+评测指标分为两阶段共 9 项加 1 项端到端综合。\texttt{recognizer} 阶段
+有 5 项指标，分别对应意图准确率、地点集合召回率与精确率、地点角色
+准确率与时间字段识别率。\texttt{completer} 阶段有 3 项指标，对应
+\texttt{is\_\bk{}complete} 判定准确率、\texttt{follow\_\bk{}up} 触发准确率
+与 \texttt{notes} 字段覆盖率。综合指标 \texttt{end\_\bk{}to\_\bk{}end\_\bk{}pass\_\bk{}rate}
+要求 9 项全部通过才算端到端通过，是论文核心指标。35 条用例的总体
+结果见 \reftab{tab:intent-overall}。
+
+\begin{table}[!htbp]
+    \centering
+    \caption{意图识别与参数补全评测 9 项指标总表（35 条用例）}
+    \label{tab:intent-overall}
+    \song\wuhao
+    \begin{tabular}{lr}
+        \toprule
+        指标 & 数值 \\
+        \midrule
+        端到端通过率 & 91.4\% \\
+        意图准确率 & 97.1\% \\
+        地点角色准确率 & 100.0\% \\
+        地点集合召回率 & 96.6\% \\
+        地点集合精确率 & 95.6\% \\
+        时间字段识别率 & 91.7\% \\
+        \texttt{is\_\bk{}complete} 判定准确率 & 100.0\% \\
+        \texttt{follow\_\bk{}up} 触发准确率 & 100.0\% \\
+        \texttt{notes} 字段覆盖率 & 50.0\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+按场景类别拆分后的差异分布更具论证价值，详见
+\reftab{tab:intent-by-category}。8 类单轮场景共 28 条用例端到端全部通过，
+对抗鲁棒 2 条全部正确触发 \texttt{unknown} 加友好追问。出行建议类 5 条
+全部通过，departure、arrival 与 waypoint 三类地点角色识别准确率为 100\%。
+唯一的 \texttt{life\_\bk{}index} 失败来自单点 \texttt{recognizer} 抖动，但
+\texttt{completer} 触发了正确追问，业务层面用户体验仍然正确。
+
+\begin{table}[!htbp]
+    \centering
+    \caption{意图识别评测按场景类别拆分（端到端通过率）}
+    \label{tab:intent-by-category}
+    \song\fontsize{9pt}{12pt}\selectfont
+    \renewcommand{\arraystretch}{0.95}
+    \begin{tabular}{lrr}
+        \toprule
+        类别 & 用例数 & 端到端通过率 \\
+        \midrule
+        \texttt{adversarial} & 2 & 100.0\% \\
+        \texttt{current\_\bk{}weather} & 4 & 100.0\% \\
+        \texttt{daily\_\bk{}forecast} & 5 & 100.0\% \\
+        \texttt{historical\_\bk{}daily} & 2 & 100.0\% \\
+        \texttt{historical\_\bk{}hourly} & 2 & 100.0\% \\
+        \texttt{hourly\_\bk{}forecast} & 5 & 100.0\% \\
+        \texttt{life\_\bk{}index} & 4 & 75.0\% \\
+        \texttt{travel\_\bk{}advice} & 5 & 100.0\% \\
+        \texttt{weather\_\bk{}warning} & 3 & 100.0\% \\
+        \texttt{context\_\bk{}inference} & 3 & 33.3\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+按场景类别拆分清晰暴露了系统在多轮长程依赖上的真实瓶颈。
+\texttt{context\_\bk{}inference} 类 3 条用例端到端通过率仅为 33.3\%，与
+单轮场景之间存在 66.7 个百分点的差距。失败用例的共同特征是，当用户
+查询仅切换其中一个槽位时，例如从查北京明天天气切换为问那成都呢，
+大语言模型能够正确识别地点切换，但会遗漏从上下文继承的时间字段
+\texttt{date} 等于明天。当查询同时切换意图与隐式继承多个槽位时，
+例如上一轮问武汉明天天气，本轮问那需要防晒吗，意图切换正确但
+\texttt{locations} 与 \texttt{time} 两个槽位都被重置为空。这一现象
+表明大语言模型在单轮意图理解上已接近人类水平，但结构化字段的跨轮
+继承能力是另一个独立的能力维度。单纯把上下文摘要拼接到 prompt 中
+不足以稳定实现地点继承加时间继承加意图切换的复合任务，必须借助显式
+对话状态跟踪机制 \cite{ref29}。这一局限性在 \ref{sec:future-work} 节
+作为未来工作展开。
+
+分层架构的容错价值同样需要在失败用例分析中专门指出。在 \texttt{life\_\bk{}index}
+类用例 \texttt{index\_\bk{}004\_\bk{}no\_\bk{}loc} 中，\texttt{recognizer} 把未提供
+地点的查询识别为意图正确加地点字段填入虚构的当前位置三元组，构成
+礼貌性补白幻觉。但 \texttt{completer} 模块识别出当前位置不是合法
+城市名，触发了 \texttt{is\_\bk{}complete=\bk{}False} 与友好追问，最终用户体验
+是系统反问您想查询哪个城市，避免了走错下游去查虚构城市的生活指数。
+这一用例在严格指标下被记为失败，但业务层面是成功的。这印证了一个
+论点：单点大语言模型错误并不必然导致系统失败，分层架构能够吸收单点
+抖动 \cite{ref10}，\texttt{recognizer} 加 \texttt{completer} 的双阶段
+设计本身就构成容错机制。
+

@@ -1,0 +1,138 @@
+% =============================================================================
+% 3.1 气象 API 的描述与封装
+% 草稿版本：v0.1 (2026-05-05)
+% 字数：约 1700 字
+% 风格规则：v0.2 风格（无 \textbf / \textit / 引例括号 / 双引号 / 破折号）
+% 引用：\cite{ref3, ref11, ref21, ref28}
+% 图表：
+%   - 表 \reftab{tab:api-tools-overview}    9 个 weather_api 工具汇总
+% 依赖宏包：booktabs / tabularx（主稿已加载）
+% =============================================================================
+
+\subsection{气象 API 的描述与封装}
+\label{sec:api-tooling}
+
+工具学习是大语言模型与外部世界交互的桥梁，其核心思想是把外部 API 包装
+为大语言模型可识别、可调用的工具单元 \cite{ref21}。本章针对 Q1 课题
+所定义的气象数据智能检索问题，沿用工具学习范式分三步建立从自然语言
+查询到结构化检索结果的完整链路。本节先解决最底层的 API 描述与封装
+问题，\ref{sec:intent-recognition} 节解决自然语言到结构化意图的转化，
+\ref{sec:param-completion} 节解决缺失参数的上下文推理与动态补全。
+
+\subsubsection*{3.1.1 \quad 异构气象数据源的统一接入}
+
+气象数据源天然具有异构性。本文同时接入了和风天气 API 与 Open-Meteo
+两类异构数据源以覆盖不同业务场景。和风天气提供商业级实时观测、逐小时
+与逐日预报、天气预警、生活指数等服务，接口稳定但仅覆盖近期与未来
+30 天。Open-Meteo 由欧洲气象研究机构维护，提供免费的全球长期历史
+数据归档，时间深度可追溯到 1940 年代，但缺少天气预警与生活指数等
+增值服务。两类数据源的接口协议、参数命名、字段命名、错误码体系都
+不一致，例如和风天气使用 \texttt{LocationID} 作为地点标识符并以
+\texttt{code} 字段表示状态，而 Open-Meteo 直接以纬度经度为参数并
+以 \texttt{error} 字段返回错误描述。林怡等 \cite{ref3} 指出这种异构
+性是面向气象任务的 AI Agent 系统在工具设计阶段必须解决的首要问题。
+
+本文采用统一的工具签名层封装两类异构 API，对外暴露相同的接口风格
+与返回结构。所有工具实现位于 \texttt{src/\bk{}tools/\bk{}weather\_\bk{}api.\bk{}py}，
+通过 \texttt{@tool} 装饰器导出为可被 LangChain Agent 自动识别的
+function 工具。工具内部统一处理 HTTP 请求、状态码校验、错误兜底
+与字段重命名四类细节。例如和风天气返回的 \texttt{precip} 是带
+\texttt{mm} 单位的字符串而 Open-Meteo 返回的是浮点数值，封装层
+统一格式化为 \texttt{X.\bk{}X mm} 字符串以便下游统一消费。这种封装把
+数据源异构性吸收在工具实现内部，对上层意图识别与 Agent 编排完全
+透明。
+
+\subsubsection*{3.1.2 \quad Function Calling Schema 的设计原则}
+
+工具暴露给大语言模型的接口规范统一遵循 OpenAI Function Calling
+Schema 协议 \cite{ref28}。每个工具的描述由四部分构成：函数名、
+docstring 自然语言描述、参数类型注解、参数描述与可选枚举值。
+LangChain 的 \texttt{@tool} 装饰器在工具被加载时自动从 Python 类型
+注解与 docstring 抽取出对应的 JSON Schema，无需手工维护额外的
+schema 文件。
+
+为最大化大语言模型的工具识别准确率，本文在 docstring 编写上遵循
+三条具体原则。第一条是任务驱动的功能描述。每个工具的首句直接说明
+该工具解决什么问题，例如 \texttt{get\_\bk{}current\_\bk{}weather} 的首句为
+获取指定地点的实时天气数据。第二条是显式的参数枚举。对于带有可选
+参数的工具，docstring 中显式枚举所有合法值。例如 \texttt{get\_\bk{}forcast\_\bk{}weather}
+的 \texttt{hours} 参数明确列出 24h、72h、168h 三个合法值，
+\texttt{get\_\bk{}weather\_\bk{}indices} 的 \texttt{types} 参数列出 16 个
+生活指数类型 ID 与对应的中文名称。第三条是显式的工具间依赖提示。
+当一个工具依赖另一个工具的输出时，docstring 中明确说明这一依赖
+关系，例如 \texttt{get\_\bk{}current\_\bk{}weather} 的 \texttt{location}
+参数描述中明确指出 \texttt{LocationID} 可通过 \texttt{search\_\bk{}city}
+获取。这一类提示是大语言模型在 ReAct 循环中正确编排多步工具调用
+的关键依据 \cite{ref28}。
+
+\subsubsection*{3.1.3 \quad 工具集汇总}
+
+按上述设计原则，本文为气象 Agent 实现了 9 个 weather\_api 工具加
+2 个 RAG 工具，共 11 个工具单元。其中 weather\_api 系列的 9 个工具
+分为四类，详见 \reftab{tab:api-tools-overview}。RAG 类的两个工具
+\texttt{search\_\bk{}knowledge} 与 \texttt{bridge\_\bk{}weather\_\bk{}data} 已在
+\ref{sec:semantic-bridge} 节展开，本节不再重复。
+
+\begin{table}[!htbp]
+    \centering
+    \caption{气象 API 工具集汇总（9 个 weather\_api 工具）}
+    \label{tab:api-tools-overview}
+    \song\fontsize{9pt}{12pt}\selectfont
+    \renewcommand{\arraystretch}{0.95}
+    \begin{tabular}{lll}
+        \toprule
+        类别 & 工具名 & 主要功能 \\
+        \midrule
+        辅助 & \texttt{get\_\bk{}current\_\bk{}time} & 返回当前日期与时间，解析相对时间表达 \\
+        辅助 & \texttt{search\_\bk{}city} & 城市名查 \texttt{LocationID} 与经纬度 \\
+        \midrule
+        实时 & \texttt{get\_\bk{}current\_\bk{}weather} & 返回观测时刻的温度、风力、降水等 \\
+        预报 & \texttt{get\_\bk{}forcast\_\bk{}weather} & 24h / 72h / 168h 逐小时预报 \\
+        预报 & \texttt{get\_\bk{}daily\_\bk{}forecast} & 3d / 7d / 10d / 15d / 30d 逐日预报 \\
+        预警 & \texttt{get\_\bk{}weather\_\bk{}warning} & 当前生效的暴雨、台风、大风等预警 \\
+        指数 & \texttt{get\_\bk{}weather\_\bk{}indices} & 1d / 3d 生活指数（16 类） \\
+        \midrule
+        历史 & \texttt{get\_\bk{}historical\_\bk{}hourly} & Open-Meteo 长期归档逐小时数据 \\
+        历史 & \texttt{get\_\bk{}historical\_\bk{}daily} & Open-Meteo 长期归档逐日数据 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+工具集的覆盖范围与意图识别模块的 9 类意图存在明确的一对一映射关系。
+\texttt{get\_\bk{}current\_\bk{}weather} 服务于 \texttt{current\_\bk{}weather} 意图，
+\texttt{get\_\bk{}forcast\_\bk{}weather} 服务于 \texttt{hourly\_\bk{}forecast},
+\texttt{get\_\bk{}daily\_\bk{}forecast} 服务于 \texttt{daily\_\bk{}forecast},
+\texttt{get\_\bk{}weather\_\bk{}warning} 服务于 \texttt{weather\_\bk{}warning},
+\texttt{get\_\bk{}weather\_\bk{}indices} 服务于 \texttt{life\_\bk{}index}，两类
+\texttt{get\_\bk{}historical\_\bk{}*} 服务于历史查询，组合调用 \texttt{search\_\bk{}city}
+加 \texttt{get\_\bk{}forcast\_\bk{}weather} 加 \texttt{get\_\bk{}weather\_\bk{}indices}
+则服务于 \texttt{travel\_\bk{}advice} 类多地点出行场景。这一映射关系
+作为推理参考写入 \texttt{INTENT\_\bk{}RECOGNIZER\_\bk{}PROMPT} 的工具映射段落，
+为 \ref{sec:intent-recognition} 节的 \texttt{needed\_\bk{}tools} 字段提供
+推断依据。
+
+\subsubsection*{3.1.4 \quad 与 MCP 协议的对比与对齐}
+
+Function Calling Schema 在工具描述层面与 Anthropic 等机构推动的 Model
+Context Protocol \cite{ref11} 在设计目标上有相当部分重叠：两者都希望
+通过标准化的工具接口让大语言模型与外部系统的解耦能力最大化。Function
+Calling 由 OpenAI 在 GPT-4 阶段提出并被 LangChain 等主流 Agent 框架
+继承，其优势是与现有大语言模型 API 紧密集成；MCP 则采用客户端服务器
+架构，工具侧实现独立的 MCP Server 进程，通过 stdio 或 SSE 协议与
+Agent 客户端通信，优势是在跨进程隔离与多进程编排上有更强的可扩展性。
+
+本文选择 Function Calling 而非 MCP 的工程取舍源自三点考虑。第一是
+延迟敏感性。气象 Agent 的典型响应需要在 5 至 15 秒内完成多步工具
+调用与最终回答生成，跨进程通信引入的额外往返延迟在毕业设计研究
+范围内不能被本课题方法论的价值充分覆盖。第二是开发与调试便利性。
+\texttt{@tool} 装饰器允许工具与 Agent 共享同一份 Python 进程与
+异常调用栈，调试单点工具崩溃时不需要在多进程之间检索日志。第三是
+评测复用便利性。\ref{sec:scenario-eval} 节的 5 套评测脚本统一直接
+调用同一份工具实现，避免了在评测时维护额外的 MCP 服务进程。
+
+需要明确的是，本文工具描述格式严格遵循 OpenAI Function Calling
+JSON Schema，与 MCP 工具描述格式在字段语义上一一对应。如果未来需要
+迁移到 MCP 架构，仅需把 \texttt{@tool} 装饰器替换为 MCP Server 注册
+逻辑，工具实现与 docstring 全部可以原样保留。这一兼容性是本文工具
+封装层在工程演进路径上的一个具体保留。
+

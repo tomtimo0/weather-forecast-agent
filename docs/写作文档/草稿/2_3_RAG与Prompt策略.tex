@@ -1,0 +1,180 @@
+% =============================================================================
+% 2.3 基于 RAG 的领域知识注入与 Prompt 工程优化策略
+% 草稿版本：v0.1 (2026-05-05)
+% 字数：约 2000 字
+% 风格规则：v0.2 风格（无 \textbf / \textit / 引例括号 / 双引号 / 破折号）
+% 引用：\cite{ref4, ref12, ref18, ref20, ref24}
+% 图表：
+%   - 表 \reftab{tab:kb-three-categories}    知识库三类条目说明
+%   - 表 \reftab{tab:prompt-modules}         System Prompt 6 段模块化设计
+% 依赖宏包：booktabs / tabularx（主稿已加载）
+% =============================================================================
+
+\subsection{基于 RAG 的领域知识注入与 Prompt 工程优化策略}
+\label{sec:rag-prompt}
+
+\ref{sec:react-paradigm} 节给出的 ReAct 单智能体框架本身只是方法论
+骨架，要在气象任务上落地仍需解决两个具体问题：领域知识从何处获取、
+如何让大语言模型在合适的时机调用合适的工具。本节分别给出两个问题
+对应的工程方案：基于 RAG 的领域知识注入与基于 Prompt 工程的工具
+调用约束。这两个方案在功能上正交而在使用上互补，共同构成 ReAct
+循环之上的领域适配层。
+
+\subsubsection*{2.3.1 \quad 领域知识库的三类条目设计}
+
+气象领域的权威知识具有强结构化、强出处、强版本化三个特征。强结构化
+体现为大量阈值表、分级表、生活指数等级表，例如降水量等级、蒲福
+风级、空气质量指数等。强出处体现为绝大多数业务规范都来自国家标准、
+行业标准或国际组织规范，例如 GB/T 28592-2012 降水量等级、Beaufort
+wind force scale 等。强版本化体现为同一标准会在不同年份发布修订版,
+例如 GB/T 21987-2017 寒潮等级取代了早期的 GB/T 20484。这三个特征
+要求知识库本身必须做到条目化、出处化、版本化的设计 \cite{ref24}。
+
+本文据此把领域知识库划分为三类条目，每类对应不同的 RAG 调用场景,
+详见 \reftab{tab:kb-three-categories}。
+
+\begin{table}[!htbp]
+    \centering
+    \caption{领域知识库三类条目的设计原则与典型 RAG 调用场景}
+    \label{tab:kb-three-categories}
+    \song\fontsize{9pt}{12pt}\selectfont
+    \renewcommand{\arraystretch}{0.95}
+    \begin{tabular}{lll}
+        \toprule
+        类别 & 用途 & 典型查询触发 \\
+        \midrule
+        \texttt{term\_\bk{}definition} & 气象术语定义 & 雷暴是什么、台风等级是什么 \\
+        \texttt{grading\_\bk{}standard} & 数值分级阈值 & 35 mm 算什么级别、7 级风的影响 \\
+        \texttt{operation\_\bk{}guideline} & 作业 / 出行规范 & 6 级风是否停止高空作业 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\texttt{term\_\bk{}definition} 类承担概念性查询的 RAG 召回职责。当用户
+直接询问某个气象术语含义时，通路 A 的 \texttt{search\_\bk{}knowledge}
+工具基于向量加 BM25 的混合检索从该类条目中召回 Top-K，作为大语言
+模型生成解释文本的上下文。
+
+\texttt{grading\_\bk{}standard} 类承担数值分级与引用归属的 RAG 召回
+职责。这一类条目的 \texttt{id} 字段被设计为机器可解析的硬链接键,
+例如 \texttt{grading\_\bk{}precip\_\bk{}24h\_\bk{}rainstorm} 表示 24 小时降水量的
+暴雨级别。通路 B 的确定性分类器通过 \texttt{grade\_\bk{}id} 字段直接
+查表，绕过向量相似度，从源头消除数值分级的归属错误。
+
+\texttt{operation\_\bk{}guideline} 类承担作业适宜性与场景过滤的知识
+注入职责。这一类条目附带 \texttt{applicable\_\bk{}scene} 字段，例如
+高空作业、户外运动、洗车、播种等，让 \texttt{bridge\_\bk{}weather\_\bk{}data}
+工具能根据用户输入的 \texttt{scene} 参数裁剪不相关的建议，避免
+\ref{sec:problem-modeling} 节描述的场景误判幻觉。
+
+每条 JSONL 记录强制带出处三元组（机构、文件名、条款号）加可信度
+标签（\texttt{official} 国家标准、\texttt{industry} 行业标准、
+\texttt{common} 业内惯例）加版本号三类元数据。这种元数据完整性
+是 \ref{sec:bridge-eval} 节实证中通路 B 的 \texttt{citation} 真实性
+能达到 100\% 的根本前提。黄冰 \cite{ref4} 在 RAG 应用古生物学的
+工作中也强调这种带出处的知识库设计是保证 RAG 输出可追溯的最低要求。
+
+\subsubsection*{2.3.2 \quad 双通路 RAG 的设计动机简述}
+
+通路 A 的混合检索 \cite{ref12} 与通路 B 的确定性分级在功能上互补
+的具体设计动机将在 \ref{sec:semantic-bridge} 节展开。本节仅说明
+为何只用通路 A 不够。
+
+向量检索对相邻阈值条目的排序不稳定。例如查询 35 mm 降水量等级，
+向量检索可能召回中雨、大雨、暴雨三个相邻档位的条目，最终归属到
+哪一个取决于嵌入模型的具体训练数据，无法做到与国家标准 100\%
+一致。Gao 等 \cite{ref24} 在 RAG 综述中也指出了这一问题，并把它
+归类为细粒度数值边界 RAG 不擅长的固有局限。本文据此引入通路 B
+的确定性分级，通过 if-elif 分支匹配显式的阈值范围，保证数值到
+分级的归属在工程上 100\% 可控。
+
+\subsubsection*{2.3.3 \quad System Prompt 的模块化设计}
+
+ReAct 循环 \cite{ref18} 的输出质量高度依赖 System Prompt 的设计。
+本文 \texttt{src/\bk{}config/\bk{}settings.\bk{}py} 中的 \texttt{SYSTEM\_\bk{}PROMPT}
+共 117 行，按功能划分为 6 个模块，详见 \reftab{tab:prompt-modules}。
+模块化设计的工作目标是让大语言模型在每一轮思考时能精确定位需要
+参考的规则段落，避免长 Prompt 中的相互干扰，这一思路与 Hong 等
+\cite{ref20} 在 Data Interpreter 中的 prompt 解耦设计同源。
+
+\begin{table}[!htbp]
+    \centering
+    \caption{System Prompt 的 6 段模块化设计}
+    \label{tab:prompt-modules}
+    \song\fontsize{9pt}{12pt}\selectfont
+    \renewcommand{\arraystretch}{0.95}
+    \begin{tabular}{lll}
+        \toprule
+        模块 & 功能 & 行数 \\
+        \midrule
+        可用工具清单 & 11 个工具的功能与触发条件 & 27 行 \\
+        工具使用规则 & 工具组合与调用顺序约束 & 13 行 \\
+        RAG 知识检索规则 & 数据与依据分离原则 & 9 行 \\
+        语义桥接调用约束 & 数值到分级的强制桥接路径 & 7 行 \\
+        出行场景推理规则 & 多地点角色与时段对齐 & 8 行 \\
+        输出规则 & 引用与建议的最终格式约束 & 6 行 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+第一段是工具清单。每个工具的描述包含名称、功能、参数三要素，并
+按数据查询、知识检索、语义桥接三类分组。\texttt{search\_\bk{}knowledge}
+工具的描述明确列出 4 类应主动调用的场景，让大语言模型在思考时
+能自我提示是否需要检索。
+
+第二段是工具使用规则。这一段把 9 类典型查询与对应工具组合显式
+列出，例如问现在天气调用 \texttt{get\_\bk{}current\_\bk{}weather}、问几点
+天气调用 \texttt{get\_\bk{}forcast\_\bk{}weather}。这种典型场景到工具的
+映射为 ReAct 循环的初始决策提供了启发式锚点。
+
+第三段是 RAG 知识检索规则。本段强调数据与依据的分离原则：天气
+工具给出现在 30 mm 降水这种事实数据，
+\texttt{search\_\bk{}knowledge} 与 \texttt{bridge\_\bk{}weather\_\bk{}data}
+给出 30 mm 属于大雨这种分级依据，两者结合才能给出准确解读。这
+一原则在工程上转化为对模型的两条硬约束：最终回答必须显式引用
+出处；遇到 X 算什么级别的判定必须先调用 RAG 而非凭空给出。
+
+第四段是语义桥接调用约束。这一段进一步细化数值场景下的工具
+路径：用户问概念定义直接调用 \texttt{search\_\bk{}knowledge}，
+用户问今天明天数值且需要建议先调用天气工具再调用桥接，用户问某
+数值算什么级别直接调用桥接。三类路径共同构成 Q3 数值幻觉的强制
+拦截机制。
+
+第五段是出行场景推理规则。这一段处理 \texttt{travel\_\bk{}advice}
+意图下的多地点角色对齐，明确出发时段查出发地、到达时段查目的地的
+工程约束。这一段的源起是 README §7.1 描述的早期失败案例：用户问
+明天早八到晚六从武汉到成都的穿衣建议，初版 Agent 错误地查询了成都
+早八的天气而非武汉。
+
+第六段是输出规则。本段约束最终回答必须做到精准定位时间地点参数、
+预警优先提示、引用出处必须显式保留三件事。这是面向终端用户的格式
+化约束，与第三、四段的过程性约束形成最终输出闭环。
+
+\subsubsection*{2.3.4 \quad Few-shot 示例与 Prompt 的协同}
+
+在 System Prompt 之外，本文在 \texttt{INTENT\_\bk{}RECOGNIZER\_\bk{}PROMPT}
+与 \texttt{COMPLETER\_\bk{}PROMPT} 中分别使用了 few-shot 示例引导
+意图识别与参数补全的输出格式（详见 \ref{chap:retrieval} 章）。
+few-shot 的选择遵循三条原则：第一是覆盖全部 9 类意图，每类至少
+一个示例；第二是覆盖三类典型异常，包括地点缺失、时间缺失、对抗
+查询；第三是示例答案与 Pydantic schema 严格一致，让模型从示例中
+学到合法字段集与合法枚举值。
+
+few-shot 与 System Prompt 的关系是抽象规则与具体范例的互补。
+System Prompt 给出原则性约束让模型知道应该做什么，few-shot 给出
+范例让模型知道应该怎么做。在 \ref{sec:intent-eval} 节的实证中,
+两种 Prompt 形态共同支撑了 35 条评测集上 91.4\% 的端到端通过率
+与 100\% 的地点角色识别率。
+
+\subsubsection*{2.3.5 \quad 与 Q1/Q2/Q3 的关联}
+
+本节给出的 RAG 与 Prompt 策略与 Q1、Q2、Q3 三个研究问题之间的
+关联可以归纳如下。Q1 指令解析依赖 \texttt{INTENT\_\bk{}RECOGNIZER\_\bk{}PROMPT}
+与 \texttt{COMPLETER\_\bk{}PROMPT} 中的工具映射段落，模型据此输出可
+执行的结构化意图。Q2 异构数据依赖 System Prompt 第二段的工具组合
+规则与第五段的出行场景对齐规则，模型据此能在多源、多时段、多
+角色的查询下选择正确的工具组合。Q3 数值幻觉则同时依赖 RAG 知识
+库的元数据严谨性与 System Prompt 第三、四段的强制桥接路径，前者
+保证引用可追溯，后者保证桥接被实际触发。三类策略互相加强，构成
+本文方法论框架在工程层面的最终落地。
+

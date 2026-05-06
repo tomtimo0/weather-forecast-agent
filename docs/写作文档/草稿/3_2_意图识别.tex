@@ -1,0 +1,168 @@
+% =============================================================================
+% 3.2 气象任务意图识别与指令化
+% 草稿版本：v0.1 (2026-05-05)
+% 字数：约 2000 字
+% 风格规则：v0.2 风格（无 \textbf / \textit / 引例括号 / 双引号 / 破折号）
+% 引用：\cite{ref1, ref18, ref20, ref28}
+% 图表：
+%   - 表 \reftab{tab:intent-types}            9 类意图说明
+%   - 表 \reftab{tab:weather-intent-schema}   WeatherIntent 结构化字段
+% 依赖宏包：booktabs / tabularx（主稿已加载）
+% =============================================================================
+
+\subsection{气象任务意图识别与指令化}
+\label{sec:intent-recognition}
+
+\ref{sec:api-tooling} 节解决了底层 API 的工具化封装问题，但仅靠一组
+Function Calling 工具仍不足以处理用户的自然语言查询。用户提问的语义
+具有高度多样性，例如同样查询武汉今天的天气，用户可能说现在武汉怎么样、
+武汉今天会下雨吗、明天早八到晚六从成都坐高铁到武汉有什么穿衣建议等
+形态各异的句式。如果直接把原始查询送入 ReAct 循环 \cite{ref18}，
+大语言模型需要同时承担意图理解、参数解析、工具选择三类任务，错误
+率会显著上升。本文据此在 ReAct 循环之前增加一道独立的意图识别前置，
+把自然语言查询解析为结构化 \texttt{WeatherIntent} 对象，作为
+ReAct 循环的强结构化输入。
+
+\subsubsection*{3.2.1 \quad WeatherIntent 数据模型设计}
+
+意图识别模块的核心数据结构是 \texttt{WeatherIntent}，定义于
+\texttt{src/\bk{}intent/\bk{}schema.\bk{}py}，基于 Pydantic v2 实现。该数据结构
+通过 6 个关键字段刻画用户查询的全部结构化要素，详见
+\reftab{tab:weather-intent-schema}。
+
+\begin{table}[!htbp]
+    \centering
+    \caption{WeatherIntent 数据模型字段说明}
+    \label{tab:weather-intent-schema}
+    \song\fontsize{9pt}{12pt}\selectfont
+    \renewcommand{\arraystretch}{0.95}
+    \begin{tabular}{lll}
+        \toprule
+        字段 & 类型 & 含义 \\
+        \midrule
+        \texttt{intent} & Literal\ 9 类 + unknown & 查询任务类型 \\
+        \texttt{locations} & List[LocationIntent] & 涉及的所有地点及其角色 \\
+        \texttt{time} & TimeIntent & 日期与起止时间 \\
+        \texttt{variables} & List[str] & 关注的天气要素 \\
+        \texttt{needed\_\bk{}tools} & List[str] & 建议调用的工具名 \\
+        \texttt{reasoning} & Optional[str] & 意图判定的简短理由 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+子模型 \texttt{LocationIntent} 包含 \texttt{name} 与
+\texttt{role} 两个字段，\texttt{role} 取 \texttt{target} 单一目标、
+\texttt{departure} 出发地、\texttt{arrival} 目的地、\texttt{waypoint}
+途经点四个枚举值之一。子模型 \texttt{TimeIntent} 包含 \texttt{raw\_\bk{}text}
+原始时间表达、\texttt{date} 日期、\texttt{start\_\bk{}time} 起始时刻、
+\texttt{end\_\bk{}time} 结束时刻四个字段，可同时承载相对时间例如明天与
+绝对时间例如 2025-01-01 两类表达。\texttt{reasoning} 字段是为可调试性
+专门设计的，用于让模型记录判定逻辑，便于评测阶段定位失败用例。
+
+意图类型 \texttt{intent} 的 Literal 设计是本文降低意图识别幻觉的关键
+工程手段之一。Pydantic 在结构化输出阶段会强制校验该字段必须落在
+预定义的 9 类加 \texttt{unknown} 共 10 个枚举值中，若大语言模型
+返回不在枚举内的值，Pydantic 会抛出 \texttt{ValidationError},
+触发上游容错回退。9 类意图的具体语义见 \reftab{tab:intent-types}。
+
+\begin{table}[!htbp]
+    \centering
+    \caption{9 类意图类型的语义与典型查询}
+    \label{tab:intent-types}
+    \song\fontsize{9pt}{12pt}\selectfont
+    \renewcommand{\arraystretch}{0.95}
+    \begin{tabular}{lll}
+        \toprule
+        意图类型 & 语义 & 典型查询 \\
+        \midrule
+        \texttt{current\_\bk{}weather} & 当前实时天气 & 现在武汉怎么样 \\
+        \texttt{hourly\_\bk{}forecast} & 逐小时预报 & 明天下午 3 点会下雨吗 \\
+        \texttt{daily\_\bk{}forecast} & 逐日整体预报 & 这周武汉天气如何 \\
+        \texttt{weather\_\bk{}warning} & 极端天气预警 & 上海有没有暴雨预警 \\
+        \texttt{life\_\bk{}index} & 生活指数与适宜性建议 & 今天适合洗车吗 \\
+        \texttt{historical\_\bk{}hourly} & 历史精细数据 & 去年这个月每小时降水 \\
+        \texttt{historical\_\bk{}daily} & 历史长期数据 & 上月武汉日均最高温 \\
+        \texttt{travel\_\bk{}advice} & 多地点多时段出行 & 早八到晚六从成都到武汉 \\
+        \texttt{unknown} & 无法识别为以上类型 & 推荐部好看的电影 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsubsection*{3.2.2 \quad recognizer 阶段的实现}
+
+\texttt{recognizer} 模块位于 \texttt{src/\bk{}intent/\bk{}recognizer.\bk{}py}，
+通过 LangChain 的 \texttt{ChatOpenAI.\bk{}with\_\bk{}structured\_\bk{}output} 接口
+让大语言模型直接输出 \texttt{WeatherIntent} 对象。底层调用方式选择
+\texttt{method=\bk{}"function\_\bk{}calling"} 而非 \texttt{json\_\bk{}schema}。
+这一工程取舍源于 SiliconFlow 等第三方平台对 OpenAI 的
+\texttt{response\_\bk{}format=\bk{}json\_\bk{}schema} 协议支持不完整，当模型规模较小
+时返回的 schema 字段经常出现非法 JSON 截断，function calling 模式
+通过 OpenAI 经典的 tool 调用机制返回结构化结果，兼容性最好。本文
+被测模型 GLM-5.1 在 function calling 模式下的结构化输出可靠性显著
+高于 \texttt{json\_\bk{}schema} 模式。
+
+\texttt{INTENT\_\bk{}RECOGNIZER\_\bk{}PROMPT} 的具体设计包含 4 个段落。第一段
+列出 9 类意图的判定语义，使用动词加典型查询的形式而非纯术语描述。
+第二段列出 4 类地点角色的语义。第三段是工具映射参考，把每类意图
+显式对应到 1 至 3 个工具名，引导大语言模型在 \texttt{needed\_\bk{}tools}
+字段输出合理的工具调用建议。第四段是注意事项，包括仔细识别用户
+提到的所有地点、准确提取时间范围、在 \texttt{reasoning} 字段简短
+说明判定理由三条。这一 4 段式结构借鉴了 Hong 等 \cite{ref20} 在
+Data Interpreter 中关于 prompt 模块化设计的论述，每段聚焦一类
+信息类型，避免长 prompt 中的相互干扰。
+
+\texttt{recognize\_\bk{}intent} 函数本身实现了一道单点容错回退。当
+function calling 偶发返回 \texttt{None} 或抛出异常时，函数会重试
+\texttt{max\_\bk{}retries=\bk{}1} 次，仍失败则返回 \texttt{intent=\bk{}"unknown"}
+的兜底意图，并在 \texttt{reasoning} 字段记录失败原因。这一兜底设计
+保证了下游 \texttt{completer} 与 ReAct 循环不会因为单点意图识别
+故障而 crash，符合 \ref{sec:e2e-eval} 节强调的稳定性原则。
+
+\subsubsection*{3.2.3 \quad 多地点角色识别与时空对齐}
+
+气象任务中存在一类特殊场景。用户描述从一个地点到另一个地点的出行
+计划，例如明天早八到晚六从成都到武汉。这类查询涉及 2 个或更多地点，
+且每个地点对应不同的时间段。如果系统在 \texttt{locations} 字段中
+仅记录地点名而不记录角色，下游 ReAct 循环会无法区分查哪一个地点
+的天气、查哪一个时间段。
+
+本文通过 \texttt{LocationIntent} 子模型的 \texttt{role} 字段显式
+建模地点角色。出发地标注为 \texttt{departure}，目的地标注为
+\texttt{arrival}，途经点标注为 \texttt{waypoint}，单一查询目标
+默认为 \texttt{target}。在 \texttt{INTENT\_\bk{}RECOGNIZER\_\bk{}PROMPT}
+的第二段中显式枚举这 4 类角色并给出语义说明，结合
+\texttt{travel\_\bk{}advice} 意图类型的工具组合提示
+\texttt{search\_\bk{}city + get\_\bk{}forcast\_\bk{}weather + get\_\bk{}weather\_\bk{}indices},
+让大语言模型在多地点场景下学会同时输出地点名加角色二元组。
+
+System Prompt 中的出行场景推理规则进一步把地点角色与时间段对齐。
+针对早八到晚六从 A 到 B 的典型表述，规则约定：出发时间段查 A 地
+的天气，到达时间段查 B 地的天气，不查 A 地晚上或 B 地早上的天气，
+因为用户那时不在那里。这一规则的工程意义是把意图层的多角色标注
+传递到 Agent 层的具体工具调用上，避免出现查了无关时段地点的天气
+而消耗工具调用额度的问题。
+
+\ref{sec:intent-eval} 节的评测结果验证了这一设计的有效性。在
+\texttt{travel\_\bk{}advice} 类 5 条用例上 \texttt{location\_\bk{}role\_\bk{}accuracy}
+达到 100\%，包含 \texttt{departure}、\texttt{arrival}、
+\texttt{waypoint} 三类角色的复杂用例例如从西安自驾到敦煌途经张掖
+也全部正确识别。这一结果表明显式枚举地点角色加 few-shot 提示能够
+把大语言模型在命名实体识别加关系抽取上的能力从模糊识别提升到精确
+角色标注，与 Kim 等 \cite{ref1} 在 ClimateAgent 中关于多 agent
+角色专门化的论述在工程形态上同源但在实现上更加轻量。
+
+\subsubsection*{3.2.4 \quad 对抗鲁棒性的工程处理}
+
+意图识别还需要处理与气象无关的查询。例如推荐部好看的电影、我想看
+电影等用户输入虽然语法上合法，但语义上与气象查询无关。如果
+\texttt{recognizer} 强行把这类查询解析为某个气象意图，下游会触发
+不必要的工具调用并返回不相关的结果。
+
+本文通过 \texttt{intent=\bk{}"unknown"} 兜底意图与 \texttt{INTENT\_\bk{}RECOGNIZER\_\bk{}PROMPT}
+中的对抗鲁棒提示共同处理这类场景。当 \texttt{recognizer} 输出
+\texttt{unknown} 时，下游 \texttt{completer} 会判定 \texttt{is\_\bk{}complete=\bk{}False}
+并返回友好追问，让用户在气象查询语义下重述问题。
+\ref{sec:intent-eval} 节的评测中
+\texttt{adversarial} 类 2 条用例端到端通过率为 100\%，验证了这一
+兜底机制的可用性。
+

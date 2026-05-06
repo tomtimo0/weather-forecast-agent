@@ -1,0 +1,205 @@
+ 
+本科毕业设计（论文）开题报告
+
+
+题目：基于AI智能体的气象预报数据检索与分析
+
+
+
+
+院    系    人工智能与自动化学院   
+专业班级      人工智能2204班     
+姓    名          康王梓立         
+学    号       U202215138       
+指导教师           王剑            
+
+
+2026年02月12日
+ 
+ 
+一、课题来源
+气象预报数据是支撑国民经济和社会发展的重要基础信息资源。随着全球气候变化加剧，极端天气事件频率和强度持续攀升，精准获取和深度分析气象预报信息已成为防灾减灾、农业生产、能源调度、交通运输等领域的迫切需求[2][5]。据中国气象局统计，我国每年因气象灾害造成的直接经济损失占GDP的1%—3%，气象服务的精准化、智能化对于降低灾害损失具有重要的现实意义。
+然而，当前气象预报数据的获取与分析面临着多重技术挑战。一方面，气象数据源高度异构——来自不同机构（中国气象局、ECMWF、NOAA等）的观测数据、数值预报产品和卫星遥感资料在数据格式、时空分辨率、要素类型上差异巨大[25]，专业用户需要掌握多种API接口和数据规范才能完成跨平台数据检索。另一方面，对气象数据的统计分析与解读高度依赖专业知识，普通用户难以从海量的温度、湿度、风速等数值中提炼出有决策参考价值的信息。这些问题使得气象预报数据的价值未能被充分释放。
+与此同时，以大语言模型（LLM）为核心的AI智能体技术正在迅速发展。Xi等[10]在综述中系统梳理了基于LLM的智能体在感知、推理、规划和工具使用等方面的能力框架。Yao等[18]提出的ReAct范式使LLM能够在推理（Reasoning）的过程中与外部工具交互执行动作（Acting），为将LLM应用于需要外部数据获取与计算的实际任务提供了可行路径。Schick等[21]的Toolformer工作和Patil等[28]的Gorilla工作则进一步证明了LLM能够学习使用外部工具和大规模API。
+基于上述背景，李特等[2]和代刊等[5]分别探讨了AI智能体和大语言模型在天气预报业务中的应用前景，指出利用LLM的自然语言理解与推理能力来桥接用户需求与气象数据之间的鸿沟，是气象信息服务智能化的重要方向。Kim等[1]提出的CLIMATEAGENT系统进一步证实了多智能体编排在复杂气象数据科学工作流中的可行性。
+因此，本课题旨在设计并实现一个基于AI智能体的气象预报数据检索与分析系统，以LLM为推理引擎，采用ReAct范式构建单智能体架构，通过工具学习（Tool Learning）自动调用气象API完成数据检索，并融合代码生成与语义桥接机制实现确定性统计分析和自适应报告生成，从而为气象信息的智能化获取与分析提供一套完整的技术解决方案。
+   
+   
+图1 异构数据的可视化表示
+二、国内外研究现况及发展趋势
+	本课题所涉及的研究领域主要包括三个方向：气象预报AI应用、基于LLM的AI智能体技术、检索增强生成与工具学习。以下分别综述其研究现状和发展趋势。
+（一）气象预报领域的AI应用
+近年来，深度学习在气象预报领域取得了突破性进展。华为的盘古气象大模型[16]首次实现了基于3D神经网络的中期全球天气预报，在多项气象要素的预报精度上达到甚至超越传统数值预报模型；Google DeepMind的GraphCast[17]通过图神经网络在10天全球天气预报中展现出卓越性能；国内的风乌[26]和伏羲[27]模型也分别在中期预报精度和长时效级联预报方面取得重要进展；盛杰等[7]对临近气象预报大模型"风雷"进行了系统检验评估；李怡然等[6]提出了基于气象大模型的闪电预报方法；彭跃华等[8]则探索了盘古模型与控制论的融合。Rasp等[25]建立的WeatherBench 2为数据驱动气象模型提供了标准评测基准。
+然而，上述工作主要聚焦于预报精度的提升，即"如何预报得更准"，而较少关注预报数据的智能检索与分析，即"如何让用户更便捷地获取和理解预报信息"。代刊等[5]指出，大语言模型在天气预报中的应用不应局限于预报本身，还应拓展到预报解释、数据检索、报告生成等业务辅助环节。李特等[2]进一步提出了AI智能体在天气预报业务中的应用框架构想，强调智能体在异构数据访问、多步骤任务执行和人机交互方面的独特优势。陈敏等[9]的综述也表明，深度学习在强对流天气预测等领域的应用正向更加智能化的方向演进。
+（二）基于LLM的AI智能体技术
+AI智能体（AI Agent）是指具备自主感知环境、制定计划和执行行动能力的智能系统。Xi等[10]在综述中系统归纳了基于LLM的智能体的核心能力框架，包括配置（Profile）、记忆（Memory）、规划（Planning）和行动（Action）四个维度。
+在推理与规划方面，Wei等[13]提出的思维链（Chain-of-Thought, CoT）提示方法显著提升了LLM的复杂推理能力；Yao等[30]的思维树（Tree of Thoughts, ToT）进一步将推理过程拓展为树状搜索结构，增强了LLM解决需要多步规划问题的能力。最具影响力的是Yao等[18]提出的ReAct范式，该范式将推理（Reasoning）与行动（Acting）统一在交替循环的框架中——LLM首先生成思考（Thought）来分析当前状态，然后决定执行一个动作（Action）调用外部工具，再根据观察到的结果（Observation）进行下一步推理。这一范式为构建能够与外部环境交互的智能体提供了基础架构。
+在工程框架方面，LangChain[15]提供了构建LLM应用和Agent的成熟组件库，支持工具编排、记忆管理和多种Agent范式；Wu等[19]提出的AutoGen则面向多智能体协作场景。Hong等[20]的Data Interpreter专门面向数据科学任务，通过LLM生成并执行代码来完成数据分析，为解决LLM数值计算幻觉问题提供了重要参考。Boiko等[23]在自主化学研究中的成功实践则展示了LLM Agent在科学研究领域的巨大潜力。
+（三）检索增强生成与工具学习
+检索增强生成（RAG）是解决LLM知识局限性的核心技术路线。Lewis等[12]首次提出RAG框架，通过在生成过程中动态检索外部知识库来增强LLM的输出质量；Gao等[24]的综述全面梳理了RAG在大语言模型时代的最新进展，包括检索策略优化、知识库构建和端到端训练等方向。黄冰[4]在古生物学领域的RAG知识问答系统实践表明，RAG技术能够有效地将领域专业知识注入到LLM中，提升垂直领域的问答准确率。
+工具学习（Tool Learning）是AI智能体执行外部操作的关键能力。Schick等[21]的Toolformer让语言模型学会自主调用计算器、搜索引擎等外部工具；Patil等[28]的Gorilla则专注于LLM与大规模API的连接，通过检索感知训练显著提升了API调用的准确性。Model Context Protocol（MCP）[11]作为新兴的工具协议标准，为智能体与外部工具和数据源的标准化交互提供了统一规范。林怡等[3]在RESTful API识别方面的工作也为API工具封装提供了方法论参考。
+Gruver等[22]的研究表明LLM具备零样本时间序列预测的能力，但也揭示了其在精确数值计算方面的局限性。Qian等[29]的ChatDev工作展示了通过多智能体协作生成代码的能力，为代码生成驱动的数据分析方案提供了思路。
+（四）现有研究的不足与本课题的定位
+综合以上分析，现有研究存在以下不足：
+1.气象AI研究偏重预报建模，忽视数据检索与分析的智能化：现有气象AI工作大多致力于提升预报精度，缺少面向终端用户的智能数据检索与分析系统。
+2.通用Agent框架缺乏气象领域适配：现有LLM Agent框架（如LangChain）虽然提供了通用工具调用能力，但未针对气象数据的异构性、气象术语的专业性和气象分析任务的特殊性进行优化。
+3. LLM在数值分析中的幻觉问题尚未在气象场景中得到系统解决：已有研究表明LLM在数值计算中容易产生幻觉，但如何在气象数据统计分析的具体场景中设计可靠的确定性计算机制，仍缺乏系统性研究。
+本课题针对上述不足，提出基于ReAct范式的气象AI智能体方案，融合工具学习、RAG知识注入、代码生成驱动的确定性分析和语义桥接机制，构建从自然语言查询到气象决策报告的完整技术链路。
+
+三、预计达到的目标、关键理论、主要内容及措施 
+（一）预计达到的目标
+1. 建立面向气象任务的AI智能体架构
+基于ReAct范式设计单智能体思维链模型，使LLM能够在接收用户自然语言气象查询后，自主执行"推理-行动-观察"循环，根据任务需求动态选择和调用气象数据检索工具与分析工具，完成多步骤的气象任务处理。
+2. 实现异构气象数据的智能检索
+构建气象API工具封装层，实现自然语言查询到结构化API调用参数的自动转换。具体包括：用户意图识别与指令化、缺失参数的上下文推理与动态补全，使系统能够准确理解"明天武汉会下雨吗""下周北京最高温度趋势如何"等多样化的自然语言查询，并调用相应的气象API获取数据。
+3. 实现基于代码生成与语义桥接的可靠数据分析
+设计代码生成驱动的确定性统计分析方案，将统计计算任务转化为Python代码执行，避免LLM直接数值运算导致的幻觉问题。同时，建立气象"数据-文本"语义桥接算法，将复杂数据库映射为大模型可理解的自然语言描述，最终自动生成结构化的气象决策分析报告。
+4. 完成系统实验验证
+构建覆盖多类型气象任务场景的评测数据集，通过消融实验验证各技术模块的有效性，包括RAG知识注入、语义桥接机制、代码生成分析等核心组件对系统性能的贡献。
+（二）关键理论
+1. ReAct范式（Reasoning + Acting）
+ReAct[18]将LLM的推理能力与外部行动执行统一在交替迭代的循环框架中。每个循环包含三个步骤：（1）Thought（思考）——LLM分析当前任务状态和已获取的信息，推理下一步应执行的操作；（2）Action（行动）——根据推理结果选择并调用一个外部工具（如气象API）；（3）Observation（观察）——接收工具返回的结果，作为下一轮推理的输入。这种"思考-行动-观察"的循环使Agent能够处理需要多步推理和多次外部交互的复杂任务。
+本课题以ReAct作为Agent的核心控制范式，并结合思维链（CoT）[13]技术引导LLM进行逐步推理，确保在气象任务分解、工具选择和结果整合等环节的推理质量。
+2. 检索增强生成（Retrieval-Augmented Generation, RAG）
+RAG[12][24]通过在LLM推理过程中动态检索外部知识库，将检索到的相关知识注入到Prompt中，从而增强模型在特定领域的回答准确性。本课题中，RAG被用于注入气象领域专业知识（包括气象术语解释、业务规则、地理编码映射等），使Agent能够准确理解气象专业查询并生成符合气象业务规范的分析报告。
+3. 工具学习（Tool Learning）
+工具学习[21][28]使LLM能够识别任务需求并自主调用外部工具（API、计算器、代码执行器等）来完成超出其自身能力范围的操作。本课题中，工具学习体现在两个层面：（1）LLM学习调用多种气象API获取数据；（2）LLM学习生成并执行Python代码完成统计分析。Function Calling和MCP协议[11]为工具的标准化描述和调用提供了技术规范。
+4. 语义桥接机制
+语义桥接是将气象数值数据库转化为自然语言语义描述的方法。通过预定义的"数值-语义"特征映射表，提升LLM的数据理解能力，实现从定量数据到定性描述的自动转换，减少大模型幻觉。
+（三）主要内容及措施
+本课题的研究内容可分为四个核心部分，各部分之间的逻辑关系如下：
+Part 1：技术问题分析与总体方案设计
+本阶段首先分析气象数据检索与分析面临的三个核心技术难点：（Q1）用户自然语言气象查询的精确意图识别与结构化转换问题；（Q2）多源气象数据在格式、时空粒度、要素类型上的异构性问题；（Q3）LLM在数值统计计算和逻辑推理过程中的幻觉问题。
+在此基础上，设计基于ReAct范式的单智能体架构。Agent接收自然语言输入后，通过思维链进行任务分解与推理，动态调用工具层的各类工具（气象API、代码执行器等），在多轮"推理-行动-观察"循环中逐步完成复杂气象任务。同时，设计RAG领域知识注入策略，构建包含气象术语、业务规则和地理编码的向量化知识库，在Agent推理过程中动态检索并注入相关领域知识，优化Prompt设计以提升Agent的气象专业理解能力。
+具体措施包括：阅读ReAct[18]、CoT[13]、RAG[12][24]等核心文献，理解各技术原理；调研LangChain[15]等Agent框架的实现机制；完成系统架构设计文档。
+Part 2：基于工具学习的异构气象数据智能检索技术
+本阶段的核心任务是实现异构气象数据的智能检索。首先，参考MCP协议[11]和Function Calling规范，完成气象API的描述与统一封装，将和风天气、OpenWeatherMap等多源气象API封装为标准化的Tool Description Schema，包括工具名称、功能描述、参数定义（类型、必选/可选、默认值、取值范围等），使LLM能够准确理解和调用各工具。
+其次，实现气象任务的意图识别与指令化。设计Prompt模板和Few-shot示例，引导LLM将用户的自然语言气象查询（如"这周末武汉适合户外活动吗"）解析为结构化的检索意图（需要温度、降水、风力数据，地点=武汉，时间=本周六日），完成从自然语言到结构化检索参数的转换。
+此外，设计缺失参数的上下文推理与动态补全机制。当用户查询中未明确指定某些检索参数时（如未说明具体城市），Agent能根据对话历史、用户画像或默认规则自动推断并补全，保证API调用的完整性和准确性。
+具体措施包括：注册并测试多个气象数据API；参考Toolformer[21]和Gorilla[28]的工具描述方法设计Schema；迭代优化意图识别的Prompt模板；通过多组测试用例验证参数补全的准确性。
+Part 3：融合语义桥接机制的气象数据统计分析方法
+本阶段聚焦于气象数据的统计分析与语义转换。首先，参考Data Interpreter[20]的代码生成范式，设计基于代码生成的确定性统计分析模块。Agent根据分析任务需求，生成可执行的Python统计分析代码（包括数据清洗、聚合计算、趋势分析、极值统计等），在安全沙箱中执行并获取精确的计算结果，从根本上规避LLM直接数值计算产生的幻觉。
+在此基础上，设计气象"数据-文本"语义桥接算法。构建气象领域的"数值-语义"特征映射表，定义各气象要素数值区间到自然语言语义标签的映射关系（如温度35°C→"酷热"、风力7级→"疾风，不宜户外活动"）。在统计分析结果产生后，通过语义桥接算法将数值特征自动映射为模型可理解的语义描述，降低模型数值理解方面的幻觉率。
+最后，实现自适应气象决策报告生成。设计多场景报告模板体系（日常天气查询、出行决策建议、农业气象分析、极端天气预警等），Agent根据任务类型和数据特征自动选择合适的模板，将检索数据、统计结果和语义描述整合为结构化的气象决策分析报告。
+具体措施包括：学习Python数据分析库（Pandas, NumPy等）的统计分析方法；设计并实现安全的代码执行沙箱；基于气象业务标准（气象等级划分国标等）构建语义映射表；设计多场景报告模板并迭代优化。
+Part 4：实验验证
+本阶段的主要任务是构建评测数据集并完成系统验证。评测数据集将涵盖多种气象任务类型的测试用例，包括简单查询（单城市单要素）、复合查询（多城市多要素对比）、分析推理（趋势判断、极值分析）和决策支持（出行建议、灾害预警）等场景，每个用例标注预期的正确输出作为基准。
+评测指标方面，定义五个核心维度：意图识别准确率（Acc_intent），衡量Agent对用户查询意图分类的准确性；参数提取F1值（F1_param），衡量结构化检索参数提取的精确率与召回率；统计分析准确率（Acc_analysis），衡量计算结果与标准答案的数值偏差；报告生成质量（BLEU/ROUGE/人工评分），衡量生成报告的完整性、准确性和可读性；端到端任务完成率（Task_completion），衡量系统完成完整任务流程的成功率。
+此外，设计消融实验，分别移除RAG知识注入、语义桥接机制、代码生成执行等核心组件，通过对比实验量化各组件对系统整体性能的贡献。
+具体措施包括：使用Python编写评测脚本；收集真实气象数据构建基准答案；执行对比实验并统计分析结果；绘制实验图表。
+四、技术路线
+本课题的技术路线按照"问题分析→方案设计→模块实现→系统集成→实验验证"的逻辑展开，具体如下：
+ 
+图 2 技术路线
+表1 关键技术选型
+技术环节	选型方案	备选方案
+推理引擎	DeepSeek / 通义千问（支持Function Calling）	GPT-4
+Agent框架	LangChain	自研轻量框架
+向量检索	FAISS + BGE Embedding	ChromaDB
+代码执行	Python subprocess + 安全限制	Docker容器
+气象数据源	和风天气API + OpenWeatherMap	CMA开放数据
+开发语言	Python 3.10+	—
+
+六、课题研究进度安排
+表2 课题研究进度安排表
+学期	周次	工作任务
+2025-2026第一学期	寒假	阅读文献，完成翻译
+2025-2026第二学期	第1周	完成开题报告，开题答辩
+	第2周	搭建开发环境，完成气象API调研与测试
+	第3周——第4周	实现ReAct Agent主控逻辑，完成气象API工具封装，实现意图识别与参数补全模块
+	第5周	构建RAG领域知识库，集成RAG检索到Agent推理流程中
+	第6周—第8周	实现代码生成分析模块、语义桥接算法和报告生成模块，完成端到端系统联调
+	第9周——第10周	撰写论文，答辩
+
+七、主要参考文献
+[1] Kim H, Li C, Deng W, et al. CLIMATEAGENT: Multi-Agent Orchestration for Complex Climate Data Science Workflows[J]. arXiv preprint arXiv:2511.20109, 2025.
+
+[2] 李特, 蔡凝昊, 庄潇然, 等. AI智能体在天气预报业务中应用的思考与探索[C]//第36届中国气象学会年会摘要集. 2025.
+
+[3] 林怡, 夏冰, 王永, 等. 基于AI智能体的隐藏RESTful API识别与漏洞检测方法[J/OL]. 计算机应用, 2025.
+
+[4] 黄冰. 大语言模型在古生物学中的应用初探——以基于RAG的知识问答系统为例[J]. 古生物学报, 2025, 64(1): 100-112.
+
+[5] 代刊, 高嵩, 孟宏欣, 等. 大语言模型在天气预报中的应用探讨[J]. 气象, 2025.
+
+[6] 李怡然, 李清勇, 郑栋, 等. 基于气象大模型的门控时空融合网络闪电预报方法[J]. 中国科学:地球科学, 2025.
+
+[7] 盛杰, 金荣花, 张小雯, 等. 临近气象预报大模型"风雷"V1版本检验及个例评估[J]. 气象, 2025.
+
+[8] 彭跃华, 张宇晨, 宋军, 等. 盘古气象大模型的台风预测分析及其与控制论的融合初探[J]. 海洋科学进展, 2025.
+
+[9] 陈敏, 秦小林, 李绍涵, 等. 深度学习应用于强对流天气预测研究综述[J/OL]. 计算机应用, 2025.
+
+[10] Xi Z, Chen W, Guo X, et al. The Rise and Potential of Large Language Model Based Agents: A Survey[J]. arXiv preprint arXiv:2309.07864, 2023.
+
+[11] Model Context Protocol Authors. Model Context Protocol Specification[EB/OL]. https://modelcontextprotocol.io, 2024.
+
+[12] Lewis P, Perez E, Piktus A, et al. Retrieval-augmented generation for knowledge-intensive NLP tasks[J]. Advances in Neural Information Processing Systems, 2020.
+
+[13] Wei J, Wang X, Schuurmans D, et al. Chain-of-Thought Prompting Elicits Reasoning in Large Language Models[J]. Advances in Neural Information Processing Systems, 2022.
+
+[14] Touvron H, Martin L, Stone K, et al. Llama 2: Open foundation and fine-tuned chat models[J]. arXiv preprint arXiv:2307.09288, 2023.
+
+[15] Chase H. LangChain: Building applications with LLMs through composability[EB/OL]. https://github.com/langchain-ai/langchain, 2022.
+
+[16] Bi K, Xie L, Zhang H, et al. Accurate medium-range global weather forecasting with 3D neural networks[J]. Nature, 2023, 619(7970): 533-538.
+
+[17] Lam R, Sanchez-Gonzalez A, Willson M, et al. Learning skillful medium-range global weather forecasting[J]. Science, 2023, 382(6677): 1416-1421.
+
+[18] Yao S, Zhao J, Yu D, et al. ReAct: Synergizing Reasoning and Acting in Language Models[J]. arXiv preprint arXiv:2210.03629, 2023.
+
+[19] Wu Q, Bansal G, Zhang J, et al. AutoGen: Enabling Next-Gen LLM Applications via Multi-Agent Conversation[J]. arXiv preprint arXiv:2308.08155, 2023.
+
+[20] Hong S, Zheng Y, Chen J, et al. Data Interpreter: An LLM Agent for Data Science[J]. arXiv preprint arXiv:2402.18679, 2024.
+
+[21] Schick T, Dwivedi-Yu J, Dessì R, et al. Toolformer: Language Models Can Teach Themselves to Use Tools[J]. Advances in Neural Information Processing Systems, 2023, 36: 1234-1247.
+
+[22] Gruver N, Finzi M, Qiu S, et al. Large Language Models Are Zero-Shot Time Series Forecasters[J]. Advances in Neural Information Processing Systems, 2024.
+
+[23] Boiko D A, MacKnight R, Kline B, et al. Autonomous chemical research with large language models[J]. Nature, 2023, 624(7992): 570-578.
+
+[24] Gao Y, Xiong Y, Gao X, et al. Retrieval-Augmented Generation for Large Language Models: A Survey[J]. arXiv preprint arXiv:2312.10997, 2023.
+
+[25] Rasp S, Dreyfus P D, Dueben P D, et al. WeatherBench 2: A Benchmark for the Next Generation of Data-Driven Global Weather Models[J]. Journal of Advances in Modeling Earth Systems, 2024, 16(6): e2023MS004019.
+
+[26] Chen K, Han T, Gong J, et al. FengWu: Pushing the Limit of Medium-Range Weather Forecasting with 3D Deep Transformers[J]. arXiv preprint arXiv:2304.02948, 2023.
+
+[27] Chen L, Zhong X, Zhang F, et al. FuXi: A cascade machine learning forecasting system for 15-day global weather forecast[J]. npj Climate and Atmospheric Science, 2023, 6(1): 190.
+
+[28] Patil S G, Zhang T, Wang X, et al. Gorilla: Large Language Model Connected with Massive APIs[J]. arXiv preprint arXiv:2305.15334, 2023.
+
+[29] Qian C, Cong X, Yang C, et al. ChatDev: Communicative Agents for Software Development[J]. arXiv preprint arXiv:2307.07924, 2023.
+
+[30] Yao S, Yu D, Zhao J, et al. Tree of Thoughts: Deliberate Problem Solving with Large Language Models[J]. Advances in Neural Information Processing Systems, 2024, 36.
+
+
+
+
+
+
+ 
+华中科技大学本科生毕业设计（论文）开题报告评审表
+ 
+ 
+姓名	 康王梓立	学号	 U202215138	指导教师	 王剑
+院（系）专业	人工智能与自动化
+指导教师评语
+1.	学生前期表现情况。
+2.	是否具备开始设计（论文）条件？是否同意开始设计（论文）？
+3.	不足及建议。
+    该生拟针对基于AI智能体的气象预报数据检索与分析开展研究，研究问题明确，研究内容清晰，技术方案可行，计划安排合理。
+    情况表明，该生达到本科毕业设计开题要求。
+
+
+
+指导教师（签名）：     
+
+                                                              2026年  2月  19日 
+教研室（系、所）或开题报告答辩小组审核意见
+
+
+
+教研室（系、所）或开题报告答辩小组负责人（签名）：     
+                                                   
+2026年  3月  6 日
+

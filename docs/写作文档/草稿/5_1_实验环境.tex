@@ -1,0 +1,121 @@
+% =============================================================================
+% 5.1 实验环境与数据集构建
+% 草稿版本：v0.1 (2026-05-05)
+% 字数：约 1500 字
+% 风格规则：v0.2 风格（无 \textbf / \textit / 引例括号 / 双引号 / 破折号）
+% 引用：\cite{ref14, ref15}
+% 图表：
+%   - 表 \reftab{tab:exp-env}            软硬件与依赖版本
+%   - 表 \reftab{tab:dataset-overview}   5 份评测集统一汇总
+% 依赖宏包：booktabs / tabularx（主稿已加载）
+% =============================================================================
+
+\subsection{实验环境与数据集构建}
+\label{sec:exp-env}
+
+为支撑 \ref{chap:semantic-bridge} 章方法论的完整实证，本章在统一的实验
+环境下构建了 5 份独立评测集，形成由 4 个模块层评测加 1 个集成层评测组成
+的实证体系。本节先说明软硬件与依赖版本，再交代 5 份评测集的统一构建原则
+与可重现性工程要点。
+
+\subsubsection*{5.1.1 \quad 软硬件环境与依赖版本}
+
+实验在单机 Windows 10 工作站上运行，Python 运行时基于 Anaconda 环境管理。
+被测大语言模型为智谱 GLM-5.1，通过 SiliconFlow 平台提供的 OpenAI 兼容
+HTTP API 调用，温度全部置 0 以最大化结果可重复性。开源 LLM 体系的成熟
+为本课题提供了可替换的实验底座 \cite{ref14}，本文核心方法论与具体被测
+模型解耦，未来切换为本地部署模型不需要修改评测脚本。Agent 框架基于
+LangChain 生态 \cite{ref15} 中的 \texttt{create\_agent} 与
+LangGraph 的 \texttt{InMemorySaver}，分别承担 ReAct 循环编排与多轮对话
+状态保持。完整环境清单见 \reftab{tab:exp-env}。
+
+\begin{table}[!htbp]
+    \centering
+    \caption{实验环境与关键依赖版本}
+    \label{tab:exp-env}
+    \song\fontsize{9pt}{12pt}\selectfont
+    \renewcommand{\arraystretch}{0.95}
+    \begin{tabular}{ll}
+        \toprule
+        类别 & 名称与版本 \\
+        \midrule
+        操作系统 & Windows 10 \\
+        Python 运行时 & Python 3.11 (Anaconda 环境管理) \\
+        LLM 主模型 & GLM-5.1 (SiliconFlow OpenAI 兼容协议，温度 0) \\
+        嵌入模型 & BAAI/bge-m3 (1024 维，SiliconFlow) \\
+        Agent 框架 & langchain 0.3 + langgraph 0.2 \\
+        向量数据库 & ChromaDB (持久化模式) \\
+        词法检索 & rank\_bm25 (倒排索引) \\
+        数据校验 & Pydantic v2 (结构化输出) \\
+        天气数据源 & 和风天气 API + Open-Meteo API \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsubsection*{5.1.2 \quad 评测集构建的统一原则}
+
+本文 5 份评测集分别针对意图识别、通路 A 检索、通路 B 桥接、代码执行
+与端到端任务完成率，覆盖从用户输入入口到最终决策报告的全链条。各评测集
+的统一汇总见 \reftab{tab:dataset-overview}。
+
+\begin{table}[!htbp]
+    \centering
+    \caption{5 份评测集汇总（按论文章节顺序）}
+    \label{tab:dataset-overview}
+    \song\fontsize{9pt}{12pt}\selectfont
+    \renewcommand{\arraystretch}{0.95}
+    \begin{tabular}{llrl}
+        \toprule
+        评测集 & 评测对象 & 用例数 & 分类维度 \\
+        \midrule
+        \texttt{intent\_bench.jsonl} & 意图识别 + 参数补全 & 35 & 10 类场景 \\
+        \texttt{rag\_retrieval\_bench.jsonl} & 通路 A 混合检索 & 60 & 8 类查询 \\
+        \texttt{semantic\_bridge\_bench.jsonl} & 通路 B 语义桥接 & 71 & 9 类气象要素 \\
+        \texttt{code\_exec\_bench.jsonl} & 代码生成 + 沙箱执行 & 18 & 6 类统计模式 \\
+        \texttt{e2e\_bench.jsonl} & 端到端任务完成率 & 30 & 6 类真实场景 \\
+        \midrule
+        \multicolumn{2}{c}{合计} & 214 & --- \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+5 份评测集的设计遵守三条统一原则。第一条是真实数据为底，结构化断言
+为锚。所有用例均基于真实国家标准、真实和风天气与 Open-Meteo API 返回值
+构造，未使用人工合成的伪数据。但评测断言不直接断言具体数值，而是断言
+结构性证据，例如必须含温度数值、必须给具体日期、必须出现 GB/T 编号
+等。这一设计保证了即便 API 返回值随时间漂移，评测断言依然可重复。
+第二条是模块边界清晰，评测互不重叠。每份评测集只针对一个模块的能力
+边界，例如通路 A 评测只评检索质量而不评意图识别，意图识别评测只评结构化
+输出而不评 RAG 召回。这种切分使得失败定位可以精确到模块。第三条是
+按用例类别细粒度切分。每份评测集都至少有 6 类以上的子类别，便于按子类
+拆分发现差异化失败模式，例如通路 A 评测拆分到 8 类查询，端到端评测
+拆分到 6 类场景。
+
+知识库本身的可信性是上述检索类与桥接类评测的基础前提。本文采用分阶段
+人工核对加权威资料库检索双重核验的方式，对 \texttt{data/knowledge/} 下三类
+共 62 条知识条目所引用的 17 项国家标准、行业标准与国际规范逐一校验，
+累计修正了 24 处问题。问题类型包括 1 处标准编号张冠李戴
+GB/T 20484 误引为寒潮等级、3 处条款号错位 JGJ 80-2016 §3.0.4 应为
+§3.0.8、4 处雾分级阈值与预警阈值混用、7 处 GB 50736-2012 I 级与 II 级
+热舒适推荐值混用，以及 4 处业内惯例被错标为 official 标准等。一个值得
+注意的现象是，知识库从首轮 38 条扩展到 62 条之后，错误率不降反升，从
+首轮 13/38 即 34.2\% 上升到二轮新增 11/19 即 57.9\%，全库累计 24/62 即
+38.7\%。这反映了知识库扩展过程中人工核对环节的不可省略性，复用同样的
+标准引用模式并不能保证不出错。
+
+\subsubsection*{5.1.3 \quad 评测框架的工程稳定性要点}
+
+5 份评测集对应 5 套独立评测脚本，统一遵循三层缓存加增量落盘加断点续跑
+的工程范式。第一层缓存针对意图识别前置，按用户查询哈希索引；第二层
+缓存针对 Agent 完整输出，按查询与模式名联合索引，端到端评测中两档
+共享同一份意图识别结果以节省一半 LLM 调用；第三层缓存针对 LLM-as-judge
+打分，按问答对哈希索引。所有缓存键计算包含 prompt 字面值的版本号
+指纹，prompt 修改自动失效相关缓存。
+
+每套评测脚本的 LLM 调用统一带 60 秒至 90 秒超时与 2 次重试，单次请求
+最多约 3 分钟必定返回。主循环包裹在 \texttt{try/finally} 中，每条用例
+完成后立即增量落盘三层缓存。任何时刻按下 \texttt{KeyboardInterrupt}
+都不会丢失已完成进度，断点续跑直接从未完成用例开始。这一组工程加固
+源自前期评测中遇到的 SiliconFlow 平台 socket idle hang 教训，是
+评测可重现性的工程前提，与后续几节定量结果的可信度密切相关。
+

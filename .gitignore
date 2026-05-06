@@ -39,7 +39,42 @@ notebooks/
 # 临时文件 / 输出
 output_images/
 ~$*
-docs/
+# docs 仅跟踪「写作文档」，其余子目录仍忽略（整条 docs/ 无法再用 ! 取消子目录）
+docs/*
+!docs/写作文档/
+!docs/写作文档/**
+
+# PDF（不入库）
+*.pdf
+
+# LaTeX 编译临时文件（*.log 已在下方「日志」段忽略）
+*.aux
+*.bbl
+*.blg
+*.bcf
+*-blx.bib
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.xdv
+*.nav
+*.snm
+*.vrb
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.idx
+*.ind
+*.ilg
+*.ist
 
 # RAG 持久化向量索引（自动生成，不入库）
 data/chroma_db/

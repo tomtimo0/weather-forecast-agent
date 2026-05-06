@@ -1,0 +1,47 @@
+% =============================================================================
+% 3.4 本章小结
+% 草稿版本：v0.1 (2026-05-05)
+% 字数：约 500 字
+% 风格规则：v0.2 风格（无 \textbf / \textit / 引例括号 / 双引号 / 破折号）
+% 依赖宏包：booktabs / tabularx（主稿已加载）
+% =============================================================================
+
+\subsection{本章小结}
+\label{sec:retrieval-summary}
+
+本章针对开题报告中提出的 Q1 气象任务指令解析问题，从工具学习与
+意图理解两个维度构建了从自然语言查询到结构化检索请求的完整链路。
+
+\ref{sec:api-tooling} 节解决了底层异构 API 的统一接入与工具化封装。
+本文同时接入和风天气与 Open-Meteo 两类异构数据源，覆盖实时观测、
+预报、预警、生活指数与长期历史归档五类业务场景，并通过 LangChain
+\texttt{@tool} 装饰器把 9 个 weather\_api 工具加 2 个 RAG 工具
+统一封装为符合 OpenAI Function Calling Schema 协议的工具单元。
+docstring 编写遵循任务驱动描述、显式枚举可选参数、显式工具间依赖
+提示三条原则，最大化大语言模型的工具识别准确率。Function Calling
+与 Model Context Protocol 在工具描述格式上一一对应，本文工具封装
+保留了未来迁移到 MCP 架构的兼容性。
+
+\ref{sec:intent-recognition} 节解决了从自然语言到结构化意图的
+转化。本文设计了 \texttt{WeatherIntent} 数据模型，通过 6 个字段
+刻画意图类型、地点角色、时间范围、关注要素、建议工具、判定理由。
+\texttt{recognizer} 模块基于 \texttt{ChatOpenAI.\bk{}with\_\bk{}structured\_\bk{}output}
+的 function calling 模式实现结构化输出，9 类意图通过 Pydantic
+Literal 强制校验，避免分类幻觉。多地点角色识别通过显式枚举 4 类
+角色加 few-shot 提示在 \texttt{travel\_\bk{}advice} 类用例上达到 100\%
+准确率。\texttt{intent=\bk{}"unknown"} 兜底意图加 \texttt{adversarial}
+对抗鲁棒提示共同处理与气象无关的查询。
+
+\ref{sec:param-completion} 节解决了缺失参数的上下文推理与动态补全。
+独立的 \texttt{completer} 模块以分层架构吸收 \texttt{recognizer}
+阶段的字段级幻觉，通过 \texttt{is\_\bk{}complete}、\texttt{follow\_\bk{}up\_\bk{}question}、
+\texttt{notes} 三字段语义实现可推断字段的自动补全与不可推断字段
+的友好追问。三档补全策略与四类补全来源把每条补全操作显式记录在
+\texttt{notes} 字段，最终在报告生成阶段向用户透明展示。
+
+本章工作的实证验证将在 \ref{sec:intent-eval} 节展开。35 条 10 类
+评测集上端到端通过率 91.4\%、地点角色准确率 100\%、单轮 8 类场景
+全部 100\% 通过的结果共同验证了本章方法的有效性。下章在本章
+结构化检索基础上展开 Q2 与 Q3 两个研究问题对应的语义桥接与统计
+分析方法。
+
