@@ -13,8 +13,8 @@
 \subsection{气象任务意图识别与指令化}
 \label{sec:intent-recognition}
 
-\ref{sec:api-tooling} 节解决了底层 API 的工具化封装问题，但仅靠一组
-Function Calling 工具仍不足以处理用户的自然语言查询。用户提问的语义
+前节解决了底层 API 的工具化封装问题，但仅靠一组 Function Calling
+工具仍不足以处理用户的自然语言查询。用户提问的语义
 具有高度多样性，例如同样查询武汉今天的天气，用户可能说现在武汉怎么样、
 武汉今天会下雨吗、明天早八到晚六从成都坐高铁到武汉有什么穿衣建议等
 形态各异的句式。如果直接把原始查询送入 ReAct 循环 \cite{ref18}，
