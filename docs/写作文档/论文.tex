@@ -692,7 +692,23 @@
 \appendix
 \phantomsection
 \addcontentsline{toc}{section}{附录}
-\section*{附录}
+\section*{附\hspace{2em}录}
+\label{sec:appendix}
+
+\subsection*{附录 A\quad 本课题源代码与数据集开源说明}
+
+为支持研究的可复现性，本课题涉及的全部源代码、知识库、评测集与
+实验脚本均已托管至 GitHub 公开仓库，开放访问与下载：
+
+\begin{center}
+\fbox{\,\url{https://github.com/tomtimo0/weather-forecast-agent}\,}
+\end{center}
+
+仓库包含 Agent 实现源代码、3 类共 62 条结构化知识条目、5 套
+评测集共 214 条用例、本论文报告的全部评测结果原始 \texttt{json}
+与汇总报告，以及一键复现脚本与 \texttt{README} 文档。读者可按
+\texttt{README} 中说明重现本论文 5.2--5.6 节的全部量化结果。
+仓库以 MIT 许可证开放，欢迎后续研究在引用本文的基础上派生与改进。
 
 
 \end{document}

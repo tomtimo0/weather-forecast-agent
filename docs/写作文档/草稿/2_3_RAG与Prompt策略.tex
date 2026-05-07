@@ -71,8 +71,9 @@ wind force scale 等。强版本化体现为同一标准会在不同年份发布
 标签（\texttt{official} 国家标准、\texttt{industry} 行业标准、
 \texttt{common} 业内惯例）加版本号三类元数据。这种元数据完整性
 是 \ref{sec:bridge-eval} 节实证中通路 B 的 \texttt{citation} 真实性
-能达到 100\% 的根本前提。黄冰 \cite{ref4} 在 RAG 应用古生物学的
-工作中也强调这种带出处的知识库设计是保证 RAG 输出可追溯的最低要求。
+能达到 100\% 的根本前提。黄冰 \cite{ref4} 在面向古生物学领域构建
+基于 RAG 的知识问答系统时，亦展示了垂直领域中以结构化条目承载
+专业知识的工程价值。
 
 \subsubsection*{2.3.2 \quad 双通路 RAG 的设计动机简述}
 
@@ -83,10 +84,12 @@ wind force scale 等。强版本化体现为同一标准会在不同年份发布
 向量检索对相邻阈值条目的排序不稳定。例如查询 35 mm 降水量等级，
 向量检索可能召回中雨、大雨、暴雨三个相邻档位的条目，最终归属到
 哪一个取决于嵌入模型的具体训练数据，无法做到与国家标准 100\%
-一致。Gao 等 \cite{ref24} 在 RAG 综述中也指出了这一问题，并把它
-归类为细粒度数值边界 RAG 不擅长的固有局限。本文据此引入通路 B
-的确定性分级，通过 if-elif 分支匹配显式的阈值范围，保证数值到
-分级的归属在工程上 100\% 可控。
+一致。Gao 等 \cite{ref24} 在 RAG 综述中将 RAG 系统沿 Naive、
+Advanced 与 Modular 三个范式梳理，并把面向具体任务定制检索与
+生成模块视为 Modular RAG 的典型形态。本文据此引入通路 B 的
+确定性分级，通过 if-elif 分支匹配显式的阈值范围，保证数值到
+分级的归属在工程上 100\% 可控，可视为针对气象数值阈值任务定制
+的一类 Modular RAG 实例。
 
 \subsubsection*{2.3.3 \quad System Prompt 的模块化设计}
 
@@ -94,8 +97,9 @@ ReAct 循环 \cite{ref18} 的输出质量高度依赖 System Prompt 的设计。
 本文 \texttt{src/\bk{}config/\bk{}settings.\bk{}py} 中的 \texttt{SYSTEM\_\bk{}PROMPT}
 共 117 行，按功能划分为 6 个模块，详见 \reftab{tab:prompt-modules}。
 模块化设计的工作目标是让大语言模型在每一轮思考时能精确定位需要
-参考的规则段落，避免长 Prompt 中的相互干扰，这一思路与 Hong 等
-\cite{ref20} 在 Data Interpreter 中的 prompt 解耦设计同源。
+参考的规则段落，避免长 Prompt 中的相互干扰，这一按子问题拆分约束
+的工程思路与 Hong 等 \cite{ref20} 在 Data Interpreter 中按子问题
+分层组织 Agent 推理与执行的总体策略在精神上一致。
 
 \begin{table}[!ht]
     \centering
