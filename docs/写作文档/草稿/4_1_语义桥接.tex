@@ -1,15 +1,20 @@
-% =============================================================================
+﻿% =============================================================================
 % 4.1 气象"数据-文本"语义桥接算法
-% 草稿版本：v0.3 (2026-05-05)
+% 草稿版本：v0.4 (2026-05-07)
 %   v0.2：按写作风格规则去除 \textbf / \textit 与括号"如..."句式。
 %   v0.3：嵌入 1 张图与 3 张表，由对应 \reffig / \reftab 引用就近浮动。
-% 字数：约 1700 字（不含图表 caption）
+%   v0.4：按导师反馈第 12 条新增"桥接前后模型上下文对比图"
+%        （fig:bridge-context-compare）。考虑到对比内容核心是 ASCII 化的
+%        工具调用 JSON 与决策文本，弃用 drawio，改用 minipage + \ttfamily
+%        \scriptsize + \fbox 直接在 LaTeX 中以左右两栏代码块形式排版。
+% 字数：约 1800 字（不含图表 caption）
 % 引用：\cite{ref2, ref5, ref10, ref12, ref20, ref22, ref24}
 % 图表：
-%   - 图 \reffig{fig:dual-path-rag}      双通路 RAG 架构示意图
-%   - 表 \reftab{tab:rag-weight-sweep}   60 条 × 8 个权重点扫描结果
-%   - 表 \reftab{tab:semantic-mapping}   5 类要素分级阈值映射节选
-%   - 表 \reftab{tab:bridge-ablation}    通路 B 四档消融总表（71 条）
+%   - 图 \reffig{fig:dual-path-rag}            双通路 RAG 架构示意图
+%   - 图 \reffig{fig:bridge-context-compare}   桥接前后模型上下文对比（双栏代码）
+%   - 表 \reftab{tab:rag-weight-sweep}         60 条 × 8 个权重点扫描结果
+%   - 表 \reftab{tab:semantic-mapping}         5 类要素分级阈值映射节选
+%   - 表 \reftab{tab:bridge-ablation}          通路 B 四档消融总表（71 条）
 % 依赖宏包：booktabs / tabularx / siunitx / graphicx（主稿已加载）
 % =============================================================================
 
@@ -33,7 +38,7 @@ Retrieval-Augmented Generation, Dual-Path RAG）架构，把数值到语义的�
 中的混合检索思想，本文将知识检索分解为两条互补的通路，整体结构如
 \reffig{fig:dual-path-rag} 所示。
 
-\begin{figure}[!htbp]
+\begin{figure}[!ht]
     \centering
     \includegraphics[width=0.95\linewidth]{figures/dual_path_rag}
     \caption{双通路 RAG 架构示意图}
@@ -76,7 +81,7 @@ $\SI{52.3}{mm}$ 判为暴雨并附上 GB/T 28592-2012 的具体条款。
 \{0.0, 0.5, 0.7, 0.8, 0.85, 0.9, 0.95, 1.0\}$ 共 8 个权重点,详见
 \reftab{tab:rag-weight-sweep}，得到三条工程结论。
 
-\begin{table}[!htbp]
+\begin{table}[!ht]
     \centering
     \caption{通路 A 混合检索权重扫描（60 条评测集 \(\times\) 8 个权重点）}
     \label{tab:rag-weight-sweep}
@@ -123,7 +128,19 @@ $100\sim249.9\,\mathrm{mm}$，实际却被错误排到特大暴雨 $\geq 250\,
 通路 B 的实现思路源自 Gruver 等 \cite{ref22} 关于大语言模型在精确数值
 任务上表现局限性的实证。在数值到等级映射这一确定性可枚举的任务上，让
 大语言模型自由发挥反而引入幻觉，正确做法是把规则显式编码为
-\texttt{if/\bk{}elif} 函数。本文为五类典型气象要素实现了独立分类器，分别
+\texttt{if/\bk{}elif} 函数。通路 B 内部的数据流形态见
+\reffig{fig:path-b-internal}：原始数值经由确定性分级器判定等级后，
+通过 \texttt{grade\_\bk{}id} 字段直接硬链接到知识库的对应条目，由富化器
+一次性返回带引用源的语义标签三元组，全程绕过向量检索的排序不确定性。
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\linewidth]{figures/通路 B 内部数据流图}
+    \caption{通路 B 内部数据流示意图（数值 $\to$ \texttt{grade\_id} $\to$ 引用源）}
+    \label{fig:path-b-internal}
+\end{figure}
+
+本文为五类典型气象要素实现了独立分类器，分别
 处理降水量、风速、温度、能见度与相对湿度。每个分类器返回
 \texttt{SemanticLabel} 对象，包含三个关键字段。\texttt{grade} 是语义
 等级名，例如暴雨、疾风、高温酷热。\texttt{grade\_\bk{}id} 是与知识库条目
@@ -137,7 +154,7 @@ GB/T 28592-2012，保证引用源 100\% 真实有效。
 GB/T 35228-2017 与建筑设计规范 GB 50736-2012 编码，并经过两轮人工核对
 修正了 24 处文本与阈值偏差。
 
-\begin{table}[!htbp]
+\begin{table}[!ht]
     \centering
     \caption{语义桥接器五类要素分级阈值映射（节选 19 条，全表共 26 条）}
     \label{tab:semantic-mapping}
@@ -174,6 +191,86 @@ GB/T 35228-2017 与建筑设计规范 GB 50736-2012 编码，并经过两轮人�
     \end{tabular}
 \end{table}
 
+通路 B 桥接的核心价值，在于把生成阶段大语言模型所"看到"的上下文从一份
+纯数值的 JSON 改造为一份附带等级名、\texttt{grade\_\bk{}id} 与国标引用的
+结构化结果。\reffig{fig:bridge-context-compare} 以同一个用户问题"未来三天
+上海会有暴雨吗"为例，左右并置展示了两种工具调用编排下模型在生成最终
+回答前的全部输入与典型输出。左栏为关闭桥接的 \texttt{ablated} 档，模型仅
+看到 \texttt{get\_\bk{}forecast\_\bk{}weather} 返回的逐日降水数值，需要凭
+训练记忆完成阈值判定与引用推断；右栏为启用桥接的 \texttt{full} 档，模型
+在同样的预报数值之外，额外看到 \texttt{bridge\_\bk{}weather\_\bk{}data}
+工具返回的语义标签三元组。两栏对比的视觉效果与下文消融实验中
+\texttt{grade\_\bk{}id} 准确率从 5.6\% 跃升至 100\% 的量化结论形成相互印证。
+
+\begin{figure}[!t]
+    \centering
+    \footnotesize
+    \begin{minipage}[t]{0.48\linewidth}
+        \centering
+        {\hei 桥接前（\texttt{ablated} 档）}\\[0.2em]
+        \fbox{\begin{minipage}[t]{0.94\linewidth}
+            \ttfamily\scriptsize\raggedright\setlength{\parindent}{0pt}
+            [Tool] get\_forecast\_weather\\
+            Result: \{\\
+            ~~"2025-05-07": \{\\
+            ~~~~"precip": "5.2 mm", ...\\
+            ~~\},\\
+            ~~"2025-05-08": \{\\
+            ~~~~"precip": "12.0 mm", ...\\
+            ~~\},\\
+            ~~"2025-05-09": \{\\
+            ~~~~"precip": "8.0 mm", ...\\
+            ~~\}\\
+            \}\\[0.4em]
+            \rule{\linewidth}{0.4pt}\\[0.2em]
+            \rmfamily\song\scriptsize
+            模型必须凭训练记忆判断：\\
+            $\bullet$ 暴雨阈值是多少？\\
+            $\bullet$ 5.2 / 12 / 8 mm 是哪档？\\
+            $\bullet$ 引用哪份国标？\\[0.3em]
+            $\Rightarrow$ 输出：\\
+            \quad「未达暴雨级别。暴雨标准为 24 h\\
+            \quad ~降水量 $\geq$ 50 mm。」\\
+            \quad（阈值数字正确，但来源不可校验，\\
+            \quad ~存在编造引用风险。）
+        \end{minipage}}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[t]{0.48\linewidth}
+        \centering
+        {\hei 桥接后（\texttt{full} 档）}\\[0.2em]
+        \fbox{\begin{minipage}[t]{0.94\linewidth}
+            \ttfamily\scriptsize\raggedright\setlength{\parindent}{0pt}
+            [Tool] get\_forecast\_weather\\
+            Result: \{ ...同左... \}\\[0.4em]
+            [Tool] bridge\_weather\_data\\
+            Result: [\\
+            ~~\{ "value": 5.2,\\
+            ~~~~"grade": "小雨",\\
+            ~~~~"grade\_id":\\
+            ~~~~~~"grading\_precip\_24h\_light",\\
+            ~~~~"citation":\\
+            ~~~~~~"GB/T 28592-2012 §4.1" \},\\
+            ~~\{ "value": 12.0, "grade": "中雨", ... \},\\
+            ~~\{ "value": 8.0, "grade": "小雨", ... \}\\
+            ]\\[0.4em]
+            \rule{\linewidth}{0.4pt}\\[0.2em]
+            \rmfamily\song\scriptsize
+            模型只需引用确定性结果：\\
+            $\bullet$ 等级已确定（无暴雨）\\
+            $\bullet$ \texttt{grade\_id} 唯一可硬链接\\
+            $\bullet$ 国标编号已校验为真\\[0.3em]
+            $\Rightarrow$ 输出：\\
+            \quad「依据 GB/T 28592-2012 §4.1，24 h\\
+            \quad ~降水量 50--99.9 mm 为暴雨。本次\\
+            \quad ~预报最大 12 mm，未构成暴雨。」\\
+            \quad（来源可溯，引用真实有效。）
+        \end{minipage}}
+    \end{minipage}
+    \caption{桥接前后模型上下文与典型输出对比（用户问题：未来三天上海会有暴雨吗）}
+    \label{fig:bridge-context-compare}
+\end{figure}
+
 通路 B 的有效性通过四档消融实验得到验证，结果见
 \reftab{tab:bridge-ablation}。在 71 条覆盖 9 类要素的语义桥接评测集上，
 关闭桥接的 \texttt{off} 档 \texttt{grade\_\bk{}id} 准确率仅为 5.6\%；启用
@@ -185,7 +282,7 @@ GB/T 35228-2017 与建筑设计规范 GB 50736-2012 编码，并经过两轮人�
 对数值与逻辑幻觉问题为什么必须在数值理解阶段引入确定性桥接的最
 直接量化证据。
 
-\begin{table}[!htbp]
+\begin{table}[!ht]
     \centering
     \caption{通路 B 语义桥接四档消融总表（71 条评测集，9 类要素）}
     \label{tab:bridge-ablation}

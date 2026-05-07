@@ -1,17 +1,21 @@
-% =============================================================================
-% 5.2.2 通路 A 混合检索权重扫描与边界分析
-% 草稿版本：v0.1 (2026-05-05)
+﻿% =============================================================================
+% 5.3 混合检索权重扫描与边界分析
+% 草稿版本：v0.2 (2026-05-07)
+%   v0.1：作为 5.2.2 子小节起草。
+%   v0.2：按导师意见 3 提级为 5.3 \subsection；标题去掉前缀"通路 A"
+%        以避免清单式命名（意见 7），正文叙述里仍保留"通路 A 混合检索"。
 % 字数：约 1300 字
 % 风格规则：v0.2 风格（无 \textbf / \textit / 引例括号 / 双引号 / 破折号）
 % 引用：\cite{ref12, ref24}
 % 图表：
 %   - 表 \reftab{tab:rag-mode-comparison}    3 档检索器消融
+%   - 图 \reffig{fig:rag-weight-sweep}       8 个权重点 Top-1 / MRR 双 y 轴折线图
 %   - 表 \reftab{tab:rag-weight-drift}       最优权重随 KB 体量漂移
 % 复用 4.1 节已有图表：\reftab{tab:rag-weight-sweep}（权重扫描总表）
-% 依赖宏包：booktabs / tabularx（主稿已加载）
+% 依赖宏包：booktabs / tabularx / graphicx（主稿已加载）
 % =============================================================================
 
-\subsubsection*{5.2.2 \quad 通路 A 混合检索权重扫描与边界分析}
+\subsection{混合检索权重扫描与边界分析}
 \label{sec:rag-eval}
 
 通路 A 混合检索的设计原理与权重扫描总表已在 \ref{sec:semantic-bridge}
@@ -38,7 +42,7 @@ MRR、Recall@$K$ 与 Category@$K$ 等指标 \cite{ref24}。MRR 是其中最
 都进入了 Top-5 上下文窗口，剩余 2 条结构性失败构成本节后续分析的
 重点。
 
-\begin{table}[!htbp]
+\begin{table}[H]
     \centering
     \caption{通路 A 三档检索器全维度对照（60 条评测集）}
     \label{tab:rag-mode-comparison}
@@ -64,10 +68,22 @@ MRR、Recall@$K$ 与 Category@$K$ 等指标 \cite{ref24}。MRR 是其中最
 互补的。纯向量在概念性查询上稳定，纯 BM25 在阈值数字类查询上稳定，
 两类强项正交。这一互补性是混合可以同时优于二者 3.3 个百分点的工程
 前提。\reftab{tab:rag-weight-sweep} 在 \ref{sec:semantic-bridge} 节
-给出了 8 个权重点的完整扫描结果，本节进一步对照两轮不同知识库体量
-下的最优权重，结果见 \reftab{tab:rag-weight-drift}。
+给出了 8 个权重点的完整扫描结果，对应的可视化走势见
+\reffig{fig:rag-weight-sweep}：当 $\alpha$ 从 0.50 上升至 0.90 时
+Top-1 命中率与 MRR 同步抬升至 85.0\% 与 0.908 双双触顶，随后在 1.00
+回落，证实存在唯一最优工作点而非单调走势。
 
-\begin{table}[!htbp]
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.85\linewidth]{figures/eval_5_1_rag_weight_sweep}
+    \caption{通路 A 混合检索权重扫描走势（60 条评测集，左轴 Top-1 命中率，右轴 MRR）}
+    \label{fig:rag-weight-sweep}
+\end{figure}
+
+本节进一步对照两轮不同知识库体量下的最优权重，结果见
+\reftab{tab:rag-weight-drift}。
+
+\begin{table}[H]
     \centering
     \caption{最优混合检索权重随知识库体量的动态漂移}
     \label{tab:rag-weight-drift}
@@ -107,4 +123,3 @@ operation 两个类别召回，但 hybrid 把 \texttt{term\_\bk{}thunderstorm} �
 权重调整突破。这正是通路 B 即确定性 if-else 分级器加 grade\_id 硬链接
 设计的工程必要性。前 7 条邻近阈值与术语别名失败用例在通路 B 上都能
 达到 100\% 准确率，构成通路 A 加通路 B 双覆盖闭环的具体实证支撑。
-

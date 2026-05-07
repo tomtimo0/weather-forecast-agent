@@ -1,20 +1,24 @@
-% =============================================================================
-% 5.2.5 集成层端到端任务完成率评测
-% 草稿版本：v0.1 (2026-05-05)
+﻿% =============================================================================
+% 5.6 集成层端到端任务完成率评测
+% 草稿版本：v0.2 (2026-05-07)
+%   v0.1：作为 5.2.5 子小节起草。
+%   v0.2：按导师意见 3 提级为 5.6 \subsection；首段"前 4 节的模块层评测"
+%        改为对应新结构 5.2--5.5 节的措辞。
 % 字数：约 1500 字
 % 风格规则：v0.2 风格（无 \textbf / \textit / 引例括号 / 双引号 / 破折号）
 % 引用：\cite{ref1, ref18, ref20}
 % 图表：
 %   - 表 \reftab{tab:e2e-overall}        双档 5 类断言总表
 %   - 表 \reftab{tab:e2e-by-category}    按场景类别拆分
+%   - 图 \reffig{fig:e2e-by-category}    6 类场景双档对比柱状图（含差距标注）
 % 复用 4.3 节已有图表：\reftab{tab:report-judge-summary}
-% 依赖宏包：booktabs / tabularx（主稿已加载）
+% 依赖宏包：booktabs / tabularx / graphicx（主稿已加载）
 % =============================================================================
 
-\subsubsection*{5.2.5 \quad 集成层端到端任务完成率评测}
+\subsection{集成层端到端任务完成率评测}
 \label{sec:e2e-eval}
 
-前 4 节的模块层评测已经分别量化了意图识别、通路 A 检索、通路 B 桥接
+前面 4 节的模块层评测已经分别量化了意图识别、混合检索、语义桥接
 与代码执行 4 个子模块的能力上限。但单模块成绩好不一定端到端就好：
 通路 B 单测层面 \texttt{citation} 真实性 100\%，集成到 ReAct 循环最后
 报告生成阶段仍可能因为大语言模型在最终输出时省略 GB/T 编号而衰减。
@@ -50,7 +54,7 @@ RAG 强制规则与 \texttt{search\_\bk{}knowledge}、\texttt{bridge\_\bk{}weath
 事实性、完整性、专业性、流畅性四个 0 至 5 区间维度独立打分。30 条
 用例双档对照的核心结果见 \reftab{tab:e2e-overall}。
 
-\begin{table}[!htbp]
+\begin{table}[H]
     \centering
     \caption{端到端评测双档 5 类断言总表（30 条用例）}
     \label{tab:e2e-overall}
@@ -71,7 +75,8 @@ RAG 强制规则与 \texttt{search\_\bk{}knowledge}、\texttt{bridge\_\bk{}weath
     \end{tabular}
 \end{table}
 
-按场景类别拆分见 \reftab{tab:e2e-by-category}。差距最大的两类是
+按场景类别拆分见 \reftab{tab:e2e-by-category}，对应可视化对比见
+\reffig{fig:e2e-by-category}。差距最大的两类是
 \texttt{decision\_\bk{}support} 与 \texttt{warning\_\bk{}extreme}：决策类
 \texttt{ablated} 档通过率仅 50\%，\texttt{full} 档为 100\%，差距 50
 个百分点；预警类 \texttt{ablated} 档为 50\%，\texttt{full} 档为 75\%，
@@ -80,7 +85,14 @@ RAG 强制规则与 \texttt{search\_\bk{}knowledge}、\texttt{bridge\_\bk{}weath
 依据时双通路 RAG 价值最大，当问题只需要信息检索本身时双通路 RAG 不
 带来端到端通过率差异，但仍提供权威可溯源性。
 
-\begin{table}[!htbp]
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.95\linewidth]{figures/eval_5_5_e2e_by_category}
+    \caption{端到端通过率按场景类别拆分：\texttt{ablated}（无 RAG）与 \texttt{full}（含双通路 RAG）双档对照（30 条用例）}
+    \label{fig:e2e-by-category}
+\end{figure}
+
+\begin{table}[H]
     \centering
     \caption{端到端评测按场景类别拆分}
     \label{tab:e2e-by-category}
@@ -129,4 +141,3 @@ GB/T 编号。这一现象解释了为什么通路 B 单测 \texttt{citation} �
 \texttt{Acc\_\bk{}intent}、\texttt{F1\_\bk{}param}、\texttt{Acc\_\bk{}analysis}、
 \texttt{Task\_\bk{}completion} 与报告生成质量至此全部完成实证支撑，与
 Kim 等 \cite{ref1} 的多智能体气候 Agent 评测体系在覆盖维度上对齐。
-

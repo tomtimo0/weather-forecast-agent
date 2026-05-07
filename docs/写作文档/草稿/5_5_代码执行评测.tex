@@ -1,19 +1,23 @@
-% =============================================================================
-% 5.2.4 代码生成与受限沙箱三档消融
-% 草稿版本：v0.1 (2026-05-05)
+﻿% =============================================================================
+% 5.5 代码生成与受限沙箱三档消融
+% 草稿版本：v0.2 (2026-05-07)
+%   v0.1：作为 5.2.4 子小节起草。
+%   v0.2：按导师意见 3 提级为 5.5 \subsection。
 % 字数：约 1300 字
 % 风格规则：v0.2 风格（无 \textbf / \textit / 引例括号 / 双引号 / 破折号）
 % 引用：\cite{ref20, ref23, ref29}
 % 图表：
-%   - 表 \reftab{tab:code-fail-modes}    四类典型幻觉模式失败用例统计
+%   - 图 \reffig{fig:code-eval-overall}   3 档数值准确率柱状图（含代码生成 / 可执行率）
+%   - 图 \reffig{fig:code-eval-category}  6 类用例上 direct vs with_code 双档对比
+%   - 表 \reftab{tab:code-fail-modes}     四类典型幻觉模式失败用例统计
 % 复用 4.2 节已有图表：
 %   - \reftab{tab:code-bench-design}     评测集任务分布
 %   - \reftab{tab:code-eval-overall}     3 档总表
 %   - \reftab{tab:code-eval-category}    按类别拆分
-% 依赖宏包：booktabs / tabularx（主稿已加载）
+% 依赖宏包：booktabs / tabularx / graphicx（主稿已加载）
 % =============================================================================
 
-\subsubsection*{5.2.4 \quad 代码生成与受限沙箱三档消融}
+\subsection{代码生成与受限沙箱三档消融}
 \label{sec:code-eval}
 
 代码生成与受限沙箱的 3 档消融总表已在 \ref{sec:code-execution} 节
@@ -45,10 +49,18 @@ GLM-5.1，避免引入模型差异。\texttt{llm\_\bk{}direct} 档数值准确�
 \texttt{llm\_\bk{}with\_\bk{}code} 档为 88.9\%，差距 22.2 个百分点。代码生成率
 与代码可执行率均为 94.4\%，证明模型在 function calling 下生成可执行
 代码的能力是稳定的，失败主要来自单条用例上的算法或字段命名错误，而
-非工具调用基础能力 \cite{ref29}。
+非工具调用基础能力 \cite{ref29}。三档对比的整体走势见
+\reffig{fig:code-eval-overall}。
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.78\linewidth]{figures/eval_5_3_code_overall}
+    \caption{代码执行三档总体对比：数值准确率与代码生成 / 可执行率（18 条评测集）}
+    \label{fig:code-eval-overall}
+\end{figure}
 
 按类别拆分的差距分布揭示了大语言模型直算的能力边界规律，详见
-\reftab{tab:code-eval-category}。差距最大的两类是极值与计数：
+\reftab{tab:code-eval-category} 与 \reffig{fig:code-eval-category}。差距最大的两类是极值与计数：
 \texttt{extreme} 类 \texttt{llm\_\bk{}direct} 准确率为 0.0\%，三条全部
 失败；\texttt{count} 类 \texttt{llm\_\bk{}direct} 准确率仅 50.0\%。差距
 最小的两类是求和与排序：两档都达到 100.0\%。简单求和与天然排序任务
@@ -59,11 +71,18 @@ GLM-5.1，避免引入模型差异。\texttt{llm\_\bk{}direct} 档数值准确�
 时容易出错 \cite{ref20}。代码执行的本质是给模型配上一支笔与一张草稿
 纸，把心算换成笔算。
 
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.92\linewidth]{figures/eval_5_4_code_by_category}
+    \caption{代码执行按用例类别拆分：\texttt{llm\_direct} 与 \texttt{llm\_with\_code} 在 6 类统计模式上的数值准确率对比}
+    \label{fig:code-eval-category}
+\end{figure}
+
 逐条分析 \texttt{llm\_\bk{}direct} 档 6 条失败用例与 \texttt{llm\_\bk{}with\_\bk{}code}
 档 2 条失败用例，可归纳出四类典型幻觉模式，分布见
 \reftab{tab:code-fail-modes}。
 
-\begin{table}[!htbp]
+\begin{table}[H]
     \centering
     \caption{代码执行评测四类典型失败模式分布}
     \label{tab:code-fail-modes}
@@ -116,4 +135,3 @@ calling 下仍只填日期字段而把数值留作自由文本。这一现象与
 真实生产环境下应当使用 RestrictedPython、Pyodide 或 Docker 容器实现
 进程级隔离 \cite{ref23}。完整的安全沙箱方案在 \ref{sec:future-work}
 节作为未来工作展开。
-

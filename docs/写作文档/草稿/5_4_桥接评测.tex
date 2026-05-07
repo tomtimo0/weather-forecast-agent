@@ -1,23 +1,39 @@
-% =============================================================================
-% 5.2.3 通路 B 语义桥接四档消融
-% 草稿版本：v0.1 (2026-05-05)
+﻿% =============================================================================
+% 5.4 语义桥接四档消融
+% 草稿版本：v0.2 (2026-05-07)
+%   v0.1：作为 5.2.3 子小节起草。
+%   v0.2：按导师意见 3 提级为 5.4 \subsection，标题去掉前缀"通路 B"。
 % 字数：约 1300 字
 % 风格规则：v0.2 风格（无 \textbf / \textit / 引例括号 / 双引号 / 破折号）
 % 引用：\cite{ref10, ref20}
 % 图表：
+%   - 图 \reffig{fig:bridge-ablation}       4 档分组柱状图（核心 4 指标）
 %   - 表 \reftab{tab:bridge-by-category}    按要素类别拆分（71 条）
 %   - 表 \reftab{tab:bridge-llm-trap}       LLM baseline 双指标对比
 % 复用 4.1 节已有图表：\reftab{tab:bridge-ablation}（4 档总表）
-% 依赖宏包：booktabs / tabularx（主稿已加载）
+% 依赖宏包：booktabs / tabularx / graphicx（主稿已加载）
 % =============================================================================
 
-\subsubsection*{5.2.3 \quad 通路 B 语义桥接四档消融}
+\subsection{语义桥接四档消融}
 \label{sec:bridge-eval}
 
 通路 B 语义桥接的 4 档消融总表已在 \ref{sec:semantic-bridge} 节
-\reftab{tab:bridge-ablation} 给出，本节聚焦三件 \ref{sec:semantic-bridge}
-节未展开的内容：评测集设计与按要素类别的差异化表现、大语言模型基线的
-真实却错幻觉模式归类，以及与知识库标准核对表预演错误的呼应关系。
+\reftab{tab:bridge-ablation} 给出，对应核心 4 指标的可视化对照见
+\reffig{fig:bridge-ablation}：\texttt{rule\_\bk{}plus\_\bk{}rag} 档在
+覆盖率、\texttt{grade\_\bk{}id} 准确率、\texttt{must\_\bk{}cite} 全中与
+\texttt{citation} 真实性四项核心指标上同时达到 100\%，
+\texttt{llm\_\bk{}baseline} 档则在 \texttt{grade\_\bk{}id} 与
+\texttt{must\_\bk{}cite} 两项关键合规指标上分别仅有 5.6\% 与 25.4\%。
+本节聚焦三件 \ref{sec:semantic-bridge} 节未展开的内容：评测集设计与按
+要素类别的差异化表现、大语言模型基线的真实却错幻觉模式归类，以及
+与知识库标准核对表预演错误的呼应关系。
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.92\linewidth]{figures/eval_5_2_bridge_ablation}
+    \caption{通路 B 语义桥接四档消融核心指标对比（71 条评测集）}
+    \label{fig:bridge-ablation}
+\end{figure}
 
 评测集为 \texttt{semantic\_\bk{}bridge\_\bk{}bench.\bk{}jsonl} 共 71 条用例，覆盖
 9 类气象要素：24 小时降水、12 小时降水、风速、温度、能见度、湿度、
@@ -37,7 +53,7 @@
 fallback 类的 4 条用例：这 4 条要求模型在面对非法或无关字段时输出空
 \texttt{labels}，模型恰好正确判断而被记为通过，与生成质量无关。
 
-\begin{table}[!htbp]
+\begin{table}[H]
     \centering
     \caption{通路 B 语义桥接按要素类别拆分（71 条评测集）}
     \label{tab:bridge-by-category}
@@ -65,7 +81,7 @@ fallback 类的 4 条用例：这 4 条要求模型在面对非法或无关字�
 跌到 25.4\%，57.6 个百分点的差距正是大语言模型 \texttt{citation}
 幻觉的核心特征：模型知道有哪些标准存在，但不知道该用哪一个、哪一条。
 
-\begin{table}[!htbp]
+\begin{table}[H]
     \centering
     \caption{大语言模型基线的真实却错双指标}
     \label{tab:bridge-llm-trap}
@@ -112,4 +128,3 @@ $0.0\sim0.2\,\mathrm{m/s}$ 的微误等问题，这些问题被人工核对修�
 无法消除 \cite{ref10}。这构成了一个自洽的论证闭环：人工核对发现典型
 错误，模型基线复现同样错误，桥接架构通过 \texttt{grade\_\bk{}id} 硬链接
 加场景元数据避免错误。
-

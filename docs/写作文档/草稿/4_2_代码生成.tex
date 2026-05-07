@@ -34,7 +34,7 @@
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=\linewidth,height=0.4\textheight,keepaspectratio]{figures/code-gen-flow}
+    \includegraphics[width=0.78\linewidth,height=0.32\textheight,keepaspectratio]{figures/code-gen-flow}
     \caption{代码生成与受限沙箱执行流程图}
     \label{fig:code-gen-flow}
 \end{figure}
@@ -78,7 +78,7 @@
 每条用例标注期望值与容差，并按答案结构分为标量、日期、日期加数值复合、
 时刻加数值复合、有序列表共五种期望类型。
 
-\begin{table}[!htbp]
+\begin{table}[!ht]
     \centering
     \caption{代码执行评测集任务分布（6 类统计模式，共 18 条用例）}
     \label{tab:code-bench-design}
@@ -114,7 +114,7 @@
 表明大语言模型在 function calling 模式下生成可执行代码的能力是稳定的，
 失败主要来自单条用例上的算法错误而非工具调用失败。
 
-\begin{table}[!htbp]
+\begin{table}[!ht]
     \centering
     \caption{代码执行三档消融总表（18 条评测集）}
     \label{tab:code-eval-overall}
@@ -140,7 +140,7 @@
 中关于工作记忆容量限制的发现一致。代码执行的本质是给大语言模型配上一支
 笔与一张草稿纸，把心算换成笔算 \cite{ref20, ref29}。
 
-\begin{table}[!htbp]
+\begin{table}[!ht]
     \centering
     \caption{代码执行评测按用例类别拆分（数值准确率）}
     \label{tab:code-eval-category}

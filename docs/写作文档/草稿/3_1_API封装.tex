@@ -1,12 +1,17 @@
-% =============================================================================
+﻿% =============================================================================
 % 3.1 气象 API 的描述与封装
-% 草稿版本：v0.1 (2026-05-05)
+% 草稿版本：v0.2 (2026-05-07)
+%   v0.1：完成正文初稿。
+%   v0.2：按导师意见 8 在 3.1.1 末段嵌入 fig:api-unified-wrapper 异构 API
+%        统一封装层结构图，把"上层 ReAct Agent / 中间统一封装层 / 底层
+%        和风+Open-Meteo 双源" 三层结构可视化。
 % 字数：约 1700 字
 % 风格规则：v0.2 风格（无 \textbf / \textit / 引例括号 / 双引号 / 破折号）
 % 引用：\cite{ref3, ref11, ref21, ref28}
 % 图表：
+%   - 图 \reffig{fig:api-unified-wrapper}   异构 API 统一封装层结构图
 %   - 表 \reftab{tab:api-tools-overview}    9 个 weather_api 工具汇总
-% 依赖宏包：booktabs / tabularx（主稿已加载）
+% 依赖宏包：booktabs / tabularx / graphicx（主稿已加载）
 % =============================================================================
 
 \subsection{气象 API 的描述与封装}
@@ -40,7 +45,14 @@ function 工具。工具内部统一处理 HTTP 请求、状态码校验、错�
 \texttt{mm} 单位的字符串而 Open-Meteo 返回的是浮点数值，封装层
 统一格式化为 \texttt{X.\bk{}X mm} 字符串以便下游统一消费。这种封装把
 数据源异构性吸收在工具实现内部，对上层意图识别与 Agent 编排完全
-透明。
+透明，整体三层结构关系见 \reffig{fig:api-unified-wrapper}。
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.92\linewidth]{figures/异构 API 统一封装层结构图}
+    \caption{异构气象 API 统一封装层三层结构示意图}
+    \label{fig:api-unified-wrapper}
+\end{figure}
 
 \subsubsection*{3.1.2 \quad Function Calling Schema 的设计原则}
 
@@ -73,7 +85,7 @@ schema 文件。
 \texttt{search\_\bk{}knowledge} 与 \texttt{bridge\_\bk{}weather\_\bk{}data} 已在
 \ref{sec:semantic-bridge} 节展开，本节不再重复。
 
-\begin{table}[!htbp]
+\begin{table}[!ht]
     \centering
     \caption{气象 API 工具集汇总（9 个 weather\_api 工具）}
     \label{tab:api-tools-overview}
@@ -127,7 +139,7 @@ Agent 客户端通信，优势是在跨进程隔离与多进程编排上有更�
 范围内不能被本课题方法论的价值充分覆盖。第二是开发与调试便利性。
 \texttt{@tool} 装饰器允许工具与 Agent 共享同一份 Python 进程与
 异常调用栈，调试单点工具崩溃时不需要在多进程之间检索日志。第三是
-评测复用便利性。\ref{sec:scenario-eval} 节的 5 套评测脚本统一直接
+评测复用便利性。\ref{chap:evaluation} 章的 5 套评测脚本统一直接
 调用同一份工具实现，避免了在评测时维护额外的 MCP 服务进程。
 
 需要明确的是，本文工具描述格式严格遵循 OpenAI Function Calling

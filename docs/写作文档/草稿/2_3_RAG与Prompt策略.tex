@@ -1,4 +1,4 @@
-% =============================================================================
+﻿% =============================================================================
 % 2.3 基于 RAG 的领域知识注入与 Prompt 工程优化策略
 % 草稿版本：v0.1 (2026-05-05)
 % 字数：约 2000 字
@@ -33,7 +33,7 @@ wind force scale 等。强版本化体现为同一标准会在不同年份发布
 本文据此把领域知识库划分为三类条目，每类对应不同的 RAG 调用场景,
 详见 \reftab{tab:kb-three-categories}。
 
-\begin{table}[!htbp]
+\begin{table}[!ht]
     \centering
     \caption{领域知识库三类条目的设计原则与典型 RAG 调用场景}
     \label{tab:kb-three-categories}
@@ -97,7 +97,7 @@ ReAct 循环 \cite{ref18} 的输出质量高度依赖 System Prompt 的设计。
 参考的规则段落，避免长 Prompt 中的相互干扰，这一思路与 Hong 等
 \cite{ref20} 在 Data Interpreter 中的 prompt 解耦设计同源。
 
-\begin{table}[!htbp]
+\begin{table}[!ht]
     \centering
     \caption{System Prompt 的 6 段模块化设计}
     \label{tab:prompt-modules}

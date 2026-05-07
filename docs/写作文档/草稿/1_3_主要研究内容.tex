@@ -1,17 +1,16 @@
-% =============================================================================
+﻿% =============================================================================
 % 1.3 主要研究内容
-% 草稿版本：v0.2 (2026-05-07)
+% 草稿版本：v0.3 (2026-05-07)
 %   v0.1：三个研究问题 + 五项创新贡献 + 研究方法。
 %   v0.2：按导师意见 4 重构为"研究内容与论文结构 / 研究方法与技术路线 /
-%         研究创新点"三个小节；新增三张原理图（论文结构图 / 研究技术路线图 /
-%         研究路线图），暂以占位框形式嵌入，待 drawio 出图后由
-%         \includegraphics 替换；同时把原 1.4 论文组织结构合并到 1.3.1。
-% 字数：约 2300 字
+%         研究创新点"三个小节；新增原理图（论文结构图 / 研究技术路线图）。
+%   v0.3：按导师反馈删除研究路线图（fig:research-roadmap）以避免与论文
+%         结构图、研究技术路线图存在功能重叠；研究阶段叙述改为纯文字。
+% 字数：约 2200 字
 % 引用：\cite{ref13, ref18, ref12, ref21, ref28}
 % 图表：
-%   - 图 \reffig{fig:thesis-structure}     论文结构图（占位）
-%   - 图 \reffig{fig:tech-roadmap}         研究技术路线图（占位）
-%   - 图 \reffig{fig:research-roadmap}     研究路线图（占位）
+%   - 图 \reffig{fig:thesis-structure}     论文结构图
+%   - 图 \reffig{fig:tech-roadmap}         研究技术路线图
 %   - 表 \reftab{tab:contributions}        五项创新贡献概览
 % 依赖宏包：booktabs / tabularx / graphicx（主稿已加载）
 % =============================================================================
@@ -45,17 +44,9 @@
 实现、实验验证三段式逻辑组织全文，共划分为五章主体内容加一章总结展
 望，整体结构如 \reffig{fig:thesis-structure} 所示。
 
-\begin{figure}[!htbp]
+\begin{figure}[!ht]
     \centering
-    % TODO: 待 drawio 出图后替换为下行 \includegraphics
-    % \includegraphics[width=0.85\linewidth]{figures/论文结构图}
-    \fbox{%
-        \begin{minipage}[c][6cm][c]{0.80\linewidth}
-            \centering
-            \textit{占位：论文结构图（待 drawio 出图，\\
-            文件名 figures/论文结构图.png）}
-        \end{minipage}%
-    }
+    \includegraphics[width=0.5\linewidth]{figures/论文结构图}
     \caption{论文结构图}
     \label{fig:thesis-structure}
 \end{figure}
@@ -88,17 +79,9 @@ RAG 架构、代码生成加受限沙箱执行机制以及自适应气象决策�
 系统按数据流向可分为接入层、处理层、知识库层与输出层四个组成部分，
 整体技术栈如 \reffig{fig:tech-roadmap} 所示。
 
-\begin{figure}[!htbp]
+\begin{figure}[!ht]
     \centering
-    % TODO: 待 drawio 出图后替换为下行 \includegraphics
-    % \includegraphics[width=0.95\linewidth]{figures/研究技术路线图}
-    \fbox{%
-        \begin{minipage}[c][6.5cm][c]{0.80\linewidth}
-            \centering
-            \textit{占位：研究技术路线图（待 drawio 出图，\\
-            文件名 figures/研究技术路线图.png）}
-        \end{minipage}%
-    }
+    \includegraphics[width=0.95\linewidth]{figures/研究技术路线图}
     \caption{研究技术路线图}
     \label{fig:tech-roadmap}
 \end{figure}
@@ -115,23 +98,7 @@ RAG 架构、代码生成加受限沙箱执行机制以及自适应气象决策�
 最大化结果可重复性。
 
 从研究路线视角看，本文的研究工作按文献调研与方案设计、模块实现、
-模块层评测、集成层评测与论文撰写四个阶段递进推进，整体过程如
-\reffig{fig:research-roadmap} 所示。
-
-\begin{figure}[!htbp]
-    \centering
-    % TODO: 待 drawio 出图后替换为下行 \includegraphics
-    % \includegraphics[width=0.95\linewidth]{figures/研究路线图}
-    \fbox{%
-        \begin{minipage}[c][6cm][c]{0.80\linewidth}
-            \centering
-            \textit{占位：研究路线图（待 drawio 出图，\\
-            文件名 figures/研究路线图.png）}
-        \end{minipage}%
-    }
-    \caption{研究路线图}
-    \label{fig:research-roadmap}
-\end{figure}
+模块层评测、集成层评测与论文撰写四个阶段递进推进。
 
 第一阶段为文献调研与方案设计。通过研读 ReAct \cite{ref18}、思维链
 \cite{ref13}、检索增强生成 \cite{ref12}、工具学习 \cite{ref21, ref28}
@@ -147,7 +114,7 @@ RAG 架构、代码生成加受限沙箱执行机制以及自适应气象决策�
 围绕上述三个研究问题与四阶段技术路线，本文给出五项创新贡献，与对应
 章节位置以及评测出口共同列于 \reftab{tab:contributions}。
 
-\begin{table}[!htbp]
+\begin{table}[!ht]
     \centering
     \caption{本文五项创新贡献与对应章节及评测概览}
     \label{tab:contributions}

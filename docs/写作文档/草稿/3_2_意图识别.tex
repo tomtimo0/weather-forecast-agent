@@ -1,13 +1,18 @@
-% =============================================================================
+﻿% =============================================================================
 % 3.2 气象任务意图识别与指令化
-% 草稿版本：v0.1 (2026-05-05)
+% 草稿版本：v0.2 (2026-05-07)
+%   v0.1：完成正文初稿。
+%   v0.2：按导师意见 8 在 3.2 节首段嵌入 fig:nlu-pipeline 双阶段 NLU
+%        管线图，可视化"用户问 → recognizer → completer → ReAct"
+%        前置链路与两道容错回退分支。
 % 字数：约 2000 字
 % 风格规则：v0.2 风格（无 \textbf / \textit / 引例括号 / 双引号 / 破折号）
 % 引用：\cite{ref1, ref18, ref20, ref28}
 % 图表：
+%   - 图 \reffig{fig:nlu-pipeline}            双阶段 NLU 前置管线图
 %   - 表 \reftab{tab:intent-types}            9 类意图说明
 %   - 表 \reftab{tab:weather-intent-schema}   WeatherIntent 结构化字段
-% 依赖宏包：booktabs / tabularx（主稿已加载）
+% 依赖宏包：booktabs / tabularx / graphicx（主稿已加载）
 % =============================================================================
 
 \subsection{气象任务意图识别与指令化}
@@ -21,7 +26,15 @@
 大语言模型需要同时承担意图理解、参数解析、工具选择三类任务，错误
 率会显著上升。本文据此在 ReAct 循环之前增加一道独立的意图识别前置，
 把自然语言查询解析为结构化 \texttt{WeatherIntent} 对象，作为
-ReAct 循环的强结构化输入。
+ReAct 循环的强结构化输入。整体双阶段 NLU 前置管线见
+\reffig{fig:nlu-pipeline}。
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=\linewidth]{figures/双阶段 NLU 管线图 (1)}
+    \caption{双阶段 NLU 前置管线（recognizer + completer）示意图}
+    \label{fig:nlu-pipeline}
+\end{figure}
 
 \subsubsection*{3.2.1 \quad WeatherIntent 数据模型设计}
 
@@ -30,7 +43,7 @@ ReAct 循环的强结构化输入。
 通过 6 个关键字段刻画用户查询的全部结构化要素，详见
 \reftab{tab:weather-intent-schema}。
 
-\begin{table}[!htbp]
+\begin{table}[!ht]
     \centering
     \caption{WeatherIntent 数据模型字段说明}
     \label{tab:weather-intent-schema}
@@ -65,7 +78,7 @@ ReAct 循环的强结构化输入。
 返回不在枚举内的值，Pydantic 会抛出 \texttt{ValidationError},
 触发上游容错回退。9 类意图的具体语义见 \reftab{tab:intent-types}。
 
-\begin{table}[!htbp]
+\begin{table}[!ht]
     \centering
     \caption{9 类意图类型的语义与典型查询}
     \label{tab:intent-types}

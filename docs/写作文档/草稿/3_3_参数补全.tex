@@ -1,13 +1,18 @@
-% =============================================================================
+﻿% =============================================================================
 % 3.3 缺失检索参数的上下文推理与动态补全
-% 草稿版本：v0.1 (2026-05-05)
+% 草稿版本：v0.2 (2026-05-07)
+%   v0.1：完成正文初稿。
+%   v0.2：按导师意见 8 在 3.3.3 末段嵌入 fig:completion-three-tier
+%        三档补全策略流程图，可视化"默认值 → 上下文推断 → 常识"
+%        优先级链与失败时触发 follow_up_question 的兜底分支。
 % 字数：约 1700 字
 % 风格规则：v0.2 风格（无 \textbf / \textit / 引例括号 / 双引号 / 破折号）
 % 引用：\cite{ref10, ref15, ref29}
 % 图表：
+%   - 图 \reffig{fig:completion-three-tier}         三档补全策略流程图
 %   - 表 \reftab{tab:completion-required-params}    各意图类型的关键参数清单
 %   - 表 \reftab{tab:completion-sources}            四类补全来源
-% 依赖宏包：booktabs / tabularx（主稿已加载）
+% 依赖宏包：booktabs / tabularx / graphicx（主稿已加载）
 % =============================================================================
 
 \subsection{缺失检索参数的上下文推理与动态补全}
@@ -56,7 +61,7 @@
 \texttt{travel\_\bk{}advice} 要求至少 2 个地点加完整时间，因为出行场景
 本质上是多地点多时段的复合查询。
 
-\begin{table}[!htbp]
+\begin{table}[!ht]
     \centering
     \caption{各意图类型的关键参数清单}
     \label{tab:completion-required-params}
@@ -104,7 +109,7 @@
 \texttt{reason} 四个子字段组成。其中 \texttt{source} 取四个枚举值
 之一，详见 \reftab{tab:completion-sources}。
 
-\begin{table}[!htbp]
+\begin{table}[!ht]
     \centering
     \caption{补全记录的四类来源（\texttt{CompletionNote.\bk{}source}）}
     \label{tab:completion-sources}
@@ -128,7 +133,15 @@
 时纠正；\texttt{context\_\bk{}inference} 需要让用户了解系统是从上下文
 推断的。\texttt{format\_\bk{}completion\_\bk{}notes} 函数把 notes 列表
 格式化为人类可读文本，注入到 ReAct Agent 的首条用户消息中，最终
-报告生成阶段会以参数补全说明的形式向用户展示。
+报告生成阶段会以参数补全说明的形式向用户展示。三档补全的判定与
+回退路径整体形态见 \reffig{fig:completion-three-tier}。
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.78\linewidth]{figures/三档补全策略流程图}
+    \caption{三档补全策略流程示意图}
+    \label{fig:completion-three-tier}
+\end{figure}
 
 \subsubsection*{3.3.4 \quad 容错回退与可观测性}
 

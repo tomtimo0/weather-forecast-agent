@@ -447,14 +447,14 @@
 	与权威引用等任务上存在内在的幻觉边界，直接将其应用于气象预报数据分析会引发
 	引用编造、分级编造、数值漂移等严重的可信度问题。
 
-	\hspace{2em}本文基于 ReAct 范式设计并实现了一个面向气象预报数据检索与
+	本文基于 ReAct 范式设计并实现了一个面向气象预报数据检索与
 	分析的单智能体系统，把课题归纳为气象任务指令解析、气象数据异构特征、大语言
 	模型数值与逻辑幻觉三个研究问题，并据此提出与落地了五项创新工作，分别为基于
 	工具学习的异构 API 统一封装、意图识别加参数补全的双阶段自然语言理解管线、
 	混合检索与确定性分级器构成的双通路 RAG 架构、基于代码生成与受限沙箱的
 	确定性统计分析机制，以及覆盖模块层与集成层的多层评测体系。
 
-	\hspace{2em}本文完成了由 5 套独立评测集共 214 条用例构成的系统化实证。
+	本文完成了由 5 套独立评测集共 214 条用例构成的系统化实证。
 	意图识别端到端通过率 91.4\%，多地点角色识别准确率 100\%；通路 A 混合检索
 	Top-1 命中率 85.0\%、MRR 0.908；通路 B 桥接的等级编号准确率与权威标准
 	引用真实性同时达到 100\%，与大语言模型自由发挥的基线在严格命中率上形成
@@ -470,7 +470,7 @@
 % ----------------------------------- 英文摘要 ----------------------------------- %
 \begin{enabstract}{Large Language Model; Agent; ReAct Paradigm; Retrieval-Augmented Generation; Semantic Bridging; Hallucination Mitigation}
 
-	\hspace{2em}Weather forecast data is a critical information resource for the
+	Weather forecast data is a critical information resource for the
 	national economy and social development, but its acquisition and analysis
 	currently face two fundamental technical gaps. One stems from data
 	heterogeneity across providers in terms of interfaces, field names and error
@@ -482,7 +482,7 @@
 	credibility concerns including citation fabrication, grade fabrication and
 	numerical drift.
 
-	\hspace{2em}This thesis designs and implements a single-agent system for
+	This thesis designs and implements a single-agent system for
 	weather forecast data retrieval and analysis based on the ReAct paradigm. The
 	research is decomposed into three specific questions, namely instruction
 	parsing of weather tasks, heterogeneity handling of weather data, and
@@ -495,7 +495,7 @@
 	a sandboxed executor, and a multi-layer evaluation system covering both
 	module-level and integration-level perspectives.
 
-	\hspace{2em}A systematic empirical study is conducted on five independent
+	A systematic empirical study is conducted on five independent
 	benchmarks with a total of 214 test cases. Intent recognition reaches an
 	end-to-end pass rate of 91.4\% with 100\% accuracy on multi-location role
 	identification. Path A hybrid retrieval achieves a Top-1 hit rate of 85.0\%
@@ -516,12 +516,22 @@
 
 
 \vspace*{-1em}
-% 用一个独立分组把 TOC 内的 \parskip 重置为 0，避免全局 \parskip=\baselineskip
-% 让 TOC 每一行都被强行加大行距，从而使尾部条目溢出页脚。
-\begingroup
+% 2026-05-07 修复：原 TOC 因默认节间距较大加上 6 个 section + 25+ subsection
+% 共 37 条条目，单页放不下导致 6.3 / 致谢 / 参考文献 / 附录 4 条目录条目
+% 被挤出页脚后被紧随的 \clearpage 截断。
+% 修复方案：① 不再用 \begingroup ... \endgroup 包裹 \tableofcontents，
+% 因为 group 与 toc 跨页 \write 机制冲突会让 toc 第二页丢失；② 直接全局
+% 压紧 tocloft 节间距（\cftbeforesecskip 0pt + \cftbeforesubsecskip -0.1em
+% 负值进一步收紧 subsection 行）；③ 用 \linespread{0.92}\selectfont 微压
+% 行距 8%。三档压缩共节省约 290pt 高度，让 37 条条目稳定单页收纳，且不需要
+% \enlargethispage 兜底（后者会把英文摘要末段内容拉到目录页顶）。
+% 注意 tocloft 寄存器名是简写 \cftbeforesecskip 而非 sectionskip。
 \setlength{\parskip}{0pt}
+\setlength{\cftbeforesecskip}{0pt}
+\setlength{\cftbeforesubsecskip}{-0.1em}
+{\linespread{0.92}\selectfont
 \tableofcontents
-\endgroup
+\par}
 \thispagestyle{main}
 
 
@@ -604,27 +614,52 @@
 
 \input{草稿/4_3_报告生成}
 
+\input{草稿/4_4_本章小结}
+
 
 \sectionbreak
 
-\section{实验验证与总结}
+% ============================================================ %
+% 第 5 章：实验验证（按导师意见 3 重构）
+%   - 原 5.2.1--5.2.5 子小节提级为 5.2--5.6 \subsection
+%   - 原章名"实验验证与总结"改为"实验验证"
+%   - 新增 5.7 本章小结
+%   - 原 5.3 全文总结 / 5.4 研究前景迁出到下方独立的第 6 章
+% ============================================================ %
+\section{实验验证}
 \label{chap:evaluation}
 
 \input{草稿/5_1_实验环境}
 
-\input{草稿/5_2_1_意图评测}
+\input{草稿/5_2_意图评测}
 
-\input{草稿/5_2_2_通路A评测}
+\input{草稿/5_3_检索评测}
 
-\input{草稿/5_2_3_通路B评测}
+\input{草稿/5_4_桥接评测}
 
-\input{草稿/5_2_4_代码执行评测}
+\input{草稿/5_5_代码执行评测}
 
-\input{草稿/5_2_5_端到端评测}
+\input{草稿/5_6_端到端评测}
 
-\input{草稿/5_3_全文总结}
+\input{草稿/5_7_本章小结}
 
-\input{草稿/5_4_研究前景}
+
+\sectionbreak
+
+% ============================================================ %
+% 第 6 章：总结与展望（按导师意见 3 新建独立一章）
+%   - 6.1 全文总结        ← 原 5.3
+%   - 6.2 研究局限性      ← 原 5.4.1
+%   - 6.3 研究前景与未来工作 ← 原 5.4.2
+% ============================================================ %
+\section{总结与展望}
+\label{chap:conclusion}
+
+\input{草稿/6_1_全文总结}
+
+\input{草稿/6_2_研究局限性}
+
+\input{草稿/6_3_研究前景}
 
 
 % ------------------------------------ 致谢 ------------------------------------ %

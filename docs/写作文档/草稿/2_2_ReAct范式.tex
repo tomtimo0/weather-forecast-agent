@@ -1,12 +1,15 @@
-% =============================================================================
+﻿% =============================================================================
 % 2.2 基于 ReAct 范式的单智能体思维链模型解决方案
-% 草稿版本：v0.2 (2026-05-05)
+% 草稿版本：v0.3 (2026-05-07)
 %   v0.1：完成正文初稿。\reffig{fig:agent-architecture} 以 \fbox 占位框给出。
 %   v0.2：接入 figures/agent_architecture.png 真实出图，移除 \fbox 占位。
+%   v0.3：按导师意见 10 在 2.2.1 末段嵌入 fig:react-loop ReAct 循环图，
+%        承接思考-行动-观察循环的论述并衔接 2.2.3 总体架构。
 % 字数：约 2000 字
 % 风格规则：v0.2 风格（无 \textbf / \textit / 引例括号 / 双引号 / 破折号）
 % 引用：\cite{ref13, ref15, ref18, ref19, ref30}
 % 图表：
+%   - 图 \reffig{fig:react-loop}             ReAct 推理-行动-观察循环图
 %   - 图 \reffig{fig:agent-architecture}     气象 Agent 总体架构图
 %   - 表 \reftab{tab:single-vs-multi-agent}  单智能体与多智能体的取舍对照
 % 依赖宏包：booktabs / tabularx / graphicx（主稿已加载）
@@ -41,6 +44,14 @@ ReAct \cite{ref18} 把思维链与工具调用结合起来。模型在每一轮�
 本文气象 Agent 的核心循环采用 LangGraph 框架 \cite{ref15} 实现这一
 范式，所有 11 个气象工具加 RAG 工具均通过同一个工具节点暴露给模型,
 模型在每一轮自由选择是否调用、调用哪一个、传入什么参数。
+ReAct 推理 - 行动 - 观察循环的整体形态见 \reffig{fig:react-loop}。
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.85\linewidth]{figures/ReAct循环图}
+    \caption{ReAct 推理-行动-观察循环示意图}
+    \label{fig:react-loop}
+\end{figure}
 
 针对气象 Agent 的具体场景，本文在原始 ReAct 循环之上增加了三处
 工程改造。第一是把意图识别与参数补全前置到 ReAct 循环之外作为
@@ -68,7 +79,7 @@ AutoGen \cite{ref19} 提出可定制对话格局的多智能体框架，让多�
 智能体方案，主要基于以下三点工程取舍，详见
 \reftab{tab:single-vs-multi-agent}。
 
-\begin{table}[!htbp]
+\begin{table}[!ht]
     \centering
     \caption{气象 Agent 单智能体与多智能体的工程取舍对照}
     \label{tab:single-vs-multi-agent}
@@ -115,7 +126,7 @@ AutoGen \cite{ref19} 提出可定制对话格局的多智能体框架，让多�
 按上述方法论选型，本文气象 Agent 的总体架构由四个层次构成，整体
 组件关系见 \reffig{fig:agent-architecture}。
 
-\begin{figure}[!htbp]
+\begin{figure}[!ht]
     \centering
     \includegraphics[width=\linewidth]{figures/agent_architecture}
     \caption{气象 Agent 总体架构示意图}
