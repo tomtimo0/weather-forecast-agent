@@ -5,7 +5,7 @@
 % 风格规则：v0.2 风格（无 \textbf / \textit / 引例括号 / 双引号 / 破折号）
 % 引用：\cite{ref2, ref5, ref10, ref20, ref25}
 % 图表：
-%   - 表 \reftab{tab:three-questions}     Q1/Q2/Q3 三个问题的对照建模
+%   - 表 \reftab{tab:three-questions}     三个研究问题的对照建模
 %   - 表 \reftab{tab:hallucination-types} 大语言模型在气象任务中的 5 类幻觉
 % 依赖宏包：booktabs / tabularx（主稿已加载）
 % =============================================================================
@@ -16,14 +16,15 @@
 把大语言模型应用到气象预报数据的检索与分析这一具体业务场景，本质上是
 把通用的语言模型能力嫁接到一个对数值精度、来源权威性与时空一致性都有
 严格要求的垂直领域。本节按用户感知到 Agent 内部的处理顺序，把这一嫁接
-过程中暴露出的技术难点抽象为三个相互独立又相互衔接的研究问题（Q1、
-Q2、Q3），并在 \reftab{tab:three-questions} 中给出三者的对照建模。
-后续 \ref{sec:react-paradigm} 节与 \ref{sec:rag-prompt} 节给出本文的
-统一应对方案，第 3 章至第 4 章是这一方案在三类问题上的具体落地。
+过程中暴露出的技术难点抽象为三个相互独立又相互衔接的研究问题，依次为
+气象任务指令解析问题、气象数据异构特征问题、大语言模型数值与逻辑幻觉
+问题，并在 \reftab{tab:three-questions} 中给出三者的对照建模。后续
+\ref{sec:react-paradigm} 节与 \ref{sec:rag-prompt} 节给出本文的统一
+应对方案，第 3 章至第 4 章是这一方案在三类问题上的具体落地。
 
 \begin{table}[!htbp]
     \centering
-    \caption{气象 Agent 三类技术问题的对照建模（Q1 / Q2 / Q3）}
+    \caption{气象 Agent 三类技术问题的对照建模}
     \label{tab:three-questions}
     \song\fontsize{9pt}{12pt}\selectfont
     \renewcommand{\arraystretch}{0.95}
@@ -31,14 +32,14 @@ Q2、Q3），并在 \reftab{tab:three-questions} 中给出三者的对照建模�
         \toprule
         研究问题 & 主要表现 & 对应章节 \\
         \midrule
-        Q1 指令解析 & 自然语言到结构化检索参数的映射缺口 & \ref{chap:retrieval} \\
-        Q2 异构数据 & 多源、多粒度、多要素接入与归一化 & \ref{sec:api-tooling} 与 \ref{sec:semantic-bridge} \\
-        Q3 数值幻觉 & 数值理解、引用编造、统计口径漂移 & \ref{sec:semantic-bridge} 与 \ref{sec:code-execution} \\
+        指令解析问题 & 自然语言到结构化检索参数的映射缺口 & \ref{chap:retrieval} \\
+        异构数据问题 & 多源、多粒度、多要素接入与归一化 & \ref{sec:api-tooling} 与 \ref{sec:semantic-bridge} \\
+        数值与逻辑幻觉问题 & 数值理解、引用编造、统计口径漂移 & \ref{sec:semantic-bridge} 与 \ref{sec:code-execution} \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-\subsubsection*{2.1.1 \quad Q1：气象任务指令解析问题}
+\subsubsection*{2.1.1 \quad 气象任务指令解析问题}
 
 气象 Agent 接收的输入是用户自然语言查询，输出最终需要进入工具调用层
 转化为带有结构化参数的 API 请求。两端之间存在显著的形式与语义鸿沟。
@@ -66,7 +67,7 @@ Q2、Q3），并在 \reftab{tab:three-questions} 中给出三者的对照建模�
 电影这类与气象无关的输入也会进入系统，需要 Agent 能识别并友好引导
 而不是强行解析为某个气象意图。
 
-\subsubsection*{2.1.2 \quad Q2：气象数据的异构特征分析}
+\subsubsection*{2.1.2 \quad 气象数据的异构特征分析}
 
 气象数据天然异构，且这一异构性贯穿数据接入、数据组织、数据解读三个
 不同层面 \cite{ref25}。
@@ -98,7 +99,7 @@ Centre for Medium-Range Weather Forecasts 等机构维护，提供免费的
 工具学习与语义桥接两个 Agent 内部模块，避免在 Agent 之外维护额外
 的数据中间层。
 
-\subsubsection*{2.1.3 \quad Q3：大语言模型的数值与逻辑幻觉}
+\subsubsection*{2.1.3 \quad 大语言模型的数值与逻辑幻觉}
 
 大语言模型的训练目标本质上是以下一个 token 的预测来逼近文本概率
 分布，这一目标天然导致模型在严格要求数值精度与权威引用的任务上
@@ -127,7 +128,8 @@ Centre for Medium-Range Weather Forecasts 等机构维护，提供免费的
     \end{tabular}
 \end{table}
 
-引用编造是 Q3 中最典型也最危险的一类幻觉。在 \ref{sec:bridge-eval}
+引用编造是数值与逻辑幻觉问题中最典型也最危险的一类幻觉。在
+\ref{sec:bridge-eval}
 节的对照实验中，大语言模型自由发挥档对 71 条评测集输出的引用条款中
 仅 5.6\% 的 \texttt{grade\_\bk{}id} 完全正确，且即使引用文本看起来合理,
 \texttt{must\_\bk{}cite} 关键词的严格命中率也只有 25.4\%。换言之，模型
@@ -151,7 +153,8 @@ Centre for Medium-Range Weather Forecasts 等机构维护，提供免费的
 会发生切换；后者源于模型倾向于在结构化输出场景下也给出建议，例如
 在户外作业场景下仍输出洗车提示，违反场景过滤约束。
 
-针对 Q3 的五类幻觉，本文不寻求通过更大模型或更复杂 prompt 来缓解,
+针对数值与逻辑幻觉问题的五类幻觉，本文不寻求通过更大模型或更复杂
+prompt 来缓解,
 而是通过把数值理解、引用归属、统计计算三类高风险任务从大语言模型
 内部转移到外部确定性组件。\ref{sec:semantic-bridge} 节用确定性分级
 加 \texttt{grade\_\bk{}id} 硬链接消除引用与分级编造，
@@ -161,14 +164,14 @@ Centre for Medium-Range Weather Forecasts 等机构维护，提供免费的
 
 \subsubsection*{2.1.4 \quad 三个问题的层级关系}
 
-Q1、Q2、Q3 在数据流向上构成自然的层级。Q1 解决用户输入到结构化
-请求的转化，是 Agent 流水线的入口；Q2 解决结构化请求到原始数据的
-取数与归一化，是数据通路的中段；Q3 解决原始数据到自然语言决策报告
-的解读与表达，是 Agent 流水线的出口。三个问题的解决方案在工程上
-也存在依赖关系：Q2 的工具学习能力依赖 Q1 的结构化意图作为参数来源,
-Q3 的语义桥接依赖 Q2 的工具调用结果作为输入数值。这种依赖关系决定
-了本文在第 3 章先解决 Q1 与 Q2 的接入侧问题，第 4 章再解决 Q3 的
-解读侧问题。
+三个研究问题在数据流向上构成自然的层级。指令解析问题解决用户输入
+到结构化请求的转化，是 Agent 流水线的入口；异构数据问题解决结构化
+请求到原始数据的取数与归一化，是数据通路的中段；数值与逻辑幻觉
+问题解决原始数据到自然语言决策报告的解读与表达，是 Agent 流水线
+的出口。三个问题的解决方案在工程上也存在依赖关系，异构数据接入
+依赖指令解析输出的结构化意图作为参数来源，语义桥接依赖工具调用
+结果作为输入数值。这种依赖关系决定了本文在第 3 章先解决前两个问题
+对应的接入侧任务，第 4 章再解决数值与逻辑幻觉问题对应的解读侧任务。
 
 下面 \ref{sec:react-paradigm} 节先讨论统一这三个子问题的方法论
 框架，即基于 ReAct 范式的单智能体思维链模型。
