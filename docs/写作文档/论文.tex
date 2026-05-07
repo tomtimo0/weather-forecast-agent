@@ -303,20 +303,21 @@
 }
 
 % 英文摘要环境（局部压缩行距 + 段间距，避免长摘要把 Key Words 顶到第二页）
+% 摘要拆为 3 段后内容增多，进一步把 \linespread 从 1.2 压缩到 1.1，
+% 并把首段上拉量从 -30pt 增至 -40pt，把段末关键词的 \par\vspace 从 0.2em 压至 0em。
 \newenvironment{enabstract}[1]{
 	\def \enkeyword {#1}
 	\clearpage
 	\phantomsection
 	\addcontentsline{toc}{section}{Abstract}
-	\vspace*{-30pt}
+	\vspace*{-40pt}
 	\begin{center}
 		\bfseries \xiaoerhao Abstract
 	\end{center}
 	\seccontent
-	\linespread{1.2}\selectfont
+	\linespread{1.1}\selectfont
 	\setlength{\parskip}{0pt}
 }{
-	\par\vspace{0.2em}
 	\par\noindent {\xiaosihao\bfseries Key Words: }\ {\song\xiaosihao\enkeyword}
 	% 末尾不再 \clearpage：\tableofcontents 内部 \section* 会触发 \sectionbreak
 	% 自动 \clearpage，再次显式 \clearpage 会产生空白页。
@@ -438,65 +439,79 @@
 % ----------------------------------- 中文摘要 ----------------------------------- %
 \setcounter{page}{1}
 \renewcommand{\thepage}{\Roman{page}}
-\begin{cnabstract}{大语言模型智能体；ReAct 范式；检索增强生成；语义桥接；幻觉抑制}
-	\hspace{2em}气象预报数据是支撑国民经济与社会发展的重要基础信息资源，其获取与
-	分析当前面临两类深层次鸿沟：来自不同机构与平台的接口、字段、错误码体系不一致
-	带来的数据异构性，以及数值数据到自然语言决策语义之间的认知差距。本文基于
-	ReAct 范式设计并实现了一个面向气象预报数据检索与分析的单智能体系统，把课题
-	归纳为气象任务指令解析、气象数据异构特征、大语言模型数值与逻辑幻觉三个研究
-	问题，并据此提出与落地了五项创新工作：基于工具学习的异构 API 统一封装、
-	意图识别加参数补全的双阶段自然语言理解管线、以混合检索与确定性分级器构成
-	的双通路 RAG 架构、基于代码生成与受限沙箱的确定性统计分析机制、覆盖模块
-	层与集成层的多层评测体系。
+\begin{cnabstract}{大语言模型；智能体；ReAct 范式；检索增强生成；语义桥接；幻觉抑制}
+	\hspace{2em}气象预报数据是支撑国民经济与社会发展的重要基础信息资源，其获取
+	与分析当前面临两类深层次技术鸿沟，一类来自不同机构与平台的接口、字段、错误
+	码体系不一致带来的数据异构性，另一类来自数值数据到自然语言决策语义之间的
+	认知差距。与此同时，以大语言模型为推理核心的智能体在数值边界判定、统计计算
+	与权威引用等任务上存在内在的幻觉边界，直接将其应用于气象预报数据分析会引发
+	引用编造、分级编造、数值漂移等严重的可信度问题。
 
-	本文完成了由 5 套独立评测集共 214 条用例构成的系统化实证。意图识别端到端
-	通过率 91.4\%，多地点角色识别准确率 100\%；通路 A 混合检索 Top-1 命中率
-	85.0\%、MRR 0.908；通路 B 桥接的等级编号准确率与权威标准引用真实性同时
-	达到 100\%，与大语言模型自由发挥的基线在严格命中率上形成 74.6 个百分点
-	差距；代码执行档数值准确率比大语言模型自由直算高出 22.2 个百分点；端到端
-	集成评测中 \texttt{full} 档对 \texttt{ablated} 去 RAG 对照档的通过率高出
-	13.4 个百分点，权威引用率高出 26.7 个百分点，\texttt{decision\_support}
-	类用例通过率高出 50 个百分点。实证结果系统验证了所提架构在气象预报数据
-	智能检索与分析任务上的有效性，同时揭示了从模块层到集成层的衰减效应，为
-	后续研究指明了显式对话状态跟踪、知识库扩展、安全沙箱升级等具体方向。
+	\hspace{2em}本文基于 ReAct 范式设计并实现了一个面向气象预报数据检索与
+	分析的单智能体系统，把课题归纳为气象任务指令解析、气象数据异构特征、大语言
+	模型数值与逻辑幻觉三个研究问题，并据此提出与落地了五项创新工作，分别为基于
+	工具学习的异构 API 统一封装、意图识别加参数补全的双阶段自然语言理解管线、
+	混合检索与确定性分级器构成的双通路 RAG 架构、基于代码生成与受限沙箱的
+	确定性统计分析机制，以及覆盖模块层与集成层的多层评测体系。
+
+	\hspace{2em}本文完成了由 5 套独立评测集共 214 条用例构成的系统化实证。
+	意图识别端到端通过率 91.4\%，多地点角色识别准确率 100\%；通路 A 混合检索
+	Top-1 命中率 85.0\%、MRR 0.908；通路 B 桥接的等级编号准确率与权威标准
+	引用真实性同时达到 100\%，与大语言模型自由发挥的基线在严格命中率上形成
+	74.6 个百分点差距；代码执行档数值准确率比大语言模型自由直算高出 22.2 个
+	百分点；端到端集成评测中 \texttt{full} 档对 \texttt{ablated} 去 RAG 对照
+	档的通过率高出 13.4 个百分点，权威引用率高出 26.7 个百分点，
+	\texttt{decision\_support} 类用例通过率高出 50 个百分点。实证结果系统
+	验证了所提架构在气象预报数据智能检索与分析任务上的有效性，同时揭示了从
+	模块层到集成层的衰减效应，为后续研究指明了显式对话状态跟踪、知识库扩展、
+	安全沙箱升级等具体方向。
 \end{cnabstract}
 
 % ----------------------------------- 英文摘要 ----------------------------------- %
-\begin{enabstract}{Large Language Model Agent; ReAct Paradigm; Retrieval-Augmented Generation; Semantic Bridging; Hallucination Mitigation}
+\begin{enabstract}{Large Language Model; Agent; ReAct Paradigm; Retrieval-Augmented Generation; Semantic Bridging; Hallucination Mitigation}
 
 	\hspace{2em}Weather forecast data is a critical information resource for the
 	national economy and social development, but its acquisition and analysis
-	currently face two fundamental gaps: heterogeneity across data providers in
-	terms of interfaces, field names and error code conventions, and the cognitive
-	gap between numerical data and natural language decision semantics. This thesis
-	designs and implements a single-agent system for weather forecast data retrieval
-	and analysis based on the ReAct paradigm. The research is decomposed into three
-	specific questions, namely instruction parsing of weather tasks, heterogeneity
-	handling of weather data, and numerical and logical hallucination of large
-	language models. Five innovations are proposed accordingly: unified
-	encapsulation of heterogeneous APIs based on tool learning, a two-stage natural
-	language understanding pipeline combining intent recognition and parameter
-	completion, a dual-path RAG architecture composed of hybrid retrieval and
-	deterministic classifiers, a deterministic statistical analysis mechanism based
-	on code generation and a sandboxed executor, and a multi-layer evaluation system
-	covering both module-level and integration-level perspectives.
+	currently face two fundamental technical gaps. One stems from data
+	heterogeneity across providers in terms of interfaces, field names and error
+	code conventions, while the other arises from the cognitive gap between
+	numerical data and natural-language decision semantics. Meanwhile, large
+	language model based agents exhibit inherent hallucination boundaries on
+	numerical thresholding, statistical computation and authoritative citation,
+	so directly applying them to weather forecast data analysis raises serious
+	credibility concerns including citation fabrication, grade fabrication and
+	numerical drift.
 
-	A systematic empirical study is conducted on five independent benchmarks with
-	a total of 214 test cases. Intent recognition reaches an end-to-end pass rate
-	of 91.4\% with 100\% accuracy on multi-location role identification. Path A
-	hybrid retrieval achieves a Top-1 hit rate of 85.0\% and MRR of 0.908. Path B
-	bridging attains 100\% accuracy on grade identifiers and 100\% citation
-	authenticity, with a 74.6 percentage-point gap on strict citation hit rate over
-	the free-generation LLM baseline. Code execution improves numerical accuracy by
-	22.2 percentage points compared to direct LLM calculation. In the end-to-end
-	evaluation, the \texttt{full} configuration outperforms the \texttt{ablated}
-	non-RAG baseline by 13.4 percentage points in overall pass rate, 26.7
-	percentage points in authoritative citation rate, and 50 percentage points on
-	the \texttt{decision\_support} category. The results validate the effectiveness
-	of the proposed architecture for intelligent weather forecast data retrieval
-	and analysis, and reveal an integration decay effect from module-level to
-	integration-level evaluation, pointing to future directions including explicit
-	dialogue state tracking, knowledge base expansion, and sandbox security upgrade.
+	\hspace{2em}This thesis designs and implements a single-agent system for
+	weather forecast data retrieval and analysis based on the ReAct paradigm. The
+	research is decomposed into three specific questions, namely instruction
+	parsing of weather tasks, heterogeneity handling of weather data, and
+	numerical and logical hallucination of large language models. Five innovations
+	are proposed accordingly, including unified encapsulation of heterogeneous
+	APIs based on tool learning, a two-stage natural language understanding
+	pipeline combining intent recognition and parameter completion, a dual-path
+	RAG architecture composed of hybrid retrieval and deterministic classifiers,
+	a deterministic statistical analysis mechanism based on code generation and
+	a sandboxed executor, and a multi-layer evaluation system covering both
+	module-level and integration-level perspectives.
+
+	\hspace{2em}A systematic empirical study is conducted on five independent
+	benchmarks with a total of 214 test cases. Intent recognition reaches an
+	end-to-end pass rate of 91.4\% with 100\% accuracy on multi-location role
+	identification. Path A hybrid retrieval achieves a Top-1 hit rate of 85.0\%
+	and MRR of 0.908. Path B bridging attains 100\% accuracy on grade identifiers
+	and 100\% citation authenticity, with a 74.6 percentage-point gap on strict
+	citation hit rate over the free-generation LLM baseline. Code execution
+	improves numerical accuracy by 22.2 percentage points compared to direct LLM
+	calculation. In the end-to-end evaluation, the \texttt{full} configuration
+	outperforms the \texttt{ablated} non-RAG baseline by 13.4 percentage points
+	in overall pass rate, 26.7 percentage points in authoritative citation rate,
+	and 50 percentage points on the \texttt{decision\_support} category. The
+	results validate the effectiveness of the proposed architecture for
+	intelligent weather forecast data retrieval and analysis, and reveal an
+	integration decay effect from module-level to integration-level evaluation,
+	pointing to future directions including explicit dialogue state tracking,
+	knowledge base expansion, and sandbox security upgrade.
 \end{enabstract}
 
 
