@@ -170,9 +170,20 @@
 \captionsetup[figure]{font=mylabelfont}
 \captionsetup[table]{font=mylabelfont}
 
+% ----- 自定义浮动 casebox：对照样本（标准伪代码版式，ruled 上下双线）-----
+% 用于 4.3.3 节两个对照用例的版面承载，与 figure/table 同级独立编号
+% caption 样式：对照样本 4-1、对照样本 4-2 ...，章号自动跟随 \thesection
+\floatstyle{ruled}
+\newfloat{casebox}{!ht}{loc}[section]
+\floatname{casebox}{对照样本}
+\renewcommand{\thecasebox}{\ifnum \thesection>0 \thesection-\fi \arabic{casebox}}
+\captionsetup[casebox]{labelformat=default, labelsep=quad, name={对照样本}, font=mylabelfont}
+\floatstyle{plain}
+
 % 设置图表的autoref的格式
 \newcommand{\reffig}[1]{图 \ref{#1}}
 \newcommand{\reftab}[1]{表 \ref{#1}}
+\newcommand{\refcase}[1]{对照样本 \ref{#1}}
 % 公式的编号格式
 \renewcommand\theequation{\arabic{section}-\arabic{equation}}
 
@@ -218,7 +229,10 @@
 \usepackage[numbers,sort&compress]{gbt7714}
 \renewcommand{\refname}{\centering\hei\xiaoerhao 参考文献}
 \bibsep=0pt % 用来设置每个\bibitem之间的间距
-% \newcommand{\upcite}[1]{\textsuperscript{\textsuperscript{\cite{#1}}}} % show citation label in the upperscript
+% 上角标引用：直接重定义 \cite 命令，使全文所有引用都以 [\textsuperscript] 形式呈现
+% （gbt7714 已设定 numerical 样式，重定义只改变上下文位置，不破坏标号顺序）
+\let\oldcite\cite
+\renewcommand{\cite}[1]{\textsuperscript{\oldcite{#1}}}
 
 % ---------------------------------------------------------------------------- %
 % 设置声明页
@@ -449,7 +463,7 @@
 
 	本文基于 ReAct 范式设计并实现了一个面向气象预报数据检索与
 	分析的单智能体系统，把课题归纳为气象任务指令解析、气象数据异构特征、大语言
-	模型数值与逻辑幻觉三个研究问题，并据此提出与落地了五项创新工作，分别为基于
+	模型数值与逻辑幻觉三个研究问题，并据此提出与落地了五项特色工作，分别为基于
 	工具学习的异构 API 统一封装、意图识别加参数补全的双阶段自然语言理解管线、
 	混合检索与确定性分级器构成的双通路 RAG 架构、基于代码生成与受限沙箱的
 	确定性统计分析机制，以及覆盖模块层与集成层的多层评测体系。
@@ -526,10 +540,18 @@
 % 行距 8%。三档压缩共节省约 290pt 高度，让 37 条条目稳定单页收纳，且不需要
 % \enlargethispage 兜底（后者会把英文摘要末段内容拉到目录页顶）。
 % 注意 tocloft 寄存器名是简写 \cftbeforesecskip 而非 sectionskip。
+% 2026-05-15 调整：原参数过紧使目录堆在页面中央留大段空白；放松到刚好
+% 占满一页且不溢出。\linespread 1.0、\cftbeforesecskip 0.25em（章前留呼吸）、
+% \cftbeforesubsecskip 0pt（子节恢复默认）。如未来章节增减导致溢出，应优先
+% 回收 \cftbeforesecskip 至 0.15em，再考虑回压 \linespread 到 0.96。
 \setlength{\parskip}{0pt}
-\setlength{\cftbeforesecskip}{0pt}
-\setlength{\cftbeforesubsecskip}{-0.1em}
-{\linespread{0.92}\selectfont
+% 关键发现：\cftbeforesecskip / \cftbeforesubsecskip 在当前 article + tocloft 环境下
+% 被全局压制（0.65em → 1.5em 实测末项 yMax 仅变化 1.2pt）；真正能拉开间距的是
+% \linespread。33 条 toc 项每行 ≈ 14pt，放大到 1.15 倍 → 每行 +2.1pt，共 +69pt
+% 足以填满 46pt 顶/底空隙，留 23pt 安全余量。
+\setlength{\cftbeforesecskip}{0.4em}
+\setlength{\cftbeforesubsecskip}{0.05em}
+{\linespread{1.07}\selectfont
 \tableofcontents
 \par}
 \thispagestyle{main}
@@ -544,7 +566,7 @@
 % 第 1 章：绪论
 %   - 1.1 研究背景与意义
 %   - 1.2 国内外研究现状（气象 AI / Agent 技术 / RAG 与工具学习 / 课题定位）
-%   - 1.3 主要研究内容（研究内容与论文结构 / 研究方法与技术路线 / 创新点）
+%   - 1.3 主要研究内容（研究内容与论文结构 / 研究方法与技术路线 / 论文特色）
 %
 % 注：原 1.4 论文组织结构已合并进 1.3.1 研究内容与论文结构，
 %     1_4_论文组织结构.tex 仅作为历史素材保留，不再 \input。
@@ -649,17 +671,14 @@
 % ============================================================ %
 % 第 6 章：总结与展望（按导师意见 3 新建独立一章）
 %   - 6.1 全文总结        ← 原 5.3
-%   - 6.2 研究局限性      ← 原 5.4.1
-%   - 6.3 研究前景与未来工作 ← 原 5.4.2
+%   - 6.2 未来展望        ← 原 6.2 局限性 + 6.3 未来工作合并 (2026-05-15)
 % ============================================================ %
 \section{总结与展望}
 \label{chap:conclusion}
 
 \input{草稿/6_1_全文总结}
 
-\input{草稿/6_2_研究局限性}
-
-\input{草稿/6_3_研究前景}
+\input{草稿/6_2_未来展望}
 
 
 % ------------------------------------ 致谢 ------------------------------------ %

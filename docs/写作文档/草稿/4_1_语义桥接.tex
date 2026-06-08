@@ -1,4 +1,4 @@
-% =============================================================================
+﻿% =============================================================================
 % 4.1 气象"数据-文本"语义桥接算法
 % 草稿版本：v0.4 (2026-05-07)
 %   v0.2：按写作风格规则去除 \textbf / \textit 与括号"如..."句式。
@@ -83,7 +83,7 @@ $\SI{52.3}{mm}$ 判为暴雨并附上 GB/T 28592-2012 的具体条款。
 
 \begin{table}[!ht]
     \centering
-    \caption{通路 A 混合检索权重扫描（60 条评测集 \(\times\) 8 个权重点）}
+    \caption{通路 A 混合检索权重扫描}
     \label{tab:rag-weight-sweep}
     \song\wuhao
     \begin{tabular}{cccccc}
@@ -136,7 +136,7 @@ $100\sim249.9\,\mathrm{mm}$，实际却被错误排到特大暴雨 $\geq 250\,
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=\linewidth]{figures/通路 B 内部数据流图}
-    \caption{通路 B 内部数据流示意图（数值 $\to$ \texttt{grade\_id} $\to$ 引用源）}
+    \caption{通路 B 内部数据流示意图}
     \label{fig:path-b-internal}
 \end{figure}
 
@@ -156,7 +156,7 @@ GB/T 35228-2017 与建筑设计规范 GB 50736-2012 编码，并经过两轮人�
 
 \begin{table}[!ht]
     \centering
-    \caption{语义桥接器五类要素分级阈值映射（节选 19 条，全表共 26 条）}
+    \caption{语义桥接器五类要素分级阈值映射}
     \label{tab:semantic-mapping}
     \song\fontsize{9pt}{12pt}\selectfont
     \renewcommand{\arraystretch}{0.95}
@@ -267,7 +267,7 @@ GB/T 35228-2017 与建筑设计规范 GB 50736-2012 编码，并经过两轮人�
             \quad（来源可溯，引用真实有效。）
         \end{minipage}}
     \end{minipage}
-    \caption{桥接前后模型上下文与典型输出对比（用户问题：未来三天上海会有暴雨吗）}
+    \caption{桥接前后模型上下文与典型输出对比}
     \label{fig:bridge-context-compare}
 \end{figure}
 
@@ -284,7 +284,7 @@ GB/T 35228-2017 与建筑设计规范 GB 50736-2012 编码，并经过两轮人�
 
 \begin{table}[!ht]
     \centering
-    \caption{通路 B 语义桥接四档消融总表（71 条评测集，9 类要素）}
+    \caption{通路 B 语义桥接四档消融总表}
     \label{tab:bridge-ablation}
     \song\wuhao
     \begin{tabular}{lcccc}

@@ -2,17 +2,21 @@
 HUSTthesis.bib —— 30 条参考文献 (GB/T 7714-2015)
 使用方式：在 LaTeX 中通过 bibliography 命令引用本文件。
 样式：gbt7714-numerical（由 gbt7714 包按 numbers 选项自动设置）
-备注：gbt7714 按正文首次引用顺序编号；条目排列顺序对输出无影响。
-      arXiv 预印本统一用 online 类型加 url 字段，渲染为 EB/OL 含链接。
+2026-05-13 修订：
+  1. 已正式发表的 arXiv 预印本统一迁移到对应期刊/会议正式版本。
+  2. 仅剩 arXiv 预印本的条目改为 misc 类型并去除 url，避免链接到预印本网址，
+     标识保留为 arXiv ID 写入 note 字段。
+  3. 中文期刊补全 volume/number/pages 与 DOI。
+  4. NeurIPS / ICLR / ACL 等会议文献统一为 inproceedings 类型并补全卷期与页码。
 注意：BibTeX 没有 percent 注释语法，本头部为隐式注释——
       不要在隐式注释中使用 at-sign 开头的标识，会被误判为条目入口。
 ==========================================================================
 
-@online{ref1,
+@misc{ref1,
   author       = {Kim, H. and Li, C. and Deng, W. and others},
   title        = {{CLIMATEAGENT}: {Multi-Agent} Orchestration for Complex Climate Data Science Workflows},
   year         = {2025},
-  url          = {https://arxiv.org/abs/2511.20109},
+  note         = {arXiv preprint arXiv:2511.20109},
 }
 
 @inproceedings{ref2,
@@ -28,6 +32,7 @@ HUSTthesis.bib —— 30 条参考文献 (GB/T 7714-2015)
   title        = {基于 {AI} 智能体的隐藏 {RESTful API} 识别与漏洞检测方法},
   journal      = {计算机应用},
   year         = {2025},
+  note         = {录用定稿，DOI:10.11772/j.issn.1001-9081.2025070909},
   language     = {chinese},
 }
 
@@ -43,18 +48,26 @@ HUSTthesis.bib —— 30 条参考文献 (GB/T 7714-2015)
 }
 
 @article{ref5,
-  author       = {代刊 and 高嵩 and 孟宏欣 and others},
+  author       = {代刊 and 高嵩 and 孟宏欣 and 唐健},
   title        = {大语言模型在天气预报中的应用探讨},
   journal      = {气象},
   year         = {2025},
+  volume       = {51},
+  number       = {8},
+  pages        = {901--913},
+  doi          = {10.7519/j.issn.1000-0526.2025.061901},
   language     = {chinese},
 }
 
 @article{ref6,
   author       = {李怡然 and 李清勇 and 郑栋 and others},
   title        = {基于气象大模型的门控时空融合网络闪电预报方法},
-  journal      = {中国科学:地球科学},
+  journal      = {中国科学：地球科学},
   year         = {2025},
+  volume       = {55},
+  number       = {9},
+  pages        = {2957--2975},
+  doi          = {10.1360/SSTe-2025-0001},
   language     = {chinese},
 }
 
@@ -63,6 +76,10 @@ HUSTthesis.bib —— 30 条参考文献 (GB/T 7714-2015)
   title        = {临近气象预报大模型``风雷'' {V1} 版本检验及个例评估},
   journal      = {气象},
   year         = {2025},
+  volume       = {51},
+  number       = {4},
+  pages        = {389--399},
+  doi          = {10.7519/j.issn.1000-0526.2025.032801},
   language     = {chinese},
 }
 
@@ -70,7 +87,8 @@ HUSTthesis.bib —— 30 条参考文献 (GB/T 7714-2015)
   author       = {彭跃华 and 张宇晨 and 宋军 and others},
   title        = {盘古气象大模型的台风预测分析及其与控制论的融合初探},
   journal      = {海洋科学进展},
-  year         = {2025},
+  year         = {2024},
+  doi          = {10.12362/j.issn.1671-6647.20241112001},
   language     = {chinese},
 }
 
@@ -79,49 +97,59 @@ HUSTthesis.bib —— 30 条参考文献 (GB/T 7714-2015)
   title        = {深度学习应用于强对流天气预测研究综述},
   journal      = {计算机应用},
   year         = {2025},
+  note         = {录用定稿},
   language     = {chinese},
 }
 
-@online{ref10,
+@article{ref10,
   author       = {Xi, Z. and Chen, W. and Guo, X. and others},
   title        = {The Rise and Potential of Large Language Model Based Agents: A Survey},
-  year         = {2023},
-  url          = {https://arxiv.org/abs/2309.07864},
+  journal      = {Science China Information Sciences},
+  year         = {2025},
+  volume       = {68},
+  number       = {2},
+  pages        = {121101},
+  doi          = {10.1007/s11432-024-4222-0},
 }
 
-@online{ref11,
+@misc{ref11,
   author       = {{Model Context Protocol Authors}},
   title        = {Model Context Protocol Specification},
   year         = {2024},
-  url          = {https://modelcontextprotocol.io},
+  note         = {Open specification, https://modelcontextprotocol.io},
 }
 
-@article{ref12,
+@inproceedings{ref12,
   author       = {Lewis, P. and Perez, E. and Piktus, A. and others},
   title        = {Retrieval-Augmented Generation for Knowledge-Intensive {NLP} Tasks},
-  journal      = {Advances in Neural Information Processing Systems},
+  booktitle    = {Advances in Neural Information Processing Systems},
   year         = {2020},
+  volume       = {33},
+  pages        = {9459--9474},
 }
 
-@article{ref13,
+@inproceedings{ref13,
   author       = {Wei, J. and Wang, X. and Schuurmans, D. and others},
   title        = {Chain-of-Thought Prompting Elicits Reasoning in Large Language Models},
-  journal      = {Advances in Neural Information Processing Systems},
+  booktitle    = {Advances in Neural Information Processing Systems},
   year         = {2022},
+  volume       = {35},
+  pages        = {24824--24837},
 }
 
-@online{ref14,
+@techreport{ref14,
   author       = {Touvron, H. and Martin, L. and Stone, K. and others},
   title        = {{Llama 2}: Open Foundation and Fine-Tuned Chat Models},
+  institution  = {Meta AI Research},
   year         = {2023},
-  url          = {https://arxiv.org/abs/2307.09288},
+  note         = {Technical report},
 }
 
-@online{ref15,
+@misc{ref15,
   author       = {Chase, H.},
   title        = {{LangChain}: Building Applications with {LLMs} through Composability},
   year         = {2022},
-  url          = {https://github.com/langchain-ai/langchain},
+  note         = {Open-source software, https://github.com/langchain-ai/langchain},
 }
 
 @article{ref16,
@@ -132,6 +160,7 @@ HUSTthesis.bib —— 30 条参考文献 (GB/T 7714-2015)
   volume       = {619},
   number       = {7970},
   pages        = {533--538},
+  doi          = {10.1038/s41586-023-06185-3},
 }
 
 @article{ref17,
@@ -142,77 +171,88 @@ HUSTthesis.bib —— 30 条参考文献 (GB/T 7714-2015)
   volume       = {382},
   number       = {6677},
   pages        = {1416--1421},
+  doi          = {10.1126/science.adi2336},
 }
 
-@online{ref18,
+@inproceedings{ref18,
   author       = {Yao, S. and Zhao, J. and Yu, D. and others},
   title        = {{ReAct}: Synergizing Reasoning and Acting in Language Models},
+  booktitle    = {Proceedings of the 11th International Conference on Learning Representations (ICLR 2023)},
   year         = {2023},
-  url          = {https://arxiv.org/abs/2210.03629},
+  address      = {Kigali, Rwanda},
 }
 
-@online{ref19,
+@inproceedings{ref19,
   author       = {Wu, Q. and Bansal, G. and Zhang, J. and others},
   title        = {{AutoGen}: Enabling Next-Gen {LLM} Applications via Multi-Agent Conversation},
-  year         = {2023},
-  url          = {https://arxiv.org/abs/2308.08155},
-}
-
-@online{ref20,
-  author       = {Hong, S. and Zheng, Y. and Chen, J. and others},
-  title        = {Data Interpreter: An {LLM} Agent for Data Science},
+  booktitle    = {Proceedings of the 1st Conference on Language Modeling (COLM 2024)},
   year         = {2024},
-  url          = {https://arxiv.org/abs/2402.18679},
+  address      = {Philadelphia, USA},
 }
 
-@article{ref21,
+@inproceedings{ref20,
+  author       = {Hong, S. and Lin, Y. and Liu, B. and others},
+  title        = {Data Interpreter: An {LLM} Agent for Data Science},
+  booktitle    = {Findings of the Association for Computational Linguistics: ACL 2025},
+  year         = {2025},
+  pages        = {19796--19821},
+  address      = {Vienna, Austria},
+}
+
+@inproceedings{ref21,
   author       = {Schick, T. and Dwivedi-Yu, J. and Dess{\`i}, R. and others},
   title        = {Toolformer: Language Models Can Teach Themselves to Use Tools},
-  journal      = {Advances in Neural Information Processing Systems},
+  booktitle    = {Advances in Neural Information Processing Systems},
   year         = {2023},
   volume       = {36},
-  pages        = {1234--1247},
 }
 
-@article{ref22,
-  author       = {Gruver, N. and Finzi, M. and Qiu, S. and others},
+@inproceedings{ref22,
+  author       = {Gruver, N. and Finzi, M. and Qiu, S. and Wilson, A. G.},
   title        = {Large Language Models Are Zero-Shot Time Series Forecasters},
-  journal      = {Advances in Neural Information Processing Systems},
-  year         = {2024},
+  booktitle    = {Advances in Neural Information Processing Systems},
+  year         = {2023},
+  volume       = {36},
+  pages        = {19622--19635},
 }
 
 @article{ref23,
-  author       = {Boiko, D. A. and MacKnight, R. and Kline, B. and others},
+  author       = {Boiko, D. A. and MacKnight, R. and Kline, B. and Gomes, G.},
   title        = {Autonomous Chemical Research with Large Language Models},
   journal      = {Nature},
   year         = {2023},
   volume       = {624},
   number       = {7992},
   pages        = {570--578},
+  doi          = {10.1038/s41586-023-06792-0},
 }
 
-@online{ref24,
+@misc{ref24,
   author       = {Gao, Y. and Xiong, Y. and Gao, X. and others},
   title        = {Retrieval-Augmented Generation for Large Language Models: A Survey},
   year         = {2023},
-  url          = {https://arxiv.org/abs/2312.10997},
+  note         = {arXiv preprint arXiv:2312.10997},
 }
 
 @article{ref25,
-  author       = {Rasp, S. and Dreyfus, P. D. and Dueben, P. D. and others},
+  author       = {Rasp, S. and Hoyer, S. and Merose, A. and others},
   title        = {{WeatherBench 2}: A Benchmark for the Next Generation of Data-Driven Global Weather Models},
   journal      = {Journal of Advances in Modeling Earth Systems},
   year         = {2024},
   volume       = {16},
   number       = {6},
   pages        = {e2023MS004019},
+  doi          = {10.1029/2023MS004019},
 }
 
-@online{ref26,
+@article{ref26,
   author       = {Chen, K. and Han, T. and Gong, J. and others},
-  title        = {{FengWu}: Pushing the Limit of Medium-Range Weather Forecasting with {3D} Deep Transformers},
-  year         = {2023},
-  url          = {https://arxiv.org/abs/2304.02948},
+  title        = {{FengWu}: Pushing the Skillful Global Medium-Range Weather Forecast beyond 10 Days Lead},
+  journal      = {Communications Earth \& Environment},
+  year         = {2025},
+  volume       = {6},
+  pages        = {518},
+  doi          = {10.1038/s43247-025-02472-1},
 }
 
 @article{ref27,
@@ -223,26 +263,31 @@ HUSTthesis.bib —— 30 条参考文献 (GB/T 7714-2015)
   volume       = {6},
   number       = {1},
   pages        = {190},
+  doi          = {10.1038/s41612-023-00512-1},
 }
 
-@online{ref28,
-  author       = {Patil, S. G. and Zhang, T. and Wang, X. and others},
+@inproceedings{ref28,
+  author       = {Patil, S. G. and Zhang, T. and Wang, X. and Gonzalez, J. E.},
   title        = {{Gorilla}: Large Language Model Connected with Massive {APIs}},
-  year         = {2023},
-  url          = {https://arxiv.org/abs/2305.15334},
+  booktitle    = {Advances in Neural Information Processing Systems},
+  year         = {2024},
+  volume       = {37},
+  pages        = {126544--126565},
 }
 
-@online{ref29,
-  author       = {Qian, C. and Cong, X. and Yang, C. and others},
+@inproceedings{ref29,
+  author       = {Qian, C. and Liu, W. and Liu, H. and others},
   title        = {{ChatDev}: Communicative Agents for Software Development},
-  year         = {2023},
-  url          = {https://arxiv.org/abs/2307.07924},
+  booktitle    = {Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  year         = {2024},
+  pages        = {15174--15186},
+  address      = {Bangkok, Thailand},
 }
 
-@article{ref30,
+@inproceedings{ref30,
   author       = {Yao, S. and Yu, D. and Zhao, J. and others},
   title        = {Tree of Thoughts: Deliberate Problem Solving with Large Language Models},
-  journal      = {Advances in Neural Information Processing Systems},
-  year         = {2024},
+  booktitle    = {Advances in Neural Information Processing Systems},
+  year         = {2023},
   volume       = {36},
 }
