@@ -86,3 +86,6 @@ Thumbs.db
 # 日志和调试
 *.log
 debug-*.log
+
+# 论文 LaTeX 临时编译产物
+docs/写作文档/temp_subtexfile_dir/
